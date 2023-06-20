@@ -1,14 +1,13 @@
-import Vuex from 'vuex'
+import Vuex, { createStore } from 'vuex'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import VuexPersist from 'vuex-persist';
 
-const auth = getAuth();
 const vuexLocalStorage = new VuexPersist({
   key: 'vuex', // The key to store the state on in the storage provider.
   storage: window.localStorage, // or window.sessionStorage or localForage
 })
 
-const store = new Vuex.Store({
+const store = createStore({
   state: {
     user: {
       loggedIn: false,
@@ -30,7 +29,7 @@ const store = new Vuex.Store({
   },
   actions: {
     async register(context, { email, password, name}){
-      const response = await createUserWithEmailAndPassword(auth, email, password)
+      const response = await createUserWithEmailAndPassword(getAuth(), email, password)
       if (response) {
         context.commit('SET_USER', response.user)
         console.log(response.user)
@@ -41,7 +40,8 @@ const store = new Vuex.Store({
     },
 
     async logIn(context, { email, password }){
-      const response = await signInWithEmailAndPassword(auth, email, password)
+      const response = await signInWithEmailAndPassword(getAuth(), email, password)
+      console.log('response', response)
       if (response) {
         context.commit('SET_USER', response.user)
       } else {
@@ -50,7 +50,7 @@ const store = new Vuex.Store({
     },
 
     async logOut(context){
-      await signOut(auth)
+      await signOut(getAuth())
       context.commit('SET_USER', null)
     },
 

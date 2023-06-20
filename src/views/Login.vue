@@ -13,7 +13,7 @@
       rounded="lg"
     >
       <div class="text-subtitle-1 text-medium-emphasis">Account</div>
-        <v-text-field variant="outlined" placeholder="UserName" v-model="username"/>
+        <v-text-field variant="outlined" placeholder="Email" v-model="email"/>
       <div class="text-subtitle-1 text-medium-emphasis">Password</div>
         <v-text-field variant="outlined" placeholder="Password" v-model="password"/>
       <v-btn
@@ -35,12 +35,16 @@
   export default {
     data: () => ({
       visible: false,
-      username: '',
+      email: '',
       password: ''
     }),
     methods: {
       login() {
-        this.$store.dispatch("logIn", this.username, this.password);
+        console.log(111)
+        console.log(this.$router)
+        console.log(this.$store)
+        const loginVal = {email: this.email, password: this.password}
+        this.$store.dispatch("logIn", loginVal);
         // this.$router.push('/home')
       }
     }
