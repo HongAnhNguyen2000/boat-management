@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { checkUser } from '@/firebase'
-
+import BusinessModule from './modules/BusinessModule'
 import VuexPersist from 'vuex-persist';
 
 const vuexLocalStorage = new VuexPersist({
@@ -9,6 +9,9 @@ const vuexLocalStorage = new VuexPersist({
 })
 
 const store = createStore({
+  modules: {
+    business: BusinessModule
+  },
   state: {
     user: {
       loggedIn: false,
@@ -46,5 +49,4 @@ const store = createStore({
   plugins: [vuexLocalStorage.plugin]
 })
 
-// export the store
 export default store
