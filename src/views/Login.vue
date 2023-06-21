@@ -13,9 +13,9 @@
       rounded="lg"
     >
       <div class="text-subtitle-1 text-medium-emphasis">Account</div>
-      <v-text-field variant="outlined" placeholder="UserName"></v-text-field>
+        <v-text-field variant="outlined" placeholder="Email" v-model="email"/>
       <div class="text-subtitle-1 text-medium-emphasis">Password</div>
-        <v-text-field variant="outlined" placeholder="Password"></v-text-field>  
+        <v-text-field variant="outlined" placeholder="Password" v-model="password"/>
       <v-btn
         block
         class="mb-8"
@@ -35,11 +35,17 @@
   export default {
     data: () => ({
       visible: false,
+      email: '',
+      password: ''
     }),
     methods: {
       login() {
-      this.$router.push('/home')
-    }
+        const loginVal = {email: this.email, password: this.password}
+        this.$store.dispatch("logIn", loginVal);
+        if (this.$store.state.user) {
+          this.$router.push('/home')
+        }
+      }
     }
   }
 </script>
