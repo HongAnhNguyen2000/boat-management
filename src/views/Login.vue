@@ -40,12 +40,11 @@
     }),
     methods: {
       login() {
-        console.log(111)
-        console.log(this.$router)
-        console.log(this.$store)
         const loginVal = {email: this.email, password: this.password}
         this.$store.dispatch("logIn", loginVal);
-        // this.$router.push('/home')
+        if (this.$store.state.user) {
+          this.$router.push('/home')
+        }
       }
     }
   }
