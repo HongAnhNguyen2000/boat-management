@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { collection, getFirestore, getDocs, addDoc } from "firebase/firestore";
+import { collection, getFirestore, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 import { ref } from 'vue'
 import exp from "constants";
 
@@ -40,16 +40,24 @@ export const getListVehicle = async() => {
   const querySnapshot = await getDocs(vehicleCollection);
   const list = [];
   for (const doc of querySnapshot.docs) {
-    list.push(doc.data())
+    list.push({...doc.data(), id: doc.id})
   }
   return list ?? [];
+}
+
+
+export const getVehicle = async(id) => {
+  const docRef = doc(db, "vehicle", id);
+  let vehicle = {}
+  vehicle = await getDoc(docRef);
+  return vehicle.data()
 }
 
 export const getPlaces = async() => {
   const querySnapshot = await getDocs(placesCollection);
   const list = [];
   for (const doc of querySnapshot.docs) {
-    list.push(doc.data())
+    list.push({...doc.data(), id: doc.id})
   }
   return list ?? [];
 }
@@ -60,4 +68,13 @@ export const addVehicle = async (params:any) => {
 
 export const addBussinessData = async (params: any) => {
   await addDoc(formCollection, params)
+}
+
+export const getBussinessData = async () => {
+  const querySnapshot = await getDocs(formCollection);
+  const list = [];
+  for (const doc of querySnapshot.docs) {
+    list.push({...doc.data(), id: doc.id})
+  }
+  return list ?? [];
 }

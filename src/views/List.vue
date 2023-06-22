@@ -1,28 +1,69 @@
 <template>
   <div class="data-container">
-    <p>Hello</p>
-    </div>
+    <v-table>
+      <thead>
+        <tr>
+          <th class="text-left">
+            Thời gian tạo
+          </th>
+          <th class="text-left">
+            Thuyền trưởng
+          </th>
+          <th class="text-left">
+            Số đăng ký
+          </th>
+          <th class="text-left">
+            Loại Phương Tiện
+          </th>
+          <th class="text-left">
+            Bến rời
+          </th>
+          <th class="text-left">
+            Bến đến
+          </th>
+          <th class="text-left">
+            Thời gian xuất phát
+          </th>
+          <th class="text-left">
+            Trạng thái
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(item, index) in listBussinessData"
+          :key="item.name + index"
+          @click="gotoDetail(item.id)"
+          style="cursor:pointer"
+        >
+          <td>{{ item.created_at }}</td>
+          <td>{{ item.captain }}</td>
+          <td><div v-html="item.vehicle['registration-number'] ?? ''"/></td>
+          <td><div v-html="item.vehicle['type'] ?? ''"/></td>
+          <td>{{ item.toStation }}</td>
+          <td>{{ item.fromStation }}</td>
+          <td>{{ item.time }}</td>
+          <td>requesting</td>
+        </tr>
+      </tbody>
+    </v-table>
+  </div>
 </template>
 
 <script lang="ts">
-import { addVehicle, getListVehicle } from '@/firebase'
+import { addVehicle, getBussinessData, getListVehicle, getVehicle } from '@/firebase'
+import { getEventListeners } from 'events'
 export default {
   data () {
     return {
-      dialog: false,
-      registrationNumber: '',
-      insuranceDeadline: '',
-      insurancePhoto: '',
-      name: '',
-      registrationDeadline: '',
-      registrationPhoto: '',
-      tonnage: '',
-      type: '',
-      vehicleOwner: '',
-      wattage: '',
-      yearManufacture: '',
+      listBussinessData: [],
+      vehicles: [],
     }
   },
+  created(): void {
+    this.getBussinessData()
+  },
+
   methods: {
     async regis() {
       const params = {
@@ -39,6 +80,29 @@ export default {
         "year-manufacture": this.yearManufacture,
       }
       await addVehicle(params)
+    },
+    async getBussinessData() {
+      const getDatas = await getBussinessData()
+      const forms = []
+      const idVehicles = []
+      for (const form of getDatas) {
+        let vehicle: any = {}
+        if (!idVehicles.includes(form['idVehicle'])) {
+          idVehicles.push(form['idVehicle'])
+          const getDataVehicle = await getVehicle(form['idVehicle']);
+          vehicle = {...getDataVehicle, idVehicle: form['idVehicle']}
+          this.vehicles.push(vehicle)
+        } else {
+          vehicle = this.vehicles.find(vehicle => vehicle['idVehicle'] === form['idVehicle'])
+          console.log(vehicle)
+        }
+        console.log('vehicle', vehicle)
+        forms.push({...form, vehicle});
+      }
+      this.listBussinessData = forms
+    },
+    gotoDetail(id) {
+      this.$router.push('form/'+id)
     }
   }
 }

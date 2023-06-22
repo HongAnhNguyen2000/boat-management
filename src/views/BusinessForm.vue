@@ -229,13 +229,14 @@ export default {
       businessData: {},
       vehicle: [] as any,
       typeofVehicle: {name: ''},
+      idVehicle: '',
     };
   },
-   created(): void {
+  created(): void {
     this.getVehicle()
   },
   methods: {
-     async getVehicle() {
+    async getVehicle() {
       const list = await getListVehicle()
       this.vehicle = list
     },
@@ -243,12 +244,17 @@ export default {
       const clientData = [...this.businessData['customers'] ?? [], ...this.businessData['shipEmployees'] ?? [], ...this.businessData['guides'] ?? []]
       const localCustomers = this.businessData['customers']?.filter((item) => item.nation === 'Việt Nam')
       const internationalCustomers = this.businessData['customers']?.filter((item) => item.nation === 'Nước ngoài')
+      const now = new Date();
+      const created_at = now.toLocaleDateString() + ' ' + now.toLocaleTimeString()
+
       const setAPIData = {
         ...this.businessData,
         clients: clientData.flat(1),
         totalShipMember: !isNaN(this.businessData['guides']?.length + this.businessData['shipEmployees']?.length + 1) ? (this.businessData['guides']?.length + this.businessData['shipEmployees']?.length + 1) : 0,
         localCustomerNumber: localCustomers?.length ?? 0,
-        internationalCustomerNumber: internationalCustomers?.length ?? 0
+        internationalCustomerNumber: internationalCustomers?.length ?? 0,
+        created_at,
+        idVehicle: this.idVehicle
       }
       
       delete setAPIData['shipEmployees']
@@ -301,6 +307,7 @@ export default {
   },
   watch: {
     typeofVehicle(newVal): void {
+      this.idVehicle = newVal.id
       this.businessData['meanName'] = newVal.name;
       this.businessData['meanNumber'] = newVal['registration-number']
       this.businessData['ownerName'] = newVal['vehicle-owner']
