@@ -23,7 +23,7 @@
           <v-text-field
             class="mt-2"
             variant="outlined"
-            placeholder="Ten phuong tien"
+            placeholder="Tên phương tiện"
             v-model="businessData['meanName']"
             disabled
           ></v-text-field>
@@ -46,7 +46,6 @@
           <v-text-field
             class="mt-2"
             variant="outlined"
-            placeholder="Ten thuyen truong"
             v-model="businessData['captain']"
           ></v-text-field>
         </v-col>
@@ -72,7 +71,6 @@
               <v-text-field
                 class="mt-2"
                 variant="outlined"
-                placeholder="Tan"
                 v-model="businessData['tonnage']"
                 disabled
               ></v-text-field>
@@ -82,7 +80,6 @@
               <v-text-field
                 class="mt-2"
                 variant="outlined"
-                placeholder="Ghe"
                 v-model="businessData['seats']"
                 disabled
               ></v-text-field>
@@ -97,7 +94,6 @@
               <v-text-field
                 class="mt-2"
                 variant="outlined"
-                placeholder="Viet Nam"
                 type="number"
                 v-model="businessData['localCustomerNumber']"
               ></v-text-field>
@@ -107,7 +103,6 @@
               <v-text-field
                 class="mt-2"
                 variant="outlined"
-                placeholder="Nuoc ngoai"
                 type="number"
                 v-model="businessData['foreignCustomerNumber']"
               ></v-text-field>
@@ -122,12 +117,11 @@
             class="mt-2"
             variant="outlined"
             type="number"
-            placeholder=""
-            v-model="businessData['customerNumber']"
+            v-model="totalShipMemberNumber"
           ></v-text-field>
         </v-col>
         <v-col cols="5">
-          <h4>Hướng dẫn viên - 2</h4>
+          <h4>Hướng dẫn viên</h4>
           <v-table class="table-customer mt-2">
             <thead>
               <tr>
@@ -254,20 +248,19 @@
   </div>
 </template>
 <script lang="ts">
-import DatePicker from "../components/atoms/DatePicker.vue";
 import CustomerTableVue from "../components/CustomerTable.vue";
 import { CustomerData } from "../CommonFile";
 import { v4 as uuidv4 } from "uuid";
 import { getListVehicle, addBussinessData } from '@/firebase'
 
 export default {
-  components: { DatePicker, CustomerTableVue },
+  components: { CustomerTableVue },
   data() {
     return {
       businessData: {},
       vehicle: [] as any,
-      typeofVehicle: {},
-      totalClientNumber: 0
+      typeofVehicle: {name: ''},
+      totalShipMemberNumber: 0
     };
   },
    created(): void {
@@ -277,7 +270,6 @@ export default {
      async getVehicle() {
       const list = await getListVehicle()
       this.vehicle = list
-      console.log(this.vehicle)
     },
     regisNewBusinessForm(): void {
       const clientData = [...this.businessData['customers'], ...[this.businessData['shipEmployees'], ...[this.businessData['guides']]]]
@@ -341,7 +333,7 @@ export default {
       this.businessData['seats'] = newVal['wattage']
     },
     businessData(newVal): void {
-      this.totalClientNumber = this.businessData['guides'].length + this.businessData['shipEmployees'].length + this.businessData['customers'].length
+      this.totalShipMemberNumber = 1 + newVal['guides']?.length + newVal['shipEmployees']?.length
     }
   }
 };
