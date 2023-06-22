@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import { checkUser } from '@/firebase'
 import BusinessModule from './modules/BusinessModule'
 import VuexPersist from 'vuex-persist';
+import router from '@/router/index';
 
 const vuexLocalStorage = new VuexPersist({
   key: 'vuex', // The key to store the state on in the storage provider.
@@ -37,13 +38,15 @@ const store = createStore({
       if (user) {
         context.commit('SET_USER', user)
       } else {
+        router.push('/')
         throw new Error('login failed')
-        this.$router.push('/')
+
       }
     },
 
     async logOut(context){
       context.commit('SET_USER', null)
+      router.push('/')
     },
   },
   plugins: [vuexLocalStorage.plugin]

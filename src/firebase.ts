@@ -29,6 +29,7 @@ export const checkUser = async (email: any,  password: any) => {
   const docSnapshots = querySnapshot.docs;
   for (const doc of docSnapshots) {
     if (doc.get('email') === email && doc.get('password') === password) {
+      console.log('data', doc.data())
       return await doc.data()
     }
   }
@@ -55,4 +56,8 @@ export const getPlaces = async() => {
 
 export const addVehicle = async (params:any) => {
   await addDoc(vehicleCollection, params);
+}
+
+export const addBussinessData = async (params: any) => {
+  await addDoc()
 }
