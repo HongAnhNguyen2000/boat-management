@@ -86,41 +86,10 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="6" class="pt-0">
-          <h3>Số lượng hành khách</h3>
-          <v-row mt="2">
-            <v-col cols="6" class="mt-3">
-              <h4>Quốc tịch(Việt Nam)</h4>
-              <v-text-field
-                class="mt-2"
-                variant="outlined"
-                type="number"
-                v-model="businessData['localCustomerNumber']"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6" class="mt-3">
-              <h4>Quốc tịch (Nước ngoài)</h4>
-              <v-text-field
-                class="mt-2"
-                variant="outlined"
-                type="number"
-                v-model="businessData['foreignCustomerNumber']"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-col>
+
       </v-row>
       <v-row>
-        <v-col cols="2">
-          <h4>Tổng thuyen vien</h4>
-          <v-text-field
-            class="mt-2"
-            variant="outlined"
-            type="number"
-            v-model="businessData['shipMemberNumber']"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="5">
+        <v-col cols="6">
           <h4>Hướng dẫn viên</h4>
           <v-table class="table-customer mt-2">
             <thead>
@@ -151,7 +120,7 @@
             </tbody>
           </v-table>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="6">
           <h4>Nhân viên</h4>
           <v-table class="table-customer mt-2">
             <thead>
@@ -260,7 +229,6 @@ export default {
       businessData: {},
       vehicle: [] as any,
       typeofVehicle: {name: ''},
-      totalShipMemberNumber: 0
     };
   },
    created(): void {
@@ -272,14 +240,21 @@ export default {
       this.vehicle = list
     },
     regisNewBusinessForm(): void {
-      const clientData = [...this.businessData['customers'], ...[this.businessData['shipEmployees'], ...[this.businessData['guides']]]]
+      const clientData = [...this.businessData['customers'] ?? [], ...this.businessData['shipEmployees'] ?? [], ...this.businessData['guides'] ?? []]
+      const localCustomers = this.businessData['customers']?.filter((item) => item.nation === 'Việt Nam')
+      const internationalCustomers = this.businessData['customers']?.filter((item) => item.nation === 'Nước ngoài')
       const setAPIData = {
         ...this.businessData,
-        clients: clientData.flat(1)
+        clients: clientData.flat(1),
+        totalShipMember: !isNaN(this.businessData['guides']?.length + this.businessData['shipEmployees']?.length + 1) ? (this.businessData['guides']?.length + this.businessData['shipEmployees']?.length + 1) : 0,
+        localCustomerNumber: localCustomers?.length ?? 0,
+        internationalCustomerNumber: internationalCustomers?.length ?? 0
       }
+      
       delete setAPIData['shipEmployees']
       delete setAPIData['guides']
       delete setAPIData['customers']
+      console.log('s', setAPIData)
       try {
         addBussinessData(setAPIData)
         this.$router.push('list')
@@ -331,9 +306,6 @@ export default {
       this.businessData['ownerName'] = newVal['vehicle-owner']
       this.businessData['tonnage'] = newVal['tonnage']
       this.businessData['seats'] = newVal['wattage']
-    },
-    businessData(newVal): void {
-      this.totalShipMemberNumber = 1 + newVal['guides']?.length + newVal['shipEmployees']?.length
     }
   }
 };
