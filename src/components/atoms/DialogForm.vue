@@ -88,7 +88,7 @@ export default {
       this.customerData = { ...this.customerValue }
     },
     regisNewCustomer(): void {
-      const newCustomer = { ...this.customerData, id: uuidv4() }
+      const newCustomer = { ...this.customerData, id: uuidv4(), type: "Customer"}
       this.$emit('onAddNewCustomer', newCustomer)
     },
     onChangeCustomerData(): void {

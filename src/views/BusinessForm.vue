@@ -1,7 +1,22 @@
 <template>
+  <div class="data-container">
   <div class="grey lighten-4 nft-page create-form-page contentsWrapStyle">
     <h2>Danh sách hành khách vận tải đường thủy nội địa</h2>
     <div>
+      <v-row>
+        <v-col cols="6" class="pt-3">
+        <h3>Chọn phương tiện</h3>
+        <v-select
+          class="mt-2"
+          label="Phương tiện"
+          :items="vehicle"
+          :item-title="'name'"
+          v-model="typeofVehicle"
+          variant="solo"
+          return-object
+        />
+        </v-col>
+      </v-row>
       <v-row class="mt-5">
         <v-col cols="8" class="pt-3">
           <h3>Tên phương tiện</h3>
@@ -10,6 +25,7 @@
             variant="outlined"
             placeholder="Ten phuong tien"
             v-model="businessData['meanName']"
+            disabled
           ></v-text-field>
         </v-col>
         <v-col cols="4" class="pt-3">
@@ -19,6 +35,7 @@
             variant="outlined"
             placeholder="So dang ky"
             v-model="businessData['meanNumber']"
+            disabled
           ></v-text-field>
         </v-col>
       </v-row>
@@ -41,6 +58,7 @@
             variant="outlined"
             placeholder="Ten chu tau"
             v-model="businessData['ownerName']"
+            disabled
           ></v-text-field>
         </v-col>
       </v-row>
@@ -55,8 +73,8 @@
                 class="mt-2"
                 variant="outlined"
                 placeholder="Tan"
-                type="number"
                 v-model="businessData['tonnage']"
+                disabled
               ></v-text-field>
             </v-col>
             <v-col cols="6" class="mt-3">
@@ -65,8 +83,8 @@
                 class="mt-2"
                 variant="outlined"
                 placeholder="Ghe"
-                type="number"
                 v-model="businessData['seats']"
+                disabled
               ></v-text-field>
             </v-col>
           </v-row>
@@ -203,7 +221,12 @@
             </v-col>
             <v-col cols="4">
               <h4 class="mt-3">Thời gian rời bến</h4>
-              <date-picker></date-picker>
+              <v-text-field
+                    class="mt-1"
+                    variant="outlined"
+                    placeholder=""
+                    v-model="businessData['time']"
+                  ></v-text-field>
             </v-col>
           </v-row>
         </v-col>
@@ -228,23 +251,50 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 <script lang="ts">
-import DatePicker from "./atoms/DatePicker.vue";
-import CustomerTableVue from "./CustomerTable.vue";
+import DatePicker from "../components/atoms/DatePicker.vue";
+import CustomerTableVue from "../components/CustomerTable.vue";
 import { CustomerData } from "../CommonFile";
 import { v4 as uuidv4 } from "uuid";
+import { getListVehicle, addBussinessData } from '@/firebase'
 
 export default {
   components: { DatePicker, CustomerTableVue },
   data() {
     return {
       businessData: {},
+      vehicle: [] as any,
+      typeofVehicle: {},
+      totalClientNumber: 0
     };
   },
+   created(): void {
+    this.getVehicle()
+  },
   methods: {
+     async getVehicle() {
+      const list = await getListVehicle()
+      this.vehicle = list
+      console.log(this.vehicle)
+    },
     regisNewBusinessForm(): void {
-      console.log("businessData", this.businessData);
+      const clientData = [...this.businessData['customers'], ...[this.businessData['shipEmployees'], ...[this.businessData['guides']]]]
+      const setAPIData = {
+        ...this.businessData,
+        clients: clientData.flat(1)
+      }
+      delete setAPIData['shipEmployees']
+      delete setAPIData['guides']
+      delete setAPIData['customers']
+      try {
+        addBussinessData(setAPIData)
+        this.$router.push('list')
+      } catch (err) {
+        console.log(err)
+      }
+      
     },
     onChangeCustomerData(value: CustomerData): void {
       this.businessData["customers"] = value;
@@ -253,6 +303,7 @@ export default {
       const newEmployee = {
         id: uuidv4(),
         name: "",
+        type:"employee"
       };
       if (!Array.isArray(this.businessData["shipEmployees"])) {
         this.businessData["shipEmployees"] = [];
@@ -268,6 +319,7 @@ export default {
       const newGuide = {
         id: uuidv4(),
         name: "",
+        type:"guide"
       };
       if (!Array.isArray(this.businessData["guides"])) {
         this.businessData["guides"] = [];
@@ -280,6 +332,18 @@ export default {
       ].filter((item) => item.id !== id);
     },
   },
+  watch: {
+    typeofVehicle(newVal): void {
+      this.businessData['meanName'] = newVal.name;
+      this.businessData['meanNumber'] = newVal['registration-number']
+      this.businessData['ownerName'] = newVal['vehicle-owner']
+      this.businessData['tonnage'] = newVal['tonnage']
+      this.businessData['seats'] = newVal['wattage']
+    },
+    businessData(newVal): void {
+      this.totalClientNumber = this.businessData['guides'].length + this.businessData['shipEmployees'].length + this.businessData['customers'].length
+    }
+  }
 };
 </script>
 
@@ -291,6 +355,10 @@ export default {
 </style>
 
 <style>
+.data-container {
+  margin: 2rem;
+  padding: 40px 56px;
+}
 .create-form-page .v-input__slot {
   min-height: 45px !important;
 }

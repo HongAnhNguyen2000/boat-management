@@ -12,9 +12,14 @@ const routes = [
         component: () => import( '@/views/Login.vue'),
       },
       {
-        path: '/home',
-        name: 'Home',
-        component: () => import( '@/views/Home.vue'),
+        path: '/list',
+        name: 'List',
+        component: () => import( '@/views/List.vue'),
+      },
+      {
+        path: '/form',
+        name: 'Business form',
+        component: () => import( '@/views/BusinessForm.vue'),
       },
       {
         path: '/add-vehicle',

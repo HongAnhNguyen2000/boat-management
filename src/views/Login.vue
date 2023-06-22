@@ -43,7 +43,7 @@
         const loginVal = {email: this.email, password: this.password}
         this.$store.dispatch("logIn", loginVal);
         if (this.$store.state.user) {
-          this.$router.push('/home')
+          this.$router.push('list')
         }
       }
     }

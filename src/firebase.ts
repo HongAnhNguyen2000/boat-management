@@ -22,6 +22,7 @@ const infosCollection = collection(db, "infos")
 const placesCollection = collection(db, "places")
 const statusCollection = collection(db, "status")
 const vehicleCollection = collection(db, "vehicle")
+const formCollection = collection(db, "register-leave-wharf")
 
 export const checkUser = async (email: any,  password: any) => {
   const users = ref([])
@@ -29,7 +30,6 @@ export const checkUser = async (email: any,  password: any) => {
   const docSnapshots = querySnapshot.docs;
   for (const doc of docSnapshots) {
     if (doc.get('email') === email && doc.get('password') === password) {
-      console.log('data', doc.data())
       return await doc.data()
     }
   }
@@ -59,5 +59,5 @@ export const addVehicle = async (params:any) => {
 }
 
 export const addBussinessData = async (params: any) => {
-  await addDoc()
+  await addDoc(formCollection, params)
 }

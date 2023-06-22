@@ -1,19 +1,5 @@
 <template>
- <v-layout row justify-center>
-      <v-toolbar app dark color="blue-grey darken-1" class="hidden-xs-and-down">
-        <v-toolbar-title>Vehicle Register</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-         <v-btn
-           v-for="item in nav"
-           :key="item.icon"
-           to="#"
-           :title="item.title"
-           flat
-         >{{ item.text }}</v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-  </v-layout>
+
   <div class="data-container">
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle" >
       <v-text-field variant="outlined" placeholder="UserName"></v-text-field>
