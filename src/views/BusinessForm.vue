@@ -220,7 +220,7 @@
 import CustomerTableVue from "../components/CustomerTable.vue";
 import { CustomerData } from "../CommonFile";
 import { v4 as uuidv4 } from "uuid";
-import { getListVehicle, addBussinessData } from '@/firebase'
+import { getListVehicle, addBussinessData, getFormData } from '@/firebase'
 
 export default {
   components: { CustomerTableVue },
@@ -230,10 +230,13 @@ export default {
       vehicle: [] as any,
       typeofVehicle: {name: ''},
       idVehicle: '',
+      formID: '' as any
     };
   },
   created(): void {
-    this.getVehicle()
+    this.getVehicle();
+    this.formID = this.$route.params.formID;
+    this.getformDetail();
   },
   methods: {
     async getVehicle() {
@@ -288,7 +291,7 @@ export default {
         "shipEmployees"
       ].filter((item) => item.id !== id);
     },
-        onAddNewGuide(): void {
+    onAddNewGuide(): void {
       const newGuide = {
         id: uuidv4(),
         name: "",
@@ -304,6 +307,11 @@ export default {
         "guides"
       ].filter((item) => item.id !== id);
     },
+    async getformDetail(): Promise<void> {
+      if (this.formID && this.formID !== '') {
+        this.businessData = await getFormData(this.formID)
+      }
+    }
   },
   watch: {
     typeofVehicle(newVal): void {

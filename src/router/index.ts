@@ -22,6 +22,11 @@ const routes = [
         component: () => import( '@/views/BusinessForm.vue'),
       },
       {
+        path: '/form/:formID',
+        name: 'Business form',
+        component: () => import( '@/views/BusinessForm.vue'),
+      },
+      {
         path: '/add-vehicle',
         name: 'AddVehicle',
         component: () => import( '@/views/addVehicle.vue'),

@@ -78,3 +78,10 @@ export const getBussinessData = async () => {
   }
   return list ?? [];
 }
+
+export const getFormData = async(id) => {
+  const docRef = doc(db, "register-leave-wharf", id);
+  let form = {}
+  form = await getDoc(docRef);
+  return form.data()
+}
