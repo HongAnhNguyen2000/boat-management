@@ -117,7 +117,7 @@
             class="mt-2"
             variant="outlined"
             type="number"
-            v-model="totalShipMemberNumber"
+            v-model="businessData['shipMemberNumber']"
           ></v-text-field>
         </v-col>
         <v-col cols="5">
