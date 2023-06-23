@@ -300,7 +300,6 @@ export default {
     regisNewBusinessForm(): void {
       const setAPIData = this.handleData()
       const data = {...setAPIData, type: 'requesting'};
-      console.log('s', data)
       try {
         addBussinessData(data)
         this.$router.push('list')

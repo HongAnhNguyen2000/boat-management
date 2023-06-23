@@ -67,7 +67,6 @@ export default {
   },
   watch:{
     customers(newVal) {
-      console.log('newVal', newVal)
       this.dataCustomers = [...newVal]
     },
     dataCustomers(newVal): void {

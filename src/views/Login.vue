@@ -53,7 +53,6 @@
         }
       },
       validateLogin() {
-        console.log(this.email)
         this.disable = (this.email === '' || this.password === '')
       }
     }

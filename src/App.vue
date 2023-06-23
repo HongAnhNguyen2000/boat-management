@@ -1,7 +1,4 @@
 <template>
-    <div v-if="!isLogginUrl && !roleUser" class="overlay">
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
-    </div>
   <div>
   <v-layout row justify-center v-if="roleUser">
     <v-toolbar app dark color="blue-grey darken-1" class="hidden-xs-and-down">
@@ -65,7 +62,6 @@ import { getListVehicle } from '@/firebase'
       this.$store.dispatch("logOut")
     },
     checkRoleUser(role: string) {
-      console.log('role', role, (role === 'enterprise'))
       if (role === 'enterprise') {
         this.nav = [
           {
