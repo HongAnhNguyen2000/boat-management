@@ -65,7 +65,7 @@ import { getListVehicle } from '@/firebase'
       this.$store.dispatch("logOut")
     },
     checkRoleUser(role: string) {
-
+      console.log('role', role, (role === 'enterprise'))
       if (role === 'enterprise') {
         this.nav = [
           {
@@ -82,8 +82,7 @@ import { getListVehicle } from '@/firebase'
           url: '/form',
           active: false
         }]
-      }
-      if (role === 'manager') {
+      } else if (role === 'manager') {
         this.nav = [
           {
           icon: 'Danh sách',
@@ -100,6 +99,17 @@ import { getListVehicle } from '@/firebase'
           active: false
         }]
 
+      } else {
+        this.nav = [
+          {
+          icon: 'Danh sách',
+          text: 'Danh sách',
+          title: 'Danh sách',
+          url: '/list',
+          active: false
+        
+        }
+        ]
       }
     }
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-row add-new-customer">
     <h3>Danh sách hành khách</h3>
-    <v-btn variant="outlined" @click="onShowDialog(null)">+Thêm</v-btn>
+    <v-btn variant="outlined" @click="onShowDialog(null)" :disabled="disabled">+Thêm</v-btn>
   </div>
 
   <v-table fixed-header :height="dataCustomers && dataCustomers.length > 0 ? '300px' : '56px'" mt="2" class="customer-table">
@@ -30,7 +30,7 @@
         <td>{{ item.note }}</td>
         <td>
           <v-btn variant="outlined" @click="onShowDialog(item.id)"
-            >Sửa</v-btn
+            :disabled="disabled">Sửa</v-btn
           >
         </td>
       </tr>
@@ -53,14 +53,23 @@ export default {
       type: Array as PropType<CustomerData[]>,
       default: () => ([])
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
-      dataCustomers: this.customers,
+      dataCustomers: [...this.customers],
       setOpen: false,
       chosenCustomerId: '',
       chosenCustomerValue: {}
     };
+  },
+  watch:{
+    customers(newVal) {
+      this.dataCustomers = newVal
+    }
   },
   methods: {
     onShowDialog(customerId) {

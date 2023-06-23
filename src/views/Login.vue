@@ -15,7 +15,7 @@
       <div class="text-subtitle-1 text-medium-emphasis">Account</div>
         <v-text-field variant="outlined" placeholder="Email" v-model="email"/>
       <div class="text-subtitle-1 text-medium-emphasis">Password</div>
-        <v-text-field variant="outlined" placeholder="Password" v-model="password"/>
+        <v-text-field variant="outlined" placeholder="Password" v-model="password" type="password"/>
       <v-btn
         block
         class="mb-8"
@@ -23,6 +23,7 @@
         size="large"
         variant="tonal"
         @click="login()"
+        :disabled="disable"
       >
         Log In
       </v-btn>
@@ -36,8 +37,13 @@
     data: () => ({
       visible: false,
       email: '',
-      password: ''
+      password: '',
+      disable: true,
     }),
+    watch: {
+      password(){this.validateLogin()},
+      email(){this.validateLogin()}
+    },
     methods: {
       login() {
         const loginVal = {email: this.email, password: this.password}
@@ -45,6 +51,10 @@
         if (this.$store.state.user) {
           this.$router.push('list')
         }
+      },
+      validateLogin() {
+        console.log(this.email)
+        this.disable = (this.email === '' || this.password === '')
       }
     }
   }

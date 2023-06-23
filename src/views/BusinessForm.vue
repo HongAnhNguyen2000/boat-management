@@ -7,6 +7,7 @@
         <v-col cols="6" class="pt-3">
         <h3>Chọn phương tiện</h3>
         <v-select
+          :disabled="isDisable"
           class="mt-2"
           label="Phương tiện"
           :items="vehicle"
@@ -47,6 +48,7 @@
             class="mt-2"
             variant="outlined"
             v-model="businessData['captain']"
+            :disabled="isDisable"
           ></v-text-field>
         </v-col>
         <v-col cols="6" class="pt-3">
@@ -97,7 +99,7 @@
                 <th>STT</th>
                 <th>Ten huong dan vien</th>
                 <th>
-                  <v-btn variant="outlined" @click="onAddNewGuide"> + </v-btn>
+                  <v-btn variant="outlined" @click="onAddNewGuide" :disabled="isDisable"> + </v-btn>
                 </th>
               </tr>
             </thead>
@@ -111,10 +113,11 @@
                     variant="outlined"
                     placeholder=""
                     v-model="item.name"
+                    :disabled="isDisable"
                   ></v-text-field>
                 </td>
                 <td>
-                  <v-btn variant="outlined" @click="onDeleteGuide(item.id)"> - </v-btn>
+                  <v-btn variant="outlined" @click="onDeleteGuide(item.id)" :disabled="isDisable"> - </v-btn>
                 </td>
               </tr>
             </tbody>
@@ -128,7 +131,7 @@
                 <th>STT</th>
                 <th>Ten nhan vien phuc vu</th>
                 <th>
-                  <v-btn variant="outlined" @click="onAddNewEmployee">+</v-btn>
+                  <v-btn variant="outlined" @click="onAddNewEmployee" :disabled="isDisable">+</v-btn>
                 </th>
               </tr>
             </thead>
@@ -145,10 +148,11 @@
                     variant="outlined"
                     placeholder=""
                     v-model="item.name"
+                    :disabled="isDisable"
                   ></v-text-field>
                 </td>
                 <td>
-                  <v-btn variant="outlined" @click="onDeleteEmployee(item.id)">
+                  <v-btn variant="outlined" @click="onDeleteEmployee(item.id)" :disabled="isDisable">
                     -
                   </v-btn>
                 </td>
@@ -170,6 +174,7 @@
                 :items="['Nha Trang', 'Khánh Hòa']"
                 variant="solo"
                 v-model="businessData['fromStation']"
+                :disabled="isDisable"
               />
             </v-col>
             <v-col cols="4" class="mt-3">
@@ -180,6 +185,7 @@
                 :items="['Hòn Tắm', 'Khánh Hòa']"
                 variant="solo"
                 v-model="businessData['toStation']"
+                :disabled="isDisable"
               />
             </v-col>
             <v-col cols="4">
@@ -189,6 +195,7 @@
                     variant="outlined"
                     placeholder=""
                     v-model="businessData['time']"
+                    :disabled="isDisable"
                   ></v-text-field>
             </v-col>
           </v-row>
@@ -199,6 +206,7 @@
           <customer-table-vue
             :customers="businessData['customers']"
             @onChangeCustomerData="onChangeCustomerData"
+            :disabled="isDisable"
           />
         </v-col>
       </v-row>
@@ -208,6 +216,7 @@
           color="black"
           variant="tonal"
           @click="regisNewBusinessForm"
+          :disabled="isDisable"
         >
           Đăng kí
         </v-btn>
@@ -230,13 +239,15 @@ export default {
       vehicle: [] as any,
       typeofVehicle: {name: ''},
       idVehicle: '',
-      formID: '' as any
+      formID: '' as any,
+      isDisable: false
     };
   },
   created(): void {
     this.getVehicle();
     this.formID = this.$route.params.formID;
     this.getformDetail();
+    this.isDisable = this.$store.state?.user?.data?.role !== 'enterprise' || (this.formID && this.formID !== '')
   },
   methods: {
     async getVehicle() {
@@ -310,6 +321,9 @@ export default {
     async getformDetail(): Promise<void> {
       if (this.formID && this.formID !== '') {
         this.businessData = await getFormData(this.formID)
+        this.businessData['customers'] = this.businessData["clients"].filter(e => e.type === 'Customer')
+        this.businessData['shipEmployees'] = this.businessData["clients"].filter(e => e.type === 'employee')
+        this.businessData['guides'] = this.businessData["clients"].filter(e => e.type === 'guide')
       }
     }
   },

@@ -23,7 +23,7 @@ const routes = [
       },
       {
         path: '/form/:formID',
-        name: 'Business form',
+        name: 'Business form Detail',
         component: () => import( '@/views/BusinessForm.vue'),
       },
       {
