@@ -216,7 +216,7 @@
           color="black"
           variant="tonal"
           @click="regisNewBusinessForm"
-          :disabled="isDisable && checkDisabled()"
+          :disabled="isDisable || !checkDisabled()"
         >
           Đăng kí
         </v-btn>
