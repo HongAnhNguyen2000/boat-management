@@ -220,7 +220,7 @@
         >
           Đăng kí
         </v-btn>
-        <div v-if="isDisable && this.$store.state?.user?.data?.role !== 'enterprise'">
+        <div v-if="isDisable && $store.state?.user?.data?.role !== 'enterprise'">
           <v-btn
             class="mb-8 mt-5 ml-5"
             color="primary"

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.2.96",
+    "@vue/cli-service": "^5.0.8",
     "core-js": "^3.29.0",
     "firebase": "^9.22.2",
     "moment": "^2.29.4",
@@ -18,6 +19,7 @@
     "uuid": "^9.0.0",
     "vue": "^3.2.0",
     "vue-html-webpack-plugin": "^3.2.2",
+    "vue-loader": "^17.2.2",
     "vue-router": "^4.0.0",
     "vue3-pdfmake": "^2.2.0",
     "vuetify": "^3.0.0",
@@ -28,6 +30,7 @@
   "devDependencies": {
     "@babel/types": "^7.21.4",
     "@types/node": "^18.15.0",
+    "@types/pdfmake": "^0.2.2",
     "@types/webfontloader": "^1.6.35",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",

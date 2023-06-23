@@ -64,16 +64,19 @@
 import { addVehicle, getBussinessData, getFormData, getVehicle } from '@/firebase'
 import { getEventListeners } from 'events';
 import { usePDF } from 'vue3-pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-import pdfMake from 'pdfmake';
+// import pdfMake from 'pdfmake';
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
 
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
 export default {
   data () {
     return {
-      listBussinessData: [],
-      vehicles: [],
-      contentPDF: {},
+      listBussinessData: [] as any,
+      vehicles: [] as any,
+      contentPDF: {} as any,
       isLoading: true,
       labelType:[
         { en: 'Processing', vi: 'Đang xử lý' },
@@ -317,12 +320,15 @@ export default {
           },
         },
       }
-      pdfMake.createPdf(docDefinition, null, null, pdfFonts.pdfMake.vfs).open();
+      pdfMake.createPdf(docDefinition as any).open();
+
+      // pdfMake.createPdf(docDefinition).download('dang-ky-ben-tau.pdf');
+      // pdfMake.createPdf(docDefinition, null, null, pdfFonts.pdfMake.vfs).open();
     },
     async getBussinessData() {
-      const getDatas = await getBussinessData();
-      const forms = []
-      const idVehicles = []
+      const getDatas: any = await getBussinessData();
+      const forms: any = []
+      const idVehicles: any = []
       for (const form of getDatas) {
         let vehicle: any = {}
         if (!idVehicles.includes(form['idVehicle'])) {
@@ -333,7 +339,7 @@ export default {
         } else {
           vehicle = this.vehicles.find(vehicle => vehicle['idVehicle'] === form['idVehicle'])
         }
-        forms.push({...form, vehicle});
+        forms.push({...form as any, vehicle});
       }
       this.listBussinessData = forms;
       this.isLoading = false

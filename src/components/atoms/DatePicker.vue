@@ -1,15 +1,15 @@
 <template>
   <v-dialog v-model="display" class="mt-3">
-    <template v-slot:activator="{ on }">
+    <template :isActive="true">
       <v-text-field
       class="mt-2"
-        v-on="on"
+        v-on="true"
         hide-details="auto"
         readonly
         outlined
         clearable
       >
-        <template v-slot:progress>
+        <template>
           <slot name="progress">
             <v-progress-linear color="primary" indeterminate absolute height="2"></v-progress-linear>
           </slot>
@@ -44,9 +44,9 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <slot name="actions" :parent="this">
-          <v-btn color="grey lighten-1" text >clear</v-btn>
-          <v-btn color="green darken-1" text>ok</v-btn>
+        <slot name="actions" :parent="getParent()">
+          <v-btn color="grey lighten-1" >clear</v-btn>
+          <v-btn color="green darken-1">ok</v-btn>
         </slot>
       </v-card-actions>
     </v-card>
@@ -60,7 +60,11 @@
     data: () => ({
       display: false
     }),
-
+    methods: {
+      getParent(): any {
+        return this
+      }
+    }
   }
 </script>
 

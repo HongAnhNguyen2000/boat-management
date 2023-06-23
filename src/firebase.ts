@@ -38,7 +38,7 @@ export const checkUser = async (email: any,  password: any) => {
 
 export const getListVehicle = async() => {
   const querySnapshot = await getDocs(vehicleCollection);
-  const list = [];
+  const list: any = [];
   for (const doc of querySnapshot.docs) {
     list.push({...doc.data(), id: doc.id})
   }
@@ -48,14 +48,14 @@ export const getListVehicle = async() => {
 
 export const getVehicle = async(id) => {
   const docRef = doc(db, "vehicle", id);
-  let vehicle = {}
+  let vehicle: any = {}
   vehicle = await getDoc(docRef);
   return vehicle.data()
 }
 
 export const getPlaces = async() => {
   const querySnapshot = await getDocs(placesCollection);
-  const list = [];
+  const list: any = [];
   for (const doc of querySnapshot.docs) {
     list.push({...doc.data(), id: doc.id})
   }
@@ -72,7 +72,7 @@ export const addBussinessData = async (params: any) => {
 
 export const getBussinessData = async () => {
   const querySnapshot = await getDocs(formCollection);
-  const list = [];
+  const list: any = [];
   for (const doc of querySnapshot.docs) {
     list.push({...doc.data(), id: doc.id})
   }
@@ -81,7 +81,7 @@ export const getBussinessData = async () => {
 
 export const getFormData = async(id) => {
   const docRef = doc(db, "register-leave-wharf", id);
-  let form = {}
+  let form: any = {}
   form = await getDoc(docRef);
   return form.data()
 }
