@@ -78,7 +78,7 @@ export default {
       labelType:[
         { en: 'Processing', vi: 'Đang xử lý' },
         { en: 'Requesting', vi: 'Đang yêu cầu' },
-        { en: 'accept', vi: 'Chấp nhận' },
+        { en: 'accept', vi: 'Chấp thuận' },
         { en: 'reject', vi: 'Từ chối' },
         { en: 'purchased', vi: 'Đã thanh toán' }
       ]

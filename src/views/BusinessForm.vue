@@ -216,7 +216,7 @@
           color="black"
           variant="tonal"
           @click="regisNewBusinessForm"
-          :disabled="isDisable"
+          :disabled="isDisable && checkDisabled()"
         >
           Đăng kí
         </v-btn>
@@ -225,17 +225,19 @@
             class="mb-8 mt-5 ml-5"
             color="primary"
             variant="tonal"
+            :disabled="!deniedFlag"
             @click="accepted"
           >
-            accepted
+            Chấp thuận
           </v-btn>
           <v-btn
             class="mb-8 mt-5 ml-5"
             color="error"
             variant="tonal"
+            v-if="deniedFlag"
             @click="denie"
           >
-            denie
+            Từ chối
           </v-btn>
         </div>
       </div>
@@ -258,7 +260,8 @@ export default {
       typeofVehicle: {name: ''},
       idVehicle: '',
       formID: '' as any,
-      isDisable: false
+      isDisable: false,
+      deniedFlag: false
     };
   },
   created(): void {
@@ -270,6 +273,8 @@ export default {
       this.formID = this.$route.params.formID;
       this.getformDetail();
       this.isDisable = this.$store.state?.user?.data?.role !== 'enterprise' || (this.formID && this.formID !== '')
+      this.deniedFlag = this.businessData['type'] === 'accept'
+
     },
     async getVehicle() {
       const list = await getListVehicle()
@@ -382,6 +387,9 @@ export default {
       const data = {...setAPIData, type: type};
       await updateFormData(this.formID, data)
       this.$router.push('/list')
+    },
+    checkDisabled(): boolean {
+      return this.businessData['customers']?.length > 0 && this.businessData['meanName']
     }
   },
   watch: {
