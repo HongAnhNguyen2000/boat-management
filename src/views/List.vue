@@ -43,7 +43,7 @@
           <td>{{ item.toStation }}</td>
           <td>{{ item.fromStation }}</td>
           <td>{{ item.time }}</td>
-          <td>requesting</td>
+          <td>{{ item.type }}</td>
         </tr>
       </tbody>
     </v-table>

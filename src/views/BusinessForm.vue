@@ -220,6 +220,24 @@
         >
           Đăng kí
         </v-btn>
+        <div v-if="isDisable && this.$store.state?.user?.data?.role !== 'enterprise'">
+          <v-btn
+            class="mb-8 mt-5 ml-5"
+            color="primary"
+            variant="tonal"
+            @click="accepted"
+          >
+            accepted
+          </v-btn>
+          <v-btn
+            class="mb-8 mt-5 ml-5"
+            color="error"
+            variant="tonal"
+            @click="denie"
+          >
+            denie
+          </v-btn>
+        </div>
       </div>
     </div>
   </div>
@@ -229,7 +247,7 @@
 import CustomerTableVue from "../components/CustomerTable.vue";
 import { CustomerData } from "../CommonFile";
 import { v4 as uuidv4 } from "uuid";
-import { getListVehicle, addBussinessData, getFormData } from '@/firebase'
+import { getListVehicle, addBussinessData, getFormData, updateFormData } from '@/firebase'
 
 export default {
   components: { CustomerTableVue },
@@ -244,17 +262,20 @@ export default {
     };
   },
   created(): void {
-    this.getVehicle();
-    this.formID = this.$route.params.formID;
-    this.getformDetail();
-    this.isDisable = this.$store.state?.user?.data?.role !== 'enterprise' || (this.formID && this.formID !== '')
+    this.init();
   },
   methods: {
+    init(){
+      this.getVehicle();
+      this.formID = this.$route.params.formID;
+      this.getformDetail();
+      this.isDisable = this.$store.state?.user?.data?.role !== 'enterprise' || (this.formID && this.formID !== '')
+    },
     async getVehicle() {
       const list = await getListVehicle()
       this.vehicle = list
     },
-    regisNewBusinessForm(): void {
+    handleData() {
       const clientData = [...this.businessData['customers'] ?? [], ...this.businessData['shipEmployees'] ?? [], ...this.businessData['guides'] ?? []]
       const localCustomers = this.businessData['customers']?.filter((item) => item.nation === 'Việt Nam')
       const internationalCustomers = this.businessData['customers']?.filter((item) => item.nation === 'Nước ngoài')
@@ -274,9 +295,14 @@ export default {
       delete setAPIData['shipEmployees']
       delete setAPIData['guides']
       delete setAPIData['customers']
-      console.log('s', setAPIData)
+      return setAPIData
+    },
+    regisNewBusinessForm(): void {
+      const setAPIData = this.handleData()
+      const data = {...setAPIData, type: 'requesting'};
+      console.log('s', data)
       try {
-        addBussinessData(setAPIData)
+        addBussinessData(data)
         this.$router.push('list')
       } catch (err) {
         console.log(err)
@@ -324,7 +350,39 @@ export default {
         this.businessData['customers'] = this.businessData["clients"].filter(e => e.type === 'Customer')
         this.businessData['shipEmployees'] = this.businessData["clients"].filter(e => e.type === 'employee')
         this.businessData['guides'] = this.businessData["clients"].filter(e => e.type === 'guide')
+        this.idVehicle = this.businessData['idVehicle']
       }
+    },
+    async accepted(): Promise<void> {
+      let type = 'requesting'
+      switch (this.$store.state?.user?.data?.role) {
+        case 'manager':
+          type = 'processing'
+          break;
+        
+        case 'accountant':
+          type = 'purchased'
+          break;
+        
+        case 'border':
+          type = 'accept'
+          break;
+      
+        default:
+          type = 'requesting'
+          break;
+      }
+      const setAPIData = this.handleData();
+      const data = {...setAPIData, type: type};
+      await updateFormData(this.formID, data)
+      this.$router.push('/list')
+    },
+    async denie(): Promise<void> {
+      const type = 'reject'
+      const setAPIData = this.handleData();
+      const data = {...setAPIData, type: type};
+      await updateFormData(this.formID, data)
+      this.$router.push('/list')
     }
   },
   watch: {
@@ -335,6 +393,17 @@ export default {
       this.businessData['ownerName'] = newVal['vehicle-owner']
       this.businessData['tonnage'] = newVal['tonnage']
       this.businessData['seats'] = newVal['wattage']
+    },
+    '$route' (to, from){
+      if (to.path === '/form') {
+        this.businessData = {};
+        this.vehicle = [];
+        this.typeofVehicle = {name : ''};
+        this.idVehicle = '';
+        this.formID = '';
+        this.isDisable = false
+      }
+      this.init()
     }
   }
 };

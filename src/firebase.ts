@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { collection, getFirestore, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
+import { collection, getFirestore, getDocs, addDoc, getDoc, doc, setDoc } from "firebase/firestore";
 import { ref } from 'vue'
 import exp from "constants";
 
@@ -84,4 +84,10 @@ export const getFormData = async(id) => {
   let form = {}
   form = await getDoc(docRef);
   return form.data()
+}
+
+export const updateFormData = async(id, data) => {
+  const docRef = doc(db, "register-leave-wharf", id);
+  let form = {}
+  await setDoc(docRef, data);
 }

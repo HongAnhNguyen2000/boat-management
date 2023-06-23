@@ -3,7 +3,6 @@
     <h3>Danh sách hành khách</h3>
     <v-btn variant="outlined" @click="onShowDialog(null)" :disabled="disabled">+Thêm</v-btn>
   </div>
-
   <v-table fixed-header :height="dataCustomers && dataCustomers.length > 0 ? '300px' : '56px'" mt="2" class="customer-table">
     <thead>
       <tr>
@@ -68,7 +67,11 @@ export default {
   },
   watch:{
     customers(newVal) {
-      this.dataCustomers = newVal
+      console.log('newVal', newVal)
+      this.dataCustomers = [...newVal]
+    },
+    dataCustomers(newVal): void {
+      this.$emit('onChangeCustomerData', newVal)
     }
   },
   methods: {
@@ -93,11 +96,6 @@ export default {
     },
     onHandleActionDialog(newVal: boolean): void {
       this.setOpen = newVal
-    }
-  },
-  watch: {
-    dataCustomers(newVal): void {
-      this.$emit('onChangeCustomerData', newVal)
     }
   },
 };
