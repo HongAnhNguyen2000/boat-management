@@ -2,20 +2,19 @@
 
   <div class="data-container">
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle" >
-      <v-text-field variant="outlined" placeholder="UserName"></v-text-field>
-      <v-text-field variant="outlined" placeholder="registration-number" v-model="registrationNumber"/>
-      <v-text-field variant="outlined" placeholder="insurance-deadline" v-model="insuranceDeadline"/>
-      <v-text-field variant="outlined" placeholder="insurance-photo" v-model="insurancePhoto"/>
-      <v-text-field variant="outlined" placeholder="name" v-model="name"/>
-      <v-text-field variant="outlined" placeholder="registration-deadline" v-model="registrationDeadline"/>
-      <v-text-field variant="outlined" placeholder="registration-photo" v-model="registrationPhoto"/>
-      <v-text-field variant="outlined" placeholder="tonnage" v-model="tonnage"/>
-      <v-text-field variant="outlined" placeholder="type" v-model="type"/>
-      <v-text-field variant="outlined" placeholder="vehicle-owner" v-model="vehicleOwner"/>
-      <v-text-field variant="outlined" placeholder="wattage" v-model="wattage"/>
-      <v-text-field variant="outlined" placeholder="year-manufacture" v-model="yearManufacture"/>
+      <v-text-field variant="outlined" placeholder="Tên phương tiện" v-model="name"></v-text-field>
+      <v-text-field variant="outlined" placeholder="Số đăng ký" v-model="registrationNumber"/>
+      <v-text-field variant="outlined" placeholder="Hạn bảo hiểm" v-model="insuranceDeadline"/>
+      <v-text-field variant="outlined" placeholder="Ảnh bảo hiểm" v-model="insurancePhoto"/>
+      <v-text-field variant="outlined" placeholder="Hạn đăng kiểm" v-model="registrationDeadline"/>
+      <v-text-field variant="outlined" placeholder="Ảnh đăng kiểm" v-model="registrationPhoto"/>
+      <v-text-field variant="outlined" placeholder="Trọng tải" v-model="tonnage"/>
+      <v-text-field variant="outlined" placeholder="Loại phương tiện" v-model="type"/>
+      <v-text-field variant="outlined" placeholder="Chủ phương tiện" v-model="vehicleOwner"/>
+      <v-text-field variant="outlined" placeholder="Công suất" v-model="wattage"/>
+      <v-text-field variant="outlined" placeholder="Năm sản xuất" v-model="yearManufacture"/>
     </div>
-    <v-btn
+    <v-btn 
         block
         class="mb-8"
         color="black"
@@ -23,7 +22,7 @@
         variant="tonal"
         @click="regis"
       >
-        Regis
+        Đăng ký
       </v-btn>
   </div>
 

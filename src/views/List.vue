@@ -31,9 +31,8 @@
             Trạng thái
           </th>
           <th class="text-left">
-            Hello
+            
           </th>
-          <th></th>
 
         </tr>
       </thead>
@@ -51,9 +50,9 @@
           <td>{{ item.toStation }}</td>
           <td>{{ item.fromStation }}</td>
           <td>{{ item.time }}</td>
-          <td>{{ item.type }}</td>
+          <td>{{ labelType.find((label) => label.en === item.type)?.vi }}</td>
           <td>
-            <v-btn @click.stop="onGenPDF(item.id)">Preview</v-btn>
+            <v-btn @click.stop="onGenPDF(item.id)">Xem trước</v-btn>
           </td>
         </tr>
       </tbody>
@@ -68,13 +67,21 @@ import { usePDF } from 'vue3-pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import pdfMake from 'pdfmake';
 
+
 export default {
   data () {
     return {
       listBussinessData: [],
       vehicles: [],
       contentPDF: {},
-      isLoading: true
+      isLoading: true,
+      labelType:[
+        { en: 'Processing', vi: 'Đang xử lý' },
+        { en: 'Requesting', vi: 'Đang yêu cầu' },
+        { en: 'accept', vi: 'Chấp nhận' },
+        { en: 'reject', vi: 'Từ chối' },
+        { en: 'purchased', vi: 'Đã thanh toán' }
+      ]
     }
   },
   created(): void {
@@ -82,6 +89,9 @@ export default {
   },
 
   methods: {
+    onChangeLabel(type: string) {
+     
+    },
     onChangeContentPDF(newVal) {
       this.contentPDF = newVal
     },
