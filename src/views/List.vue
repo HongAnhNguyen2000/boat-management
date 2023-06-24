@@ -64,12 +64,8 @@
 import { addVehicle, getBussinessData, getFormData, getVehicle } from '@/firebase'
 import { getEventListeners } from 'events';
 import { usePDF } from 'vue3-pdfmake';
-// import pdfMake from 'pdfmake';
-// import pdfFonts from 'pdfmake/build/vfs_fonts';
-
 import * as pdfMake from "pdfmake/build/pdfmake";
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
 
 export default {
   data () {
@@ -320,10 +316,7 @@ export default {
           },
         },
       }
-      pdfMake.createPdf(docDefinition as any).open();
-
-      // pdfMake.createPdf(docDefinition).download('dang-ky-ben-tau.pdf');
-      // pdfMake.createPdf(docDefinition, null, null, pdfFonts.pdfMake.vfs).open();
+      pdfMake.createPdf(docDefinition as any, undefined, undefined, pdfFonts.pdfMake.vfs).open();
     },
     async getBussinessData() {
       const getDatas: any = await getBussinessData();
