@@ -18,7 +18,7 @@ import store from './store'
 import { PDFPlugin } from 'vue3-pdfmake';
 
 const app = createApp(App)
-
+app.provide("$store", store);
 registerPlugins(app)
 app.use(router)
 app.use(store)

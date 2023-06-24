@@ -2,7 +2,7 @@
   <div class="data-container">
   <div class="grey lighten-4 nft-page create-form-page contentsWrapStyle">
     <h2>Danh sách hành khách vận tải đường thủy nội địa</h2>
-    <div>
+    <div v-if="isNotReset">
       <v-row>
         <v-col cols="6" class="pt-3">
         <h3>Chọn phương tiện</h3>
@@ -261,7 +261,8 @@ export default {
       idVehicle: '',
       formID: '' as any,
       isDisable: false,
-      deniedFlag: false
+      deniedFlag: false,
+      isNotReset: true,
     };
   },
   created(): void {
@@ -274,7 +275,6 @@ export default {
       this.getformDetail();
       this.isDisable = this.$store.state?.user?.data?.role !== 'enterprise' || (this.formID && this.formID !== '')
       this.deniedFlag = this.businessData['type'] === 'accept'
-
     },
     async getVehicle() {
       const list = await getListVehicle()
@@ -314,7 +314,9 @@ export default {
       
     },
     onChangeCustomerData(value: CustomerData): void {
-      this.businessData["customers"] = value;
+      if (!this.isDisable) {
+        this.businessData["customers"] = value;
+      }
     },
     onAddNewEmployee(): void {
       const newEmployee = {
@@ -402,6 +404,7 @@ export default {
       this.businessData['seats'] = newVal['wattage']
     },
     '$route' (to, from){
+      this.isNotReset = false;
       if (to.path === '/form') {
         this.businessData = {};
         this.vehicle = [];
@@ -411,6 +414,9 @@ export default {
         this.isDisable = false
       }
       this.init()
+      setTimeout(() => {
+        this.isNotReset = true;
+      }, 500);
     }
   }
 };

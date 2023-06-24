@@ -67,7 +67,9 @@ export default {
   },
   watch:{
     customers(newVal) {
-      this.dataCustomers = [...newVal]
+      if (this.disabled) {
+        this.dataCustomers = [...newVal]
+      }
     },
     dataCustomers(newVal): void {
       this.$emit('onChangeCustomerData', newVal)
