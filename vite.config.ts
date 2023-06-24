@@ -4,14 +4,23 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 // Utilities
 import { defineConfig } from 'vite'
+import { ViteMinifyPlugin } from 'vite-plugin-minify'
+import viteCompression from 'vite-plugin-compression'
 import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    manifest: true,
+    cssMinify: true,
+    minify: 'terser',
+  },
   plugins: [
     vue({ 
       template: { transformAssetUrls }
     }),
+    ViteMinifyPlugin({}),
+    viteCompression(),
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true,

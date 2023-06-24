@@ -17,6 +17,8 @@
     "pdfmake": "^0.2.7",
     "roboto-fontface": "*",
     "uuid": "^9.0.0",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-minify": "^1.5.2",
     "vue": "^3.2.0",
     "vue-html-webpack-plugin": "^3.2.2",
     "vue-loader": "^17.2.2",
