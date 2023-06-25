@@ -73,8 +73,8 @@ export default {
       contentPDF: {} as any,
       isLoading: true,
       labelType:[
-        { en: 'Processing', vi: 'Đang xử lý' },
-        { en: 'Requesting', vi: 'Đang yêu cầu' },
+        { en: 'processing', vi: 'Đang xử lý' },
+        { en: 'requesting', vi: 'Đang yêu cầu' },
         { en: 'accept', vi: 'Chấp thuận' },
         { en: 'reject', vi: 'Từ chối' },
         { en: 'purchased', vi: 'Đã thanh toán' }

@@ -221,21 +221,20 @@
         >
           Đăng kí
         </v-btn>
-        <div v-if="isDisable && $store.state?.user?.data?.role !== 'enterprise'">
+        <div v-if="isDisable && !isEnterprise">
           <v-btn
             class="mb-8 mt-5 ml-5"
             color="primary"
             variant="tonal"
-            :disabled="!deniedFlag"
+            :disabled="isDisableProcess"
             @click="accepted"
           >
-            Chấp thuận
+            {{process}}
           </v-btn>
           <v-btn
             class="mb-8 mt-5 ml-5"
             color="error"
             variant="tonal"
-            v-if="deniedFlag"
             @click="denie"
           >
             Từ chối
@@ -264,8 +263,17 @@ export default {
       formID: '' as any,
       isDisable: false,
       deniedFlag: false,
+      isDisableProcess: true,
       isNotReset: true,
       isEnterprise: false,
+      process: 'Chấp nhận',
+      userRole: this.$store.state?.user?.data?.role,
+      roleSameChange: [
+        {role: 'manager', permission: 'requesting'},
+        {role: 'authority', permission: 'purchased'},
+        {role: 'border', permission: 'semniaccept'},
+        {role: 'accountant', permission: 'processing'},
+      ]
     };
   },
   created(): void {
@@ -277,8 +285,21 @@ export default {
       this.formID = this.$route.params.formID;
       this.getformDetail();
       this.isDisable = !_.isEmpty(this.formID)
-      this.isEnterprise = this.$store.state?.user?.data?.role === 'enterprise'
+      this.userRole = this.$store.state?.user?.data?.role;
+      this.isEnterprise = this.userRole === 'enterprise'
       this.deniedFlag = this.businessData['type'] === 'accept'
+      switch (this.userRole) {
+        case 'manager':
+          this.process = 'Đang xử lý'
+          break;
+        case 'accountant':
+          this.process = 'Đã thu tiền'
+          break;
+        default:
+          this.process = 'Chấp nhận'
+          break;
+      }
+      process
     },
     async getVehicle() {
       const list = await getListVehicle()
@@ -361,6 +382,11 @@ export default {
         this.businessData['shipEmployees'] = this.businessData["clients"].filter(e => e.type === 'employee')
         this.businessData['guides'] = this.businessData["clients"].filter(e => e.type === 'guide')
         this.idVehicle = this.businessData['idVehicle']
+        
+        const theRole = this.roleSameChange.find(e => e.role === this.userRole)
+        console.log('type', this.businessData['type'])
+        console.log('permission', theRole?.permission)
+        this.isDisableProcess = theRole?.permission !== this.businessData['type']
       }
     },
     async accepted(): Promise<void> {
@@ -376,6 +402,10 @@ export default {
         
         case 'border':
           type = 'accept'
+          break;
+
+        case 'authority':
+          type = 'semniaccept'
           break;
       
         default:
