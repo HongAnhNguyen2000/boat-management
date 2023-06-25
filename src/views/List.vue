@@ -16,7 +16,7 @@
             Số đăng ký
           </th>
           <th class="text-left">
-            Loại Phương Tiện
+            Loại phương tiện
           </th>
           <th class="text-left">
             Bến rời
@@ -61,9 +61,7 @@
 </template>
 
 <script lang="ts">
-import { addVehicle, getBussinessData, getFormData, getVehicle } from '@/firebase'
-import { getEventListeners } from 'events';
-import { usePDF } from 'vue3-pdfmake';
+import { getBussinessData, getFormData, getVehicle } from '@/firebase'
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 

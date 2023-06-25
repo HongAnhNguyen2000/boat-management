@@ -30,7 +30,7 @@ export const checkUser = async (email: any,  password: any) => {
   const docSnapshots = querySnapshot.docs;
   for (const doc of docSnapshots) {
     if (doc.get('email') === email && doc.get('password') === password) {
-      return await doc.data()
+      return {...await doc.data(), id: doc.id}
     }
   }
   return users
@@ -60,6 +60,32 @@ export const getPlaces = async() => {
     list.push({...doc.data(), id: doc.id})
   }
   return list ?? [];
+}
+
+
+export const getUsers = async() => {
+  const querySnapshot = await getDocs(usersCollection);
+  const list: any = [];
+  for (const doc of querySnapshot.docs) {
+    list.push({...doc.data(), id: doc.id})
+  }
+  return list ?? [];
+}
+
+export const getInfos = async() => {
+  const querySnapshot = await getDocs(infosCollection);
+  const list: any = [];
+  for (const doc of querySnapshot.docs) {
+    list.push({...doc.data(), id: doc.id})
+  }
+  return list ?? [];
+}
+
+export const getInfo = async(id) => {
+  const docRef = doc(db, "infos", id);
+  let form: any = {}
+  form = await getDoc(docRef);
+  return form.data()
 }
 
 export const addVehicle = async (params:any) => {

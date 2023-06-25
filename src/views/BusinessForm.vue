@@ -255,7 +255,7 @@ export default {
   components: { CustomerTableVue },
   data() {
     return {
-      businessData: {},
+      businessData: {} as any,
       vehicle: [] as any,
       typeofVehicle: {name: ''},
       idVehicle: '',
@@ -278,7 +278,7 @@ export default {
     },
     async getVehicle() {
       const list = await getListVehicle()
-      this.vehicle = list
+      this.vehicle = list.filter(detailVehicle => detailVehicle.users_id === this.$store.state?.user?.data.id)
     },
     handleData() {
       const clientData = [...this.businessData['customers'] ?? [], ...this.businessData['shipEmployees'] ?? [], ...this.businessData['guides'] ?? []]

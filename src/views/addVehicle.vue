@@ -13,6 +13,19 @@
       <v-text-field variant="outlined" placeholder="Chủ phương tiện" v-model="vehicleOwner"/>
       <v-text-field variant="outlined" placeholder="Công suất" v-model="wattage"/>
       <v-text-field variant="outlined" placeholder="Năm sản xuất" v-model="yearManufacture"/>
+      <div>
+        <h3>Chọn công ty</h3>
+        <v-select
+          class="mt-2"
+          label="Công ty"
+          :items="companies"
+          item-value="users_id"
+          item-text="company"
+          :item-title="'company'"
+          v-model="usersId"
+          variant="solo"
+        />
+      </div>
     </div>
     <v-btn 
         block
@@ -30,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { addVehicle, getListVehicle } from '@/firebase'
+import { addVehicle, getInfo, getInfos, getListVehicle, getUsers } from '@/firebase'
 export default {
   data () {
     return {
@@ -60,7 +73,13 @@ export default {
       vehicleOwner: '',
       wattage: '',
       yearManufacture: '',
+      usersId: '',
+      users: [] as any,
+      companies: [] as any,
     }
+  },
+  created() {
+    this.getUsers();
   },
   methods: {
     async regis() {
@@ -76,8 +95,18 @@ export default {
         "vehicle-owner": this.vehicleOwner,
         "wattage": this.wattage,
         "year-manufacture": this.yearManufacture,
+        "users_id": this.usersId,
       }
       await addVehicle(params)
+    },
+    async getUsers(): Promise<void> {
+      
+      const getDatas: any = await getUsers();
+      const users = getDatas.filter(data => data.role === 'enterprise')
+      this.users = users
+      for (const user of users) {
+        this.companies.push( {...await getInfo(user.infos_id), users_id: user.id})
+      }
     }
   }
 }
