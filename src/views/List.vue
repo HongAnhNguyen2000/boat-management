@@ -36,10 +36,10 @@
 
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="showListBussinessData.length > 0 && isReload">
         <tr
-          v-for="(item, index) in listBussinessData"
-          :key="item.name + index"
+          v-for="(item, index) in showListBussinessData"
+          :key="item.created_at + index"
           @click="gotoDetail(item.id)"
           style="cursor:pointer"
         >
@@ -57,21 +57,32 @@
         </tr>
       </tbody>
     </v-table>
+    <div class="text-center" v-if="pages > 1">
+      <v-pagination
+        v-model="page"
+        :length="pages"
+      ></v-pagination>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { getBussinessData, getFormData, getVehicle } from '@/firebase'
 import * as pdfMake from "pdfmake/build/pdfmake";
+import _ from "lodash";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 
 export default {
   data () {
     return {
       listBussinessData: [] as any,
+      showListBussinessData: [] as any,
       vehicles: [] as any,
       contentPDF: {} as any,
       isLoading: true,
+      isReload: true,
+      page: 1,
+      pages: 1,
       labelType:[
         { en: 'processing', vi: 'Đang xử lý' },
         { en: 'requesting', vi: 'Đang yêu cầu' },
@@ -83,6 +94,17 @@ export default {
   },
   created(): void {
     this.getBussinessData()
+  },
+  watch:{
+    page(newVal){
+      if (this.listBussinessData.length > 0) {
+        this.isReload = false
+        this.showListBussinessData = [...this.listBussinessData].slice((newVal - 1) * 10, newVal * 10)
+        setTimeout(() => {
+          this.isReload = true
+        }, 500);
+      }
+    }
   },
 
   methods: {
@@ -339,7 +361,12 @@ export default {
         }
         forms.push({...form as any, vehicle});
       }
-      this.listBussinessData = forms;
+      const mergedata = [...forms, ...forms, ...forms, ...forms];
+      this.listBussinessData = _.orderBy([...mergedata], ['created_at'], ['asc']);
+      this.pages = this.listBussinessData.length/10 + 1
+      if (this.listBussinessData.length > 0) {
+        this.showListBussinessData = [...this.listBussinessData].slice((this.page - 1) * 10, this.page * 10)
+      }
       this.isLoading = false
     },
     gotoDetail(id) {
