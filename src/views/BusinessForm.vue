@@ -216,6 +216,7 @@
           color="black"
           variant="tonal"
           @click="regisNewBusinessForm"
+          v-if="isEnterprise"
           :disabled="isDisable || !checkDisabled()"
         >
           Đăng kí
@@ -249,6 +250,7 @@
 import CustomerTableVue from "../components/CustomerTable.vue";
 import { CustomerData } from "../CommonFile";
 import { v4 as uuidv4 } from "uuid";
+import _ from "lodash";
 import { getListVehicle, addBussinessData, getFormData, updateFormData } from '@/firebase'
 
 export default {
@@ -263,6 +265,7 @@ export default {
       isDisable: false,
       deniedFlag: false,
       isNotReset: true,
+      isEnterprise: false,
     };
   },
   created(): void {
@@ -273,7 +276,8 @@ export default {
       this.getVehicle();
       this.formID = this.$route.params.formID;
       this.getformDetail();
-      this.isDisable = this.$store.state?.user?.data?.role !== 'enterprise' || (this.formID && this.formID !== '')
+      this.isDisable = !_.isEmpty(this.formID)
+      this.isEnterprise = this.$store.state?.user?.data?.role === 'enterprise'
       this.deniedFlag = this.businessData['type'] === 'accept'
     },
     async getVehicle() {
