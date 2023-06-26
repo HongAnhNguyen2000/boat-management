@@ -41,6 +41,9 @@ export default {
   },
   created(): void {
     this.getVehicle();
+    if (!this.$store.state.user.loggedIn) {
+      this.$router.push("/");
+    }
   },
   computed: {
     roleUser() {
@@ -57,6 +60,7 @@ export default {
       this.vehicle = list;
     },
     logOutUser() {
+      this.$store.dispatch("reset");
       this.$store.dispatch("logOut");
     },
     checkRoleUser(role: string) {
@@ -70,8 +74,8 @@ export default {
         },
         {
           icon: "Người dùng",
-          text: "Cập nhật người dùng",
-          title: "Cập nhật người dùng",
+          text: "Cập nhật Thông tin",
+          title: "Cập nhật Thông tin",
           url: "/update-user",
           active: false,
         },
@@ -107,6 +111,11 @@ export default {
   watch: {
     roleUser(newVal) {
       this.checkRoleUser(newVal);
+    },
+    $route(to, from) {
+      // if (!this.$store.state.user.loggedIn) {
+      //   this.$router.push("/");
+      // }
     },
   },
 };

@@ -94,17 +94,22 @@ export default {
   },
   created(): void {
     this.getBussinessData();
+    if (!this.$store.state.user.loggedIn) {
+      this.$router.push("/");
+    }
   },
   watch: {
     page(newVal) {
       if (this.listBussinessData.length > 0) {
         this.isReload = false;
+        this.isLoading = true;
         this.showListBussinessData = [...this.listBussinessData].slice(
           (newVal - 1) * 10,
           newVal * 10
         );
         setTimeout(() => {
           this.isReload = true;
+          this.isLoading = false;
         }, 500);
       }
     },

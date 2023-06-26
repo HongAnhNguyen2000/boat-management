@@ -3,6 +3,16 @@
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </v-overlay>
   <div class="data-container">
+    <v-btn
+      class="mb-8"
+      color="black"
+      size="large"
+      variant="tonal"
+      @click="createUser"
+    >
+      <v-icon class="white--text mr-2">mdi-plus</v-icon>
+      Tạo người dùng
+    </v-btn>
     <v-table>
       <thead>
         <tr>
@@ -61,6 +71,7 @@ export default {
       users: [] as any,
       showUsers: [] as any,
       isReload: true,
+      isLoading: true,
       isSortASC: true,
       currentSort: "",
       page: 1,
@@ -81,9 +92,11 @@ export default {
     page(newVal) {
       if (this.users.length > 0) {
         this.isReload = false;
+        this.isLoading = true;
         this.showUsers = [...this.users].slice((newVal - 1) * 10, newVal * 10);
         setTimeout(() => {
           this.isReload = true;
+          this.isLoading = false;
         }, 500);
       }
     },
@@ -126,9 +139,13 @@ export default {
           this.page * 10
         );
       }
+      this.isLoading = false;
     },
     gotoDetail(id) {
-      this.$router.push("user/" + id);
+      this.$router.push("/user/" + id);
+    },
+    createUser() {
+      this.$router.push("/user/register");
     },
   },
 };

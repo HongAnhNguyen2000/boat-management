@@ -31,12 +31,19 @@ const store = createStore({
     SET_USER(state, data) {
       state.user.data = data;
     },
+    reset(state) {
+      state.user = {
+        loggedIn: false,
+        data: null,
+      };
+    },
   },
   actions: {
     async logIn(context, { email, password }) {
       const user = await checkUser(email, password);
       if (user) {
         context.commit("SET_USER", user);
+        context.commit("SET_LOGGED_IN", true);
       } else {
         router.push("/");
         throw new Error("login failed");
@@ -46,6 +53,9 @@ const store = createStore({
     logOut(context) {
       context.commit("SET_USER", null);
       router.push("/");
+    },
+    reset({ commit }) {
+      commit("reset");
     },
   },
   plugins: [vuexLocalStorage.plugin],

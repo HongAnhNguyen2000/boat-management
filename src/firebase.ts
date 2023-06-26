@@ -44,6 +44,13 @@ export const checkUser = async (email: any, password: any) => {
   return users;
 };
 
+export const getUser = async (id: string) => {
+  const docRef = doc(db, "users", id);
+  let form: any = {};
+  form = await getDoc(docRef);
+  return form.data();
+};
+
 export const getUsers = async () => {
   const querySnapshot = await getDocs(usersCollection);
   const list: any = [];
@@ -56,6 +63,10 @@ export const getUsers = async () => {
 export const updateUser = async (id: string, data: any) => {
   const docRef = doc(db, "users", id);
   await setDoc(docRef, data);
+};
+
+export const addUser = async (params: any) => {
+  await addDoc(usersCollection, params);
 };
 
 export const getListVehicle = async () => {

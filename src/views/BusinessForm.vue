@@ -381,7 +381,7 @@ export default {
       const data = { ...setAPIData, type: "requesting" };
       try {
         addBussinessData(data);
-        this.$router.push("list");
+        this.$router.push("/list");
       } catch (err) {
         console.log(err);
       }

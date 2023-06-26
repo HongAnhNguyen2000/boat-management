@@ -34,7 +34,7 @@ const routes = [
       {
         path: "/update-user",
         name: "UpdateUser",
-        component: () => import("@/views/UpdateUser.vue"),
+        component: () => import("@/views/users/UpdateUser.vue"),
       },
       {
         path: "/users",
@@ -49,7 +49,12 @@ const routes = [
       {
         path: "/user/update/:userID",
         name: "User Update",
-        component: () => import("@/views/users/UserUpdate.vue"),
+        component: () => import("@/views/users/UpdateUser.vue"),
+      },
+      {
+        path: "/user/register",
+        name: "User Create",
+        component: () => import("@/views/users/AddUser.vue"),
       },
     ],
   },
