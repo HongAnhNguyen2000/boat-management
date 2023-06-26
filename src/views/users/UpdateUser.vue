@@ -131,14 +131,16 @@ export default {
     };
   },
   created() {
+    this.currentRole = this.$store.state?.user?.data.role ?? ''
     this.user_id =
-      this.$route.params.userID ?? this.$store.state?.user?.data.id;
+      this.$route.params.userID ?? this.$store.state?.user?.data?.id;
     this.getUser();
   },
   watch: {
     $route(to, from) {
+      this.currentRole = this.$store.state?.user?.data?.role ?? ''
       this.user_id =
-        this.$route.params.userID ?? this.$store.state?.user?.data.id;
+        this.$route.params.userID ?? this.$store.state?.user?.data?.id;
       this.getUser();
     },
   },

@@ -45,10 +45,12 @@ export const checkUser = async (email: any, password: any) => {
 };
 
 export const getUser = async (id: string) => {
-  const docRef = doc(db, "users", id);
-  let form: any = {};
-  form = await getDoc(docRef);
-  return form.data();
+  if (id) {
+    const docRef = doc(db, "users", id);
+    let form: any = {};
+    form = await getDoc(docRef);
+    return form.data();
+  }
 };
 
 export const getUsers = async () => {
@@ -61,8 +63,10 @@ export const getUsers = async () => {
 };
 
 export const updateUser = async (id: string, data: any) => {
-  const docRef = doc(db, "users", id);
-  await setDoc(docRef, data);
+  if (id) {
+    const docRef = doc(db, "users", id);
+    await setDoc(docRef, data);
+  }
 };
 
 export const addUser = async (params: any) => {
@@ -79,10 +83,12 @@ export const getListVehicle = async () => {
 };
 
 export const getVehicle = async (id: string) => {
-  const docRef = doc(db, "vehicle", id);
-  let vehicle: any = {};
-  vehicle = await getDoc(docRef);
-  return vehicle.data();
+  if (id) {
+    const docRef = doc(db, "vehicle", id);
+    let vehicle: any = {};
+    vehicle = await getDoc(docRef);
+    return vehicle.data();
+  }
 };
 
 export const updateVehicle = async (id: string, data: any) => {
@@ -109,10 +115,12 @@ export const getInfos = async () => {
 };
 
 export const getInfo = async (id: string) => {
-  const docRef = doc(db, "infos", id);
-  let form: any = {};
-  form = await getDoc(docRef);
-  return form.data();
+  if (id) {
+    const docRef = doc(db, "infos", id);
+    let form: any = {};
+    form = await getDoc(docRef);
+    return form.data();
+  }
 };
 
 export const addVehicle = async (params: any) => {
@@ -133,10 +141,12 @@ export const getBussinessData = async () => {
 };
 
 export const getFormData = async (id: string) => {
-  const docRef = doc(db, "register-leave-wharf", id);
-  let form: any = {};
-  form = await getDoc(docRef);
-  return form.data();
+  if (id) {
+    const docRef = doc(db, "register-leave-wharf", id);
+    let form: any = {};
+    form = await getDoc(docRef);
+    return form.data();
+  }
 };
 
 export const updateFormData = async (id: string, data: any) => {

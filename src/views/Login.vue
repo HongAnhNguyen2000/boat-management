@@ -56,9 +56,11 @@ export default {
     login() {
       const loginVal = { email: this.email, password: this.password };
       this.$store.dispatch("logIn", loginVal);
-      if (this.$store.state.user) {
-        this.$router.push("list");
-      }
+      setTimeout(() => {
+        if (this.$store.state.user.loggedIn) {
+          this.$router.push("list");
+        }
+      }, 500);
     },
     validateLogin() {
       this.disable = this.email === "" || this.password === "";
