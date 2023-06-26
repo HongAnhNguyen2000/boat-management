@@ -76,7 +76,7 @@
       <tbody v-if="showVehicles.length > 0 && isReload">
         <tr
           v-for="(item, index) in showVehicles"
-          :key="item.registration-number + index"
+          :key="item['registration-number'] + index"
           @click="gotoDetail(item.id)"
           style="cursor: pointer"
         >

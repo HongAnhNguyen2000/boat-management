@@ -30,6 +30,7 @@
           <th class="text-left">Tên</th>
           <th class="text-left">Số điện thoại</th>
           <th class="text-left">Tên người dùng</th>
+          <th class="text-left">Công ty</th>
           <th class="text-left" @click="sortBy('role')" style="cursor: pointer">
             <span style="display: inline-block">Vai trò</span>
             <div v-if="currentSort === 'role'" style="display: inline-block">
@@ -51,6 +52,7 @@
           <td>{{ item.name }}</td>
           <td>{{ item.phonenumber }}</td>
           <td>{{ item.username }}</td>
+          <td>{{ item.company }}</td>
           <td>{{ labelType.find((label) => label.en === item.role)?.vi }}</td>
         </tr>
       </tbody>

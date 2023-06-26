@@ -72,13 +72,6 @@ export default {
           url: "/list",
           active: true,
         },
-        {
-          icon: "Người dùng",
-          text: "Cập nhật Thông tin",
-          title: "Cập nhật Thông tin",
-          url: "/update-user",
-          active: false,
-        },
       ];
       if (role === "enterprise") {
         this.nav.push({
@@ -106,6 +99,14 @@ export default {
           }
         );
       }
+      this.nav.push(
+        {
+          icon: "Người dùng",
+          text: "Cập nhật Thông tin",
+          title: "Cập nhật Thông tin",
+          url: "/update-user",
+          active: false,
+        })
     },
   },
   watch: {
