@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar flat>
+  <v-app-bar flat>
     <v-app-bar-title>
       <v-icon icon="mdi-circle-slice-4" />
       Boat management
@@ -13,9 +13,14 @@
       rounded="lg"
     >
       <div class="text-subtitle-1 text-medium-emphasis">Account</div>
-        <v-text-field variant="outlined" placeholder="Email" v-model="email"/>
+      <v-text-field variant="outlined" placeholder="Email" v-model="email" />
       <div class="text-subtitle-1 text-medium-emphasis">Password</div>
-        <v-text-field variant="outlined" placeholder="Password" v-model="password" type="password"/>
+      <v-text-field
+        variant="outlined"
+        placeholder="Password"
+        v-model="password"
+        type="password"
+      />
       <v-btn
         block
         class="mb-8"
@@ -27,40 +32,43 @@
       >
         Log In
       </v-btn>
-
     </v-card>
   </div>
 </template>
 
 <script lang="ts">
-  export default {
-    data: () => ({
-      visible: false,
-      email: '',
-      password: '',
-      disable: true,
-    }),
-    watch: {
-      password(){this.validateLogin()},
-      email(){this.validateLogin()}
+export default {
+  data: () => ({
+    visible: false,
+    email: "",
+    password: "",
+    disable: true,
+  }),
+  watch: {
+    password() {
+      this.validateLogin();
     },
-    methods: {
-      login() {
-        const loginVal = {email: this.email, password: this.password}
-        this.$store.dispatch("logIn", loginVal);
-        if (this.$store.state.user) {
-          this.$router.push('list')
-        }
-      },
-      validateLogin() {
-        this.disable = (this.email === '' || this.password === '')
+    email() {
+      this.validateLogin();
+    },
+  },
+  methods: {
+    login() {
+      const loginVal = { email: this.email, password: this.password };
+      this.$store.dispatch("logIn", loginVal);
+      if (this.$store.state.user) {
+        this.$router.push("list");
       }
-    }
-  }
+    },
+    validateLogin() {
+      this.disable = this.email === "" || this.password === "";
+    },
+  },
+};
 </script>
 
 <style scoped>
 .container {
-    margin-top: 150px;
+  margin-top: 150px;
 }
 </style>

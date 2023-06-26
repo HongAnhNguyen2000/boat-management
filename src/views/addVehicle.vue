@@ -152,13 +152,11 @@ export default {
       this.users = users;
       for (const user of users) {
         const fetInfo = await getInfo(user.infos_id);
-        console.log(fetInfo);
         this.companies.push({
           ...fetInfo,
           users_id: user.id,
         });
       }
-      console.log(this.companies);
     },
   },
 };

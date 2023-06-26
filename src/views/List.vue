@@ -93,6 +93,9 @@ export default {
   },
   created(): void {
     this.getBussinessData();
+    if (!this.$store.state.user.loggedIn) {
+      this.$router.push("/");
+    }
   },
   watch: {
     page(newVal) {

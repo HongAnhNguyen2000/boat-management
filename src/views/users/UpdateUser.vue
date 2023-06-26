@@ -56,19 +56,15 @@
         <h3 class="mb-3">Thay đổi mật khẩu (bỏ qua nếu không muốn thay đổi)</h3>
         <v-text-field
           variant="outlined"
-          placeholder="Mật khẩu cũ"
-          v-model="oldPassword"
-          :rules="passwordRules"
-        />
-        <v-text-field
-          variant="outlined"
           placeholder="Mật khẩu mới"
+          type="password"
           v-model="newPassword"
           :rules="passwordRules"
         />
         <v-text-field
           variant="outlined"
           placeholder="Mật khẩu mới nhắc lại"
+          type="password"
           :rules="confirmPasswordRules"
           v-model="newPasswordRepeat"
         />
@@ -112,7 +108,6 @@ export default {
       companies: [] as any,
       user_id: "" as any,
       message: "",
-      oldPassword: "",
       newPassword: "",
       newPasswordRepeat: "",
       alert: false,
@@ -150,7 +145,7 @@ export default {
   methods: {
     validate() {
       if (
-        this.oldPassword === this.password &&
+        (this.newPassword || this.newPasswordRepeat) &&
         this.newPassword === this.newPasswordRepeat
       ) {
         this.password = this.newPassword;
@@ -169,14 +164,9 @@ export default {
         role: this.role.en,
       };
       await updateUser(this.user_id, params);
-      this.message = "Bạn đã cập nhật người dùng thành công.";
-      this.alert = true;
-      setTimeout(() => {
-        this.alert = false;
-      }, 3000);
+      this.$router.push("/users");
     },
     async getUser(): Promise<void> {
-      console.log(_.isEmpty(this.user_id));
       this.currentRole = this.$store.state.user.data.role;
       if (_.isEmpty(this.user_id)) {
         this.user_id = this.$store.state?.user?.data.id;
