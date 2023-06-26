@@ -440,8 +440,6 @@ export default {
         const theRole = this.roleSameChange.find(
           (e) => e.role === this.userRole
         );
-        console.log("type", this.businessData["type"]);
-        console.log("permission", theRole?.permission);
         this.isDisableProcess =
           theRole?.permission !== this.businessData["type"];
       }

@@ -68,6 +68,7 @@ import { getBussinessData, getFormData, getVehicle } from "@/firebase";
 import * as pdfMake from "pdfmake/build/pdfmake";
 import _ from "lodash";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
+import moment from "moment";
 
 export default {
   data() {
@@ -135,6 +136,7 @@ export default {
     },
     async onGenPDF(formId: string): Promise<void> {
       const businessData = await getFormData(formId);
+      const dateCreatedAt = moment(businessData["created_at"]);
       const employees = businessData["clients"].filter(
         (item) => item.type === "employee"
       );
@@ -145,10 +147,16 @@ export default {
         (item) => item.type === "Customer"
       );
       const test2 = customers.map((item, index) => [
-        { text: `${index + 1}`, style: "static" },
+        { text: `${index + 1}`, style: "static", alignment: "center" },
         { text: `${item.name ?? ""}`, style: "static" },
-        { text: `${item.birthYear ?? ""}`, style: "static" },
-        { text: `${item.gender ?? ""}`, style: "static" },
+        {
+          text: `${item.gender === "Nam" ? item.birthYear : ""}`,
+          style: "static",
+        },
+        {
+          text: `${item.gender === "Nữ" ? item.birthYear : ""}`,
+          style: "static",
+        },
         { text: `${item.cardId ?? ""}`, style: "static" },
         { text: `${item.nation ?? ""}`, style: "static" },
         { text: `${item.place ?? ""}`, style: "static" },
@@ -180,27 +188,25 @@ export default {
             style: "title",
             bold: true,
             alignment: "center",
+            margin: [0, 0, 0, 10],
           },
           {
             columns: [
               {
-                width: "35%",
                 text: " - Tên phương tiện: ",
                 bold: false,
+                alignment: "left",
               },
               {
-                width: "35%",
                 text: businessData["meanName"],
                 bold: true,
+                margin: [20, 0, 20, 0],
               },
               {
-                width: "30%",
                 text: `Số đăng ký : ${businessData["meanNumber"]} `,
               },
             ],
-            columnGap: 5,
-            margin: 12,
-            alignment: "left",
+            margin: 8,
           },
           {
             columns: [
@@ -208,156 +214,209 @@ export default {
                 width: "35%",
                 text: " - Tên thuyền trưởng:",
                 bold: false,
+                alignment: "left",
               },
               {
-                width: "35%",
-                text: businessData["captain"],
+                width: "auto",
+                text: businessData["captain"].toUpperCase(),
+                style: "headerText",
                 bold: true,
-              },
-              {
-                width: "30%",
-                text: "",
+                alignment: "left",
               },
             ],
-            columnGap: 5,
-            margin: [8, 0],
-            alignment: "left",
+            columnGap: 12,
+            margin: 8,
           },
+
           {
             columns: [
               {
                 width: "35%",
                 text: " - Tên chủ tàu:",
                 bold: false,
+                alignment: "left",
               },
               {
-                width: "35%",
-                text: businessData["ownerName"],
+                width: "auto",
+                text: businessData["ownerName"].toUpperCase(),
                 bold: true,
-              },
-              {
-                width: "30%",
-                text: "",
+                style: "headerText",
+                alignment: "left",
               },
             ],
-            columnGap: 5,
+            columnGap: 12,
             margin: 8,
-            alignment: "left",
           },
           {
-            text: ` - Trọng tải đăng ký: ${
-              businessData["tonnage"] ?? 0
-            } (tấn) ${businessData["seats"] ?? 0} (ghế)`,
-            margin: 8,
-            bold: false,
-          },
-          {
-            text: ` - Số lượng thuyền viên:  ${
-              businessData["totalShipMember"] ?? 0
-            } (Người)`,
+            text: [
+              " - Trọng tải đăng ký:  ",
+              { text: `${businessData["tonnage"] ?? 0} `, bold: true },
+              "(tấn) ",
+              { text: ` ${businessData["seats"] ?? 0}`, bold: true },
+              " (ghế)",
+            ],
             margin: 8,
             bold: false,
           },
           {
-            text: ` - Số hành khách: 24 (Người) ${
-              businessData["client"]?.length ?? 0
-            }`,
+            text: [
+              " - Số lượng thuyền viên: ",
+              { text: ` ${businessData["totalShipMember"] ?? 0}`, bold: true },
+              " (Người)",
+            ],
+            margin: 8,
+            bold: false,
+          },
+          {
+            text: [
+              " - Số hành khách: ",
+              { text: ` ${customers?.length ?? 0}`, bold: true },
+              " (Người)",
+            ],
             margin: 8,
             bold: false,
           },
           {
             columns: [
               {
-                text: ` - Quốc tịch: Việt Nam: ${
-                  businessData["localCustomerNumber"] ?? 0
-                } (Người)`,
-                bold: false,
-              },
-              {
-                text: `, Nước ngoài: ${
-                  businessData["internationalCustomerNumber"] ?? 0
-                } (Người)`,
-                bold: false,
+                text: [
+                  " - Quốc tịch: Việt Nam: ",
+                  {
+                    text: businessData["localCustomerNumber"] ?? 0,
+                    bold: true,
+                  },
+                  " (Người)",
+                  ", Nước ngoài: ",
+                  {
+                    text: businessData["internationalCustomerNumber"] ?? 0,
+                    bold: true,
+                  },
+                  " (Người)",
+                ],
               },
             ],
-            columnGap: 1,
             margin: 8,
             alignment: "left",
           },
           {
             columns: [
               {
-                text: ` - Bến rời ${businessData["fromStation"] ?? ""}`,
-                bold: false,
-              },
-              {
-                text: ` Bến đến ${businessData["toStation"] ?? ""}`,
-                bold: false,
-              },
-              {
-                text: ` Thời gian rời bến ${businessData["time"] ?? ""}`,
-                bold: false,
+                text: [
+                  " - Bến rời: ",
+                  { text: `${businessData["fromStation"] ?? ""}`, bold: true },
+                  " ; ",
+                  "Bến đến: ",
+                  { text: `${businessData["toStation"] ?? ""}`, bold: true },
+                  " ; ",
+                  ` Thời gian rời bến ${businessData["time"] ?? ""}`,
+                ],
               },
             ],
-            columnGap: 1,
             margin: 8,
             alignment: "left",
           },
           {
             columns: [
-              " - Hướng dẫn viên: ",
+              {
+                width: 150,
+                text: " - Hướng dẫn viên: ",
+                bold: false,
+                alignment: "left",
+              },
               {
                 stack: guides?.map((item, index) => [
                   `${index + 1}. ${item.name}`,
                 ]),
               },
             ],
+            columnGap: 1,
             margin: 8,
           },
           {
             columns: [
-              " - Nhân viên phục vụ: ",
+              {
+                width: 150,
+                text: " - Nhân viên phục vụ: ",
+                bold: false,
+                alignment: "left",
+              },
               {
                 stack: employees?.map((item, index) => [
                   `${index + 1}. ${item.name}`,
                 ]),
               },
             ],
+            columnGap: 1,
             margin: 8,
           },
           {
             style: "tableExample",
             table: {
-              headerRows: 1,
-              widths: [
-                "auto",
-                "auto",
-                "auto",
-                "auto",
-                "auto",
-                100,
-                "auto",
-                "auto",
-              ],
+              headerRows: 2,
+              widths: [20, 110, "auto", "auto", 70, 60, 75, 70],
 
               body: [
                 [
-                  { text: "STT", style: "tableHeader", bold: true },
-                  { text: "Họ và tên khách", style: "tableHeader", bold: true },
-                  { text: "Năm sinh", style: "tableHeader", bold: true },
-                  { text: "Gioi tinh", style: "tableHeader", bold: true },
+                  { text: "STT", style: "tableHeader", bold: true, rowSpan: 2 },
+                  {
+                    text: "Họ và tên khách",
+                    style: "tableHeader",
+                    bold: true,
+                    rowSpan: 2,
+                  },
+                  {
+                    text: "Năm sinh",
+                    colSpan: 2,
+                    alignment: "center",
+                    style: "tableHeader",
+                    bold: true,
+                  },
+                  {},
                   {
                     text: "Số CMND (Số hộ chiếu)",
                     style: "tableHeader",
                     bold: true,
+                    rowSpan: 2,
                   },
-                  { text: "Quốc tịch", style: "tableHeader", bold: true },
+                  {
+                    text: "Quốc tịch",
+                    style: "tableHeader",
+                    bold: true,
+                    rowSpan: 2,
+                  },
                   {
                     text: "Nơi tạm trú (đối với khách nước ngoài)",
                     style: "tableHeader",
+                    rowSpan: 2,
+
                     bold: true,
                   },
-                  { text: "Ghi chú", style: "tableHeader", bold: true },
+                  {
+                    text: "Ghi chú",
+                    style: "tableHeader",
+                    bold: true,
+                    rowSpan: 2,
+                  },
+                ],
+                [
+                  {},
+                  {},
+                  {
+                    text: "Nam",
+                    style: "tableHeader",
+                    alignment: "center",
+                    bold: true,
+                  },
+                  {
+                    text: "Nữ",
+                    style: "tableHeader",
+                    alignment: "center",
+                    bold: true,
+                  },
+                  {},
+                  {},
+                  {},
+                  {},
                 ],
               ].concat(test2),
             },
@@ -377,19 +436,31 @@ export default {
                     style: "mark",
                     bold: true,
                   },
-                  { text: "(Ký, ghi rõ họ tên)" },
+                  {
+                    text: "(Ký, ghi rõ họ tên)",
+                    alignment: "left",
+                    margin: [18, 0, 0, 0],
+                  },
                 ],
+                alignment: "left",
+                width: "50%",
               },
+
               {
                 stack: [
                   {
-                    text: "Khánh Hòa, ngày  tháng  năm ",
+                    text: `Khánh Hòa, ngày ${dateCreatedAt.date()} tháng ${dateCreatedAt.month()} năm ${dateCreatedAt.year()}`,
                     italics: true,
-                    style: "static",
                   },
-                  { text: " NGƯỜI LẬP DANH SÁCH", style: "mark", bold: true },
-                  { text: "(Ký, ghi rõ họ tên)" },
+                  {
+                    text: " NGƯỜI LẬP DANH SÁCH",
+                    style: "mark",
+                    bold: true,
+                    alignment: "center",
+                  },
+                  { text: "(Ký, ghi rõ họ tên)", alignment: "center" },
                 ],
+                width: "50%",
               },
             ],
             margin: 20,
@@ -418,7 +489,12 @@ export default {
           tableHeader: {
             fontSize: 10,
           },
+          headerText: {
+            characterSpacing: 0.4,
+          },
         },
+        pageSize: "A4",
+        pageMargins: [30, 30, 30, 30],
       };
       const vfsInherit = pdfFonts?.pdfMake?.vfs ?? {
         "Roboto-Italic.ttf":
