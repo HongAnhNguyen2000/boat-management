@@ -71,6 +71,7 @@ export default {
       users: [] as any,
       showUsers: [] as any,
       isReload: true,
+      isLoading: true,
       isSortASC: true,
       currentSort: "",
       page: 1,
@@ -91,9 +92,11 @@ export default {
     page(newVal) {
       if (this.users.length > 0) {
         this.isReload = false;
+        this.isLoading = true;
         this.showUsers = [...this.users].slice((newVal - 1) * 10, newVal * 10);
         setTimeout(() => {
           this.isReload = true;
+          this.isLoading = false;
         }, 500);
       }
     },
@@ -136,6 +139,7 @@ export default {
           this.page * 10
         );
       }
+      this.isLoading = false;
     },
     gotoDetail(id) {
       this.$router.push("/user/" + id);

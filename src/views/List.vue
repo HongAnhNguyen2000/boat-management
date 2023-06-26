@@ -101,12 +101,14 @@ export default {
     page(newVal) {
       if (this.listBussinessData.length > 0) {
         this.isReload = false;
+        this.isLoading = true;
         this.showListBussinessData = [...this.listBussinessData].slice(
           (newVal - 1) * 10,
           newVal * 10
         );
         setTimeout(() => {
           this.isReload = true;
+          this.isLoading = false;
         }, 500);
       }
     },
