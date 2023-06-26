@@ -133,13 +133,11 @@ export default {
   created() {
     this.user_id = this.$route.params.userID;
     this.getUser();
-    this.getInfo();
   },
   watch: {
     $route(to, from) {
       this.user_id = this.$route.params.userID;
       this.getUser();
-      this.getInfo();
     },
   },
   methods: {
@@ -159,8 +157,7 @@ export default {
         password: this.password,
         phonenumber: this.phonenumber,
         username: this.username,
-        infos_id: this.infos_id,
-        company: this.company,
+        infos_id: this.company,
         role: this.role.en,
       };
       await updateUser(this.user_id, params);
@@ -191,6 +188,7 @@ export default {
           (label) => label.en === userDetail.role
         );
       }
+      this.getInfo();
     },
     async getInfo(): Promise<void> {
       this.companies = await getInfos();
