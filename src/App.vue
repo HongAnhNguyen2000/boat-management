@@ -85,13 +85,22 @@ export default {
           active: false,
         });
       } else if (role === "manager") {
-        this.nav.push({
-          icon: "Phương tiện",
-          text: "Thêm phương tiện",
-          title: "Thêm phương tiện",
-          url: "/add-vehicle",
-          active: false,
-        });
+        this.nav.push(
+          {
+            icon: "Phương tiện",
+            text: "Thêm phương tiện",
+            title: "Thêm phương tiện",
+            url: "/add-vehicle",
+            active: false,
+          },
+          {
+            icon: "Quản lý người dùng",
+            text: "Quản lý người dùng",
+            title: "Quản lý người dùng",
+            url: "/users",
+            active: false,
+          }
+        );
       }
     },
   },
