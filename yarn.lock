@@ -6577,7 +6577,7 @@ vue@^3.2.0:
 
 vuetify@^3.0.0:
   version "3.3.5"
-  resolved "https://registry.npmjs.org/vuetify/-/vuetify-3.3.5.tgz"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.3.5.tgz#b927214d106122240e79f4d65e49bfec0e86e189"
   integrity sha512-vkfPgPmKfSJa+jq6Ov+CTg7L1t2jLPKa7Slef9OrVHcLqg+gLuIj0z4PJE6E9HjFTUbgZShShOGxps52REJRIA==
 
 vuex-persist@^3.1.3:
