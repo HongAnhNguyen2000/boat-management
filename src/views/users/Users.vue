@@ -3,6 +3,16 @@
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </v-overlay>
   <div class="data-container">
+    <v-btn
+      class="mb-8"
+      color="black"
+      size="large"
+      variant="tonal"
+      @click="createUser"
+    >
+      <v-icon class="white--text mr-2">mdi-plus</v-icon>
+      Tạo người dùng
+    </v-btn>
     <v-table>
       <thead>
         <tr>
@@ -128,7 +138,10 @@ export default {
       }
     },
     gotoDetail(id) {
-      this.$router.push("user/" + id);
+      this.$router.push("/user/" + id);
+    },
+    createUser() {
+      this.$router.push("/user/register");
     },
   },
 };

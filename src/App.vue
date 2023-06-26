@@ -70,8 +70,8 @@ export default {
         },
         {
           icon: "Người dùng",
-          text: "Cập nhật người dùng",
-          title: "Cập nhật người dùng",
+          text: "Cập nhật Thông tin",
+          title: "Cập nhật Thông tin",
           url: "/update-user",
           active: false,
         },

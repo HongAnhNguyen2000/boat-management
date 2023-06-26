@@ -25,20 +25,20 @@
         v-model="username"
         :rules="[rules.required]"
       />
-      <div v-if="this.role !== 'enterprise'">
+      <div>
         <h3>Chọn vai trò</h3>
         <v-select
           class="mt-2"
           label="Vai trò người dùng"
-          :items="roles"
-          item-value="role"
-          item-text="role"
-          item-title="Vai trò người dùng"
+          :items="labelType"
           v-model="role"
+          item-value="en"
+          item-text="vi"
+          item-title="vi"
           variant="solo"
         />
       </div>
-      <div v-if="this.role !== 'enterprise'">
+      <div v-if="isEnterprise">
         <h3>Chọn công ty</h3>
         <v-select
           class="mt-2"
@@ -51,28 +51,20 @@
           variant="solo"
         />
       </div>
-      <hr />
-      <div class="pt-5">
-        <h3 class="mb-3">Thay đổi mật khẩu (bỏ qua nếu không muốn thay đổi)</h3>
-        <v-text-field
-          variant="outlined"
-          placeholder="Mật khẩu cũ"
-          v-model="oldPassword"
-          :rules="passwordRules"
-        />
-        <v-text-field
-          variant="outlined"
-          placeholder="Mật khẩu mới"
-          v-model="newPassword"
-          :rules="passwordRules"
-        />
-        <v-text-field
-          variant="outlined"
-          placeholder="Mật khẩu mới nhắc lại"
-          :rules="confirmPasswordRules"
-          v-model="newPasswordRepeat"
-        />
-      </div>
+      <v-text-field
+        variant="outlined"
+        placeholder="Mật khẩu mới"
+        type="password"
+        v-model="newPassword"
+        :rules="passwordRules"
+      />
+      <v-text-field
+        variant="outlined"
+        placeholder="Mật khẩu mới nhắc lại"
+        type="password"
+        :rules="confirmPasswordRules"
+        v-model="newPasswordRepeat"
+      />
     </div>
     <v-btn
       block
@@ -82,17 +74,24 @@
       variant="tonal"
       @click="regis"
     >
-      Cập nhật Người dùng
+      Tạo Người dùng
     </v-btn>
   </div>
 </template>
 
 <script lang="ts">
-import { getInfo, getInfos, getUsers, updateUser } from "@/firebase";
+import { addUser, getInfos } from "@/firebase";
+import _ from "lodash";
 export default {
   data() {
     return {
-      roles: ["manager", "authority", "border", "accountant", "enterprise"],
+      labelType: [
+        { en: "manager", vi: "Ban quản lý" },
+        { en: "authority", vi: "Cảng vụ" },
+        { en: "border", vi: "Biên phòng" },
+        { en: "accountant", vi: "Kế toán" },
+        { en: "enterprise", vi: "Doanh nghiệp" },
+      ],
       email: "",
       name: "",
       password: "",
@@ -100,21 +99,21 @@ export default {
       username: "",
       infos_id: "",
       company: "",
-      role: "",
+      role: { en: "enterprise", vi: "Doanh nghiệp" } as any,
+      currentRole: "",
       companies: [] as any,
-      user_id: "",
+      user_id: "" as any,
       message: "",
-      oldPassword: "",
       newPassword: "",
       newPasswordRepeat: "",
-      alert: false,
+      isEnterprise: true,
       passwordRules: [
         (value: any) =>
           (value && value.length >= 6) || "Mật khẩu ít nhất có 6 ký tự",
       ],
       confirmPasswordRules: [
         (value: any) =>
-          value === this.password || "Mật khẩu xác nhận không trùng khớp.",
+          value === this.newPassword || "Mật khẩu xác nhận không trùng khớp.",
       ],
       rules: {
         required: (value: any) => !!value || "Required.",
@@ -128,52 +127,42 @@ export default {
     };
   },
   created() {
-    this.getUser();
     this.getInfo();
+  },
+  watch: {
+    role(newVal) {
+      this.isEnterprise = newVal === "enterprise";
+      this.company = "";
+    },
   },
   methods: {
     validate() {
-      if (
-        this.oldPassword === this.password &&
-        this.newPassword === this.newPasswordRepeat
-      ) {
-        this.password = this.newPassword;
-      }
+      return this.newPassword === this.newPasswordRepeat;
     },
     async regis() {
-      await this.validate();
-      const params = {
-        email: this.email,
-        name: this.name,
-        password: this.password,
-        phonenumber: this.phonenumber,
-        username: this.username,
-        infos_id: this.infos_id,
-        company: this.company,
-        role: this.role,
-      };
-      await updateUser(this.user_id, params);
-      this.message = "Bạn đã cập nhật người dùng thành công.";
-      this.alert = true;
-      setTimeout(() => {
-        this.alert = false;
-      }, 3000);
-    },
-    async getUser(): Promise<void> {
-      this.user_id = this.$store.state?.user?.data.id;
-      this.email = this.$store.state.user.data.email;
-      this.name = this.$store.state.user.data.name;
-      this.password = this.$store.state.user.data.password;
-      this.phonenumber = this.$store.state.user.data.phonenumber;
-      this.username = this.$store.state.user.data.username;
-      this.infos_id = this.$store.state.user.data.infos_id;
-      this.role = this.$store.state.user.data.role;
+      if (await this.validate()) {
+        const params = {
+          email: this.email,
+          name: this.name,
+          password: this.password,
+          phonenumber: this.phonenumber,
+          username: this.username,
+          infos_id: this.infos_id,
+          role: this.role.en,
+        };
+        if (this.role.en === "enterprise") {
+          params["company"] = this.company;
+        }
+        await addUser(params);
+        this.$router.push("/users");
+      }
     },
     async getInfo(): Promise<void> {
       this.companies = await getInfos();
-      this.company = this.companies.filter(
-        (company: any) => company.id === this.infos_id
-      ).company;
+      this.company = this.infos_id
+        ? this.companies.find((company: any) => company.id === this.infos_id)
+            .company
+        : "";
     },
   },
 };
