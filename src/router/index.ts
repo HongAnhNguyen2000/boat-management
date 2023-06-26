@@ -27,11 +27,6 @@ const routes = [
         component: () => import("@/views/BusinessForm.vue"),
       },
       {
-        path: "/add-vehicle",
-        name: "AddVehicle",
-        component: () => import("@/views/addVehicle.vue"),
-      },
-      {
         path: "/update-user",
         name: "UpdateUser",
         component: () => import("@/views/users/UpdateUser.vue"),
@@ -55,6 +50,26 @@ const routes = [
         path: "/user/register",
         name: "User Create",
         component: () => import("@/views/users/AddUser.vue"),
+      },
+      {
+        path: "/vehicles",
+        name: "Vehicles",
+        component: () => import("@/views/vehicle/Vehicles.vue"),
+      },
+      {
+        path: "/vehicle/register",
+        name: "AddVehicle",
+        component: () => import("@/views/vehicle/addVehicle.vue"),
+      },
+      {
+        path: "/vehicle/:vehicleID",
+        name: "Vehicle",
+        component: () => import("@/views/vehicle/Vehicle.vue"),
+      },
+      {
+        path: "/vehicle/update/:vehicleID",
+        name: "Vehicle Update",
+        component: () => import("@/views/vehicle/UpdateVehicle.vue"),
       },
     ],
   },

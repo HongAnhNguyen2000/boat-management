@@ -5,51 +5,61 @@
         variant="outlined"
         placeholder="Tên phương tiện"
         v-model="name"
+        :rules="[rules.required]"
       ></v-text-field>
       <v-text-field
         variant="outlined"
         placeholder="Số đăng ký"
         v-model="registrationNumber"
+        :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
         placeholder="Hạn bảo hiểm"
         v-model="insuranceDeadline"
+        :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
         placeholder="Ảnh bảo hiểm"
         v-model="insurancePhoto"
+        :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
         placeholder="Hạn đăng kiểm"
         v-model="registrationDeadline"
+        :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
         placeholder="Ảnh đăng kiểm"
         v-model="registrationPhoto"
+        :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
         placeholder="Trọng tải"
         v-model="tonnage"
+        :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
         placeholder="Loại phương tiện"
         v-model="type"
+        :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
         placeholder="Chủ phương tiện"
         v-model="vehicleOwner"
+        :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
         placeholder="Công suất"
         v-model="wattage"
+        :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
@@ -123,6 +133,9 @@ export default {
       usersId: "",
       users: [] as any,
       companies: [] as any,
+      rules: {
+        required: (value: any) => !!value || "Required.",
+      },
     };
   },
   created() {
@@ -145,6 +158,7 @@ export default {
         users_id: this.usersId,
       };
       await addVehicle(params);
+      this.$router.push("/vehicles");
     },
     async getUsers(): Promise<void> {
       const getDatas: any = await getUsers();

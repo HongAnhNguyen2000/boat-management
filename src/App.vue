@@ -91,17 +91,17 @@ export default {
       } else if (role === "manager") {
         this.nav.push(
           {
-            icon: "Phương tiện",
-            text: "Thêm phương tiện",
-            title: "Thêm phương tiện",
-            url: "/add-vehicle",
-            active: false,
-          },
-          {
             icon: "Quản lý người dùng",
             text: "Quản lý người dùng",
             title: "Quản lý người dùng",
             url: "/users",
+            active: false,
+          },
+          {
+            icon: "Quản lý phương tiện",
+            text: "Quản lý phương tiện",
+            title: "Quản lý phương tiện",
+            url: "/vehicles",
             active: false,
           }
         );
@@ -113,6 +113,12 @@ export default {
       this.checkRoleUser(newVal);
     },
     $route(to, from) {
+      if (this.roleUser !== "manager" && (['/users', '/vehicles'].includes(to.path) || to.path.includes('/vehicle'))) {
+        this.$router.push("/list");
+      }
+      if (this.roleUser !== "enterprise" && to.path === "/form") {
+        this.$router.push("/list");
+      }
       // if (!this.$store.state.user.loggedIn) {
       //   this.$router.push("/");
       // }

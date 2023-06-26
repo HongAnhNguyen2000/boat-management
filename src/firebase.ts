@@ -85,6 +85,11 @@ export const getVehicle = async (id: string) => {
   return vehicle.data();
 };
 
+export const updateVehicle = async (id: string, data: any) => {
+  const docRef = doc(db, "vehicle", id);
+  await setDoc(docRef, data);
+};
+
 export const getPlaces = async () => {
   const querySnapshot = await getDocs(placesCollection);
   const list: any = [];

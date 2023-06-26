@@ -77,7 +77,7 @@ export default {
     };
   },
   created() {
-    this.user_id = this.$route.params.userID;
+    this.user_id = this.$route.params.userID ?? this.$store.state?.user?.data.id;
     this.getUser();
     this.getInfo();
   },
@@ -86,25 +86,14 @@ export default {
       this.$router.push("/user/update/" + this.user_id);
     },
     async getUser(): Promise<void> {
-      if (_.isEmpty(this.user_id)) {
-        this.user_id = this.$store.state?.user?.data.id;
-        this.email = this.$store.state.user.data.email;
-        this.name = this.$store.state.user.data.name;
-        this.password = this.$store.state.user.data.password;
-        this.phonenumber = this.$store.state.user.data.phonenumber;
-        this.username = this.$store.state.user.data.username;
-        this.infos_id = this.$store.state.user.data.infos_id;
-        this.role = this.$store.state.user.data.role;
-      } else {
-        const userDetail = await getUser(this.user_id);
-        this.email = userDetail.email;
-        this.name = userDetail.name;
-        this.password = userDetail.password;
-        this.phonenumber = userDetail.phonenumber;
-        this.username = userDetail.username;
-        this.infos_id = userDetail.infos_id;
-        this.role = userDetail.role;
-      }
+      const userDetail = await getUser(this.user_id);
+      this.email = userDetail.email;
+      this.name = userDetail.name;
+      this.password = userDetail.password;
+      this.phonenumber = userDetail.phonenumber;
+      this.username = userDetail.username;
+      this.infos_id = userDetail.infos_id;
+      this.role = userDetail.role;
     },
     async getInfo(): Promise<void> {
       const companies = await getInfos();
