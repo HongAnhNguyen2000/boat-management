@@ -1,44 +1,48 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
-    path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
+    path: "/",
+    component: () => import("@/layouts/default/Default.vue"),
     children: [
       {
-        path: '',
-        name: 'Login',
-        component: () => import( '@/views/Login.vue'),
+        path: "",
+        name: "Login",
+        component: () => import("@/views/Login.vue"),
       },
       {
-        path: '/list',
-        name: 'List',
-        component: () => import( '@/views/List.vue'),
+        path: "/list",
+        name: "List",
+        component: () => import("@/views/List.vue"),
       },
       {
-        path: '/form',
-        name: 'Business form',
-        component: () => import( '@/views/BusinessForm.vue'),
+        path: "/form",
+        name: "Business form",
+        component: () => import("@/views/BusinessForm.vue"),
       },
       {
-        path: '/form/:formID',
-        name: 'Business form Detail',
-        component: () => import( '@/views/BusinessForm.vue'),
+        path: "/form/:formID",
+        name: "Business form Detail",
+        component: () => import("@/views/BusinessForm.vue"),
       },
       {
-        path: '/add-vehicle',
-        name: 'AddVehicle',
-        component: () => import( '@/views/addVehicle.vue'),
+        path: "/add-vehicle",
+        name: "AddVehicle",
+        component: () => import("@/views/addVehicle.vue"),
       },
-      
+      {
+        path: "/update-user",
+        name: "UpdateUser",
+        component: () => import("@/views/UpdateUser.vue"),
+      },
     ],
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-})
+});
 
-export default router
+export default router;
