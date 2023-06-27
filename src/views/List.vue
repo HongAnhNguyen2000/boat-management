@@ -156,15 +156,17 @@ export default {
         {
           text: `${item.gender === "Nam" ? item.birthYear : ""}`,
           style: "static",
+          alignment: "center",
         },
         {
           text: `${item.gender === "Nữ" ? item.birthYear : ""}`,
           style: "static",
+          alignment: "center",
         },
-        { text: `${item.cardId ?? ""}`, style: "static" },
-        { text: `${item.nation ?? ""}`, style: "static" },
-        { text: `${item.place ?? ""}`, style: "static" },
-        { text: `${item.note ?? ""}`, style: "static" },
+        { text: `${item.cardId ?? ""}`, style: "static", alignment: "center" },
+        { text: `${item.nation ?? ""}`, style: "static", alignment: "center" },
+        { text: `${item.place ?? ""}`, style: "static", alignment: "center" },
+        { text: `${item.note ?? ""}`, style: "static", alignment: "center" },
       ]);
       const docDefinition = {
         content: [
@@ -207,10 +209,10 @@ export default {
                 margin: [20, 0, 20, 0],
               },
               {
-                text: `Số đăng ký : ${businessData["meanNumber"]} `,
+                text:['Số đăng ký :', {text: `${businessData["meanNumber"]} ` , bold:true}],
               },
             ],
-            margin: 8,
+            margin: [32, 8, 8, 0],
           },
           {
             columns: [
@@ -229,7 +231,7 @@ export default {
               },
             ],
             columnGap: 12,
-            margin: 8,
+            margin: [32, 8, 8, 0],
           },
 
           {
@@ -249,7 +251,7 @@ export default {
               },
             ],
             columnGap: 12,
-            margin: 8,
+            margin: [32, 8, 8, 0],
           },
           {
             text: [
@@ -259,25 +261,28 @@ export default {
               { text: ` ${businessData["seats"] ?? 0}`, bold: true },
               " (ghế)",
             ],
-            margin: 8,
+            margin: [32, 8, 8, 0],
+
             bold: false,
           },
           {
             text: [
               " - Số lượng thuyền viên: ",
               { text: ` ${businessData["totalShipMember"] ?? 0}`, bold: true },
-              " (Người)",
+              " (người)",
             ],
-            margin: 8,
+            margin: [32, 8, 8, 0],
+
             bold: false,
           },
           {
             text: [
               " - Số hành khách: ",
               { text: ` ${customers?.length ?? 0}`, bold: true },
-              " (Người)",
+              " (người)",
             ],
-            margin: 8,
+            margin: [32, 8, 8, 0],
+
             bold: false,
           },
           {
@@ -289,17 +294,18 @@ export default {
                     text: businessData["localCustomerNumber"] ?? 0,
                     bold: true,
                   },
-                  " (Người)",
+                  " (người)",
                   ", Nước ngoài: ",
                   {
                     text: businessData["internationalCustomerNumber"] ?? 0,
                     bold: true,
                   },
-                  " (Người)",
+                  " (người)",
                 ],
               },
             ],
-            margin: 8,
+            margin: [32, 8, 8, 0],
+
             alignment: "left",
           },
           {
@@ -316,7 +322,8 @@ export default {
                 ],
               },
             ],
-            margin: 8,
+            margin: [32, 8, 8, 0],
+
             alignment: "left",
           },
           {
@@ -334,7 +341,7 @@ export default {
               },
             ],
             columnGap: 1,
-            margin: 8,
+            margin: [32, 8, 8, 0],
           },
           {
             columns: [
@@ -351,7 +358,7 @@ export default {
               },
             ],
             columnGap: 1,
-            margin: 8,
+            margin: [32, 8, 8, 5],
           },
           {
             style: "tableExample",
@@ -367,6 +374,7 @@ export default {
                     style: "tableHeader",
                     bold: true,
                     rowSpan: 2,
+                    alignment: "center",
                   },
                   {
                     text: "Năm sinh",
@@ -381,23 +389,26 @@ export default {
                     style: "tableHeader",
                     bold: true,
                     rowSpan: 2,
+                    alignment: "center",
                   },
                   {
                     text: "Quốc tịch",
                     style: "tableHeader",
                     bold: true,
                     rowSpan: 2,
+                    alignment: "center",
                   },
                   {
                     text: "Nơi tạm trú (đối với khách nước ngoài)",
                     style: "tableHeader",
                     rowSpan: 2,
-
+                    alignment: "center",
                     bold: true,
                   },
                   {
                     text: "Ghi chú",
                     style: "tableHeader",
+                    alignment: "center",
                     bold: true,
                     rowSpan: 2,
                   },
@@ -429,7 +440,8 @@ export default {
             text: "(Thuyền trưởng phải lập và nộp danh sách cho Bộ đội Biên phòng, Ban quản lý bến trước khi phương tiện xuất bến)",
             margin: 2,
             alignment: "center",
-            fontSize: 8,
+            fontSize: 10,
+            italics: true,
           },
           {
             columns: [
@@ -444,6 +456,7 @@ export default {
                     text: "(Ký, ghi rõ họ tên)",
                     alignment: "left",
                     margin: [18, 0, 0, 0],
+                    italics: true,
                   },
                 ],
                 alignment: "left",
@@ -462,7 +475,11 @@ export default {
                     bold: true,
                     alignment: "center",
                   },
-                  { text: "(Ký, ghi rõ họ tên)", alignment: "center" },
+                  {
+                    text: "(Ký, ghi rõ họ tên)",
+                    alignment: "center",
+                    italics: true,
+                  },
                 ],
                 width: "50%",
               },
