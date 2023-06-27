@@ -109,7 +109,7 @@ export const getListVehicle = async () => {
   const querySnapshot = await getDocs(vehicleCollection);
   const list: any = [];
   for (const doc of querySnapshot.docs) {
-    list.push({ ...doc.data(), id: doc.id });
+    list.push({ ...await doc.data(), id: doc.id });
   }
   return list ?? [];
 };
@@ -141,7 +141,7 @@ export const getInfos = async () => {
   const querySnapshot = await getDocs(infosCollection);
   const list: any = [];
   for (const doc of querySnapshot.docs) {
-    list.push({ ...doc.data(), id: doc.id });
+    list.push({ ...await doc.data(), id: doc.id });
   }
   return list ?? [];
 };

@@ -4,68 +4,80 @@
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-text-field
         variant="outlined"
-        placeholder="Tên phương tiện"
-        v-model="name"
+        placeholder="Tên phương tiện*"
+        label="Tên phương tiện*"
+        v-model="vehicle.name"
         :rules="[rules.required]"
-      ></v-text-field>
+        required
+      />
       <v-text-field
         variant="outlined"
-        placeholder="Số đăng ký"
-        v-model="registrationNumber"
+        placeholder="Số đăng ký*"
+        label="Số đăng ký*"
+        v-model="vehicle.registrationNumber"
         :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Hạn bảo hiểm"
-        v-model="insuranceDeadline"
+        placeholder="Hạn bảo hiểm*"
+        label="Hạn bảo hiểm*"
+        v-model="vehicle.insuranceDeadline"
         :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Ảnh bảo hiểm"
-        v-model="insurancePhoto"
+        placeholder="Ảnh bảo hiểm*"
+        label="Ảnh bảo hiểm*"
+        v-model="vehicle.insurancePhoto"
         :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Hạn đăng kiểm"
-        v-model="registrationDeadline"
+        placeholder="Hạn đăng kiểm*"
+        label="Hạn đăng kiểm*"
+        v-model="vehicle.registrationDeadline"
         :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Ảnh đăng kiểm"
-        v-model="registrationPhoto"
+        placeholder="Ảnh đăng kiểm*"
+        label="Ảnh đăng kiểm*"
+        v-model="vehicle.registrationPhoto"
         :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Trọng tải"
-        v-model="tonnage"
+        placeholder="Trọng tải*"
+        label="Trọng tải*"
+        v-model="vehicle.tonnage"
         :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Loại phương tiện"
-        v-model="type"
+        placeholder="Loại phương tiện*"
+        label="Loại phương tiện*"
+        v-model="vehicle.type"
         :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Chủ phương tiện"
-        v-model="vehicleOwner"
+        placeholder="Chủ phương tiện*"
+        label="Chủ phương tiện*"
+        v-model="vehicle.vehicleOwner"
         :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Công suất"
-        v-model="wattage"
+        placeholder="Công suất*"
+        label="Công suất*"
+        v-model="vehicle.wattage"
         :rules="[rules.required]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Năm sản xuất"
-        v-model="yearManufacture"
+        placeholder="Năm sản xuất*"
+        label="Năm sản xuất*"
+        v-model="vehicle.yearManufacture"
       />
       <div>
         <h3>Chọn công ty</h3>
@@ -73,10 +85,10 @@
           class="mt-2"
           label="Công ty"
           :items="companies"
-          item-value="users_id"
+          item-value="id"
           item-text="company"
           item-title="company"
-          v-model="usersId"
+          v-model="vehicle.infosId"
           variant="solo"
         />
       </div>
@@ -98,10 +110,7 @@
 <script lang="ts">
 import {
   addVehicle,
-  getInfo,
   getInfos,
-  getListVehicle,
-  getUsers,
 } from "@/firebase";
 import _ from "lodash";
 export default {
@@ -122,19 +131,20 @@ export default {
           active: false,
         },
       ],
-      registrationNumber: "",
-      insuranceDeadline: "",
-      insurancePhoto: "",
-      name: "",
-      registrationDeadline: "",
-      registrationPhoto: "",
-      tonnage: "",
-      type: "",
-      vehicleOwner: "",
-      wattage: "",
-      yearManufacture: "",
-      usersId: "",
-      users: [] as any,
+      vehicle: {
+        registrationNumber: "",
+        insuranceDeadline: "",
+        insurancePhoto: "",
+        name: "",
+        registrationDeadline: "",
+        registrationPhoto: "",
+        tonnage: "",
+        type: "",
+        vehicleOwner: "",
+        wattage: "",
+        yearManufacture: "",
+        infosId: ''
+      },
       companies: [] as any,
       disabled: true,
       rules: {
@@ -143,88 +153,53 @@ export default {
     };
   },
   created() {
-    this.getUsers();
+    this.getCompanies();
   },
   watch: {
-    registrationNumber() {
-      this.disabled = this.validate();
-    },
-    insuranceDeadline() {
-      this.disabled = this.validate();
-    },
-    insurancePhoto() {
-      this.disabled = this.validate();
-    },
-    name() {
-      this.disabled = this.validate();
-    },
-    registrationDeadline() {
-      this.disabled = this.validate();
-    },
-    registrationPhoto() {
-      this.disabled = this.validate();
-    },
-    tonnage() {
-      this.disabled = this.validate();
-    },
-    type() {
-      this.disabled = this.validate();
-    },
-    vehicleOwner() {
-      this.disabled = this.validate();
-    },
-    wattage() {
-      this.disabled = this.validate();
-    },
-    yearManufacture() {
-      this.disabled = this.validate();
+    vehicle: {
+      handler(newVal){
+        this.disabled = !this.validate();
+      },
+      deep: true
     },
   },
   methods: {
     validate() {
       return (
-        _.isEmpty(this.registrationNumber) ||
-        _.isEmpty(this.insuranceDeadline) ||
-        _.isEmpty(this.insurancePhoto) ||
-        _.isEmpty(this.name) ||
-        _.isEmpty(this.registrationDeadline) ||
-        _.isEmpty(this.registrationPhoto) ||
-        _.isEmpty(this.tonnage) ||
-        _.isEmpty(this.type) ||
-        _.isEmpty(this.vehicleOwner) ||
-        _.isEmpty(this.wattage) ||
-        _.isEmpty(this.yearManufacture)
+        !_.isEmpty(this.vehicle['registrationNumber']) &&
+        !_.isEmpty(this.vehicle['insuranceDeadline']) &&
+        !_.isEmpty(this.vehicle['insurancePhoto']) &&
+        !_.isEmpty(this.vehicle['name']) &&
+        !_.isEmpty(this.vehicle['registrationDeadline']) &&
+        !_.isEmpty(this.vehicle['registrationPhoto']) &&
+        !_.isEmpty(this.vehicle['tonnage']) &&
+        !_.isEmpty(this.vehicle['type']) &&
+        !_.isEmpty(this.vehicle['vehicleOwner']) &&
+        !_.isEmpty(this.vehicle['wattage']) &&
+        !_.isEmpty(this.vehicle['yearManufacture']) &&
+        !_.isEmpty(this.vehicle['infosId'])
       );
     },
     async regis() {
       const params = {
-        "registration-number": this.registrationNumber,
-        "insurance-deadline": this.insuranceDeadline,
-        "insurance-photo": this.insurancePhoto,
-        name: this.name,
-        "registration-deadline": this.registrationDeadline,
-        "registration-photo": this.registrationPhoto,
-        tonnage: this.tonnage,
-        type: this.type,
-        "vehicle-owner": this.vehicleOwner,
-        wattage: this.wattage,
-        "year-manufacture": this.yearManufacture,
-        users_id: this.usersId,
+        "registration-number": this.vehicle['registrationNumber'],
+        "insurance-deadline": this.vehicle['insuranceDeadline'],
+        "insurance-photo": this.vehicle['insurancePhoto'],
+        'name': this.vehicle['name'],
+        "registration-deadline": this.vehicle['registrationDeadline'],
+        "registration-photo": this.vehicle['registrationPhoto'],
+        'tonnage': this.vehicle['tonnage'],
+        'type': this.vehicle['type'],
+        "vehicle-owner": this.vehicle['vehicleOwner'],
+        'wattage': this.vehicle['wattage'],
+        "year-manufacture": this.vehicle['yearManufacture'],
+        'infos_id': this.vehicle['infosId'],
       };
       await addVehicle(params);
       this.$router.push("/vehicles");
     },
-    async getUsers(): Promise<void> {
-      const getDatas: any = await getUsers();
-      const users = getDatas.filter((data) => data.role === "enterprise");
-      this.users = users;
-      for (const user of users) {
-        const fetInfo = await getInfo(user.infos_id);
-        this.companies.push({
-          ...fetInfo,
-          users_id: user.id,
-        });
-      }
+    async getCompanies() {
+      this.companies = await getInfos()
     },
   },
 };

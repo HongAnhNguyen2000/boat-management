@@ -136,7 +136,7 @@
 </template>
 
 <script lang="ts">
-import { getInfo, getListVehicle, getUser } from "@/firebase";
+import { getInfo, getInfos, getListVehicle, getUser } from "@/firebase";
 import _ from "lodash";
 
 export default {
@@ -148,6 +148,7 @@ export default {
       isLoading: true,
       isSortASC: true,
       currentSort: "",
+      companies: [] as any,
       page: 1,
       pages: 1,
     };
@@ -198,21 +199,17 @@ export default {
         this.isLoading = false;
       }, 500);
     },
+    async getCompanies() {
+      this.companies = await getInfos()
+    },
     async getVehicles() {
       const getDatas: any = await getListVehicle();
-      this.vehicles = [...getDatas];
-      const listCompany: any = [];
-      for (const vehicle of this.vehicles) {
-        if (!listCompany.find((e: any) => e.id === vehicle.users_id)) {
-          const company = await this.getCompany(vehicle.users_id);
-          vehicle.company = company;
-          listCompany.push({ id: vehicle.users_id, company: company });
-        } else {
-          vehicle.company = listCompany.find(
-            (e) => e.id === vehicle.users_id
-          ).company;
-        }
+      await this.getCompanies();
+      for (const vehicle of getDatas) {
+        vehicle.company = this.companies.find(company => company.id === vehicle['infos_id']).company
       }
+      this.vehicles = [...getDatas];
+
       this.sortBy("name");
       this.pages = this.vehicles.length / 10;
       if (this.vehicles.length % 10 > 0) {

@@ -109,13 +109,12 @@ export default {
         this.yearManufacture = vehicleDetail['year-manufacture']
         this.type = vehicleDetail['type']
         this.insuranceDeadline = vehicleDetail['insurance-deadline']
-        this.company = await this.getCompany(vehicleDetail['users_id'])
+        this.company = await this.getCompany(vehicleDetail['infos_id'])
       }
     },
-    async getCompany(userId){
-      const user:any = await getUser(userId)
-      const company = user.infos_id ? await getInfo(user.infos_id) : ''
-      return user.infos_id ? company.company : ''
+    async getCompany(infos_id){
+      const company = await getInfo(infos_id)
+      return company ? company.company : ''
     },
   },
 };

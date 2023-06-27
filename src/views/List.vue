@@ -7,6 +7,14 @@
     <v-table class="min-width-table">
       <thead>
         <tr>
+          <th class="text-left" @click="sortBy('type')" style="cursor: pointer">
+            <span style="display: inline-block"> Trạng thái </span>
+            <div v-if="currentSort === 'type'" style="display: inline-block">
+              <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
+              <v-icon icon="mdi-chevron-up" v-else></v-icon>
+            </div>
+            <span v-else> - </span>
+          </th>
           <th
             class="text-left"
             @click="sortBy('created_at')"
@@ -28,14 +36,7 @@
           <th class="text-left">Bến rời</th>
           <th class="text-left">Bến đến</th>
           <th class="text-left">Thời gian xuất phát</th>
-          <th class="text-left" @click="sortBy('type')" style="cursor: pointer">
-            <span style="display: inline-block"> Trạng thái </span>
-            <div v-if="currentSort === 'type'" style="display: inline-block">
-              <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
-              <v-icon icon="mdi-chevron-up" v-else></v-icon>
-            </div>
-            <span v-else> - </span>
-          </th>
+          
           <th class="text-left"></th>
         </tr>
       </thead>
@@ -46,6 +47,7 @@
           @click="gotoDetail(item.id)"
           style="cursor: pointer"
         >
+          <td>{{ labelType.find((label) => label.en === item.type)?.vi }}</td>
           <td>{{ item.created_at }}</td>
           <td>{{ item.captain }}</td>
           <td><div v-html="item.vehicle['registration-number'] ?? ''" /></td>
@@ -53,7 +55,6 @@
           <td>{{ item.toStation }}</td>
           <td>{{ item.fromStation }}</td>
           <td>{{ item.time }}</td>
-          <td>{{ labelType.find((label) => label.en === item.type)?.vi }}</td>
           <td>
             <v-btn @click.stop="onGenPDF(item.id)">Xem trước</v-btn>
           </td>
@@ -129,7 +130,7 @@ export default {
       this.listBussinessData = _.orderBy(
         [...this.listBussinessData],
         [field],
-        [this.isSortASC ? "asc" : "desc"]
+        [this.isSortASC ? "desc" : "asc"]
       );
       if (this.listBussinessData.length > 0) {
         this.showListBussinessData = [...this.listBussinessData].slice(
@@ -556,7 +557,7 @@ export default {
         forms.push({ ...(form as any), vehicle });
       }
       this.listBussinessData = [...forms];
-      this.sortBy("created_at");
+      this.sortBy("type");
 
       this.pages = this.listBussinessData.length / 10;
       if (this.listBussinessData.length % 10 > 0) {
