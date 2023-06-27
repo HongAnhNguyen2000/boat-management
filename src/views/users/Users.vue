@@ -52,13 +52,13 @@
           <td>{{ item.name }}</td>
           <td>{{ item.phonenumber }}</td>
           <td>{{ item.username }}</td>
-          <td>{{ item.company }}</td>
+          <td>{{ item.company ? item.company : "" }}</td>
           <td>{{ labelType.find((label) => label.en === item.role)?.vi }}</td>
         </tr>
       </tbody>
     </v-table>
     <div class="text-center" v-if="pages > 1">
-      <v-pagination v-model="page" :length="pages"></v-pagination>
+      <v-pagination v-model="page" :length="pages - 1"></v-pagination>
     </div>
   </div>
 </template>
@@ -130,7 +130,9 @@ export default {
       for (const user of getDatas) {
         if (user.infos_id) {
           const fetInfo = await getInfo(user.infos_id);
-          user.company = fetInfo.company;
+          user.company = fetInfo ? fetInfo.company : "";
+        } else {
+          user.company = "";
         }
       }
       this.sortBy("role");

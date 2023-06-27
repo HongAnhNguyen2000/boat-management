@@ -47,16 +47,6 @@
         />
       </div>
       <div class="text-subtitle-1 text-medium-emphasis">
-        <span> Tên </span>
-        <v-text-field
-          variant="outlined"
-          placeholder="Tên"
-          v-model="name"
-          class="mt-3"
-          :rules="[rules.required]"
-        />
-      </div>
-      <div class="text-subtitle-1 text-medium-emphasis">
         <span> Số điện thoại </span>
         <v-text-field
           variant="outlined"
@@ -112,7 +102,6 @@ export default {
   data: () => ({
     visible: false,
     email: "",
-    name: "",
     password: "",
     newPassword: "",
     phonenumber: "",
@@ -138,9 +127,6 @@ export default {
     email() {
       this.disable = !this.validate();
     },
-    name() {
-      this.disable = !this.validate();
-    },
     password() {
       this.disable = !this.validate();
     },
@@ -156,7 +142,6 @@ export default {
       if (this.validate()) {
         const isForgotOk = await forgotPassword(
           this.email,
-          this.name,
           this.phonenumber,
           this.password
         );
@@ -184,7 +169,6 @@ export default {
     validate() {
       if (
         !_.isEmpty(this.email) &&
-        !_.isEmpty(this.name) &&
         !_.isEmpty(this.password) &&
         !_.isEmpty(this.newPassword) &&
         !_.isEmpty(this.phonenumber) &&

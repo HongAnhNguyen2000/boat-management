@@ -5,6 +5,28 @@
       Boat management
     </v-app-bar-title>
   </v-app-bar>
+  <v-alert
+    v-model="alert"
+    close-text="Close Alert"
+    color="deep-purple accent-4"
+    class="alert-forgot"
+    dark
+    dismissible
+  >
+    <div class="d-flex align-center">
+      <span>
+        {{ message }}
+      </span>
+      <v-btn
+        color="white"
+        size="large"
+        variant="tonal"
+        class="ml-auto"
+        @click="closeAlert()"
+        >Đóng</v-btn
+      >
+    </div>
+  </v-alert>
   <div class="container">
     <v-card
       class="mx-auto pa-12 pb-8"
@@ -46,6 +68,8 @@ export default {
     email: "",
     password: "",
     disable: true,
+    message: "",
+    alert: false,
   }),
   watch: {
     password() {
@@ -65,6 +89,12 @@ export default {
             this.$router.push("list");
           }
         }, 500);
+      } else {
+        this.alert = true;
+        this.message = "Bạn đăng nhập sai xin mời thử lại";
+        setTimeout(() => {
+          this.alert = false;
+        }, 3000);
       }
     },
     validateLogin() {
@@ -72,6 +102,9 @@ export default {
     },
     goForgotPage() {
       this.$router.push("/forgot");
+    },
+    closeAlert() {
+      this.alert = false;
     },
   },
 };

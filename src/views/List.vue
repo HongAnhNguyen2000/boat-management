@@ -58,7 +58,7 @@
       </tbody>
     </v-table>
     <div class="text-center" v-if="pages > 1">
-      <v-pagination v-model="page" :length="pages"></v-pagination>
+      <v-pagination v-model="page" :length="pages - 1"></v-pagination>
     </div>
   </div>
 </template>

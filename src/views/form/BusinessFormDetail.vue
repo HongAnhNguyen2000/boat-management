@@ -51,13 +51,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
+                <template
                   v-for="(item, index) in businessData['guides']"
-                  :key="index"
+                  :key="item.name + index"
                 >
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ item.name }}</td>
-                </tr>
+                  <tr v-if="item.name && item.name != ''">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ item.name }}</td>
+                  </tr>
+                </template>
               </tbody>
             </v-table>
           </v-col>
@@ -71,13 +73,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
+                <template
                   v-for="(item, index) in businessData['shipEmployees']"
-                  :key="index"
+                  :key="item.name + index"
                 >
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ item.name }}</td>
-                </tr>
+                  <tr v-if="item.name && item.name != ''">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ item.name }}</td>
+                  </tr>
+                </template>
               </tbody>
             </v-table>
           </v-col>

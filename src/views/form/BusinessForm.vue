@@ -214,13 +214,31 @@
               </v-col>
               <v-col cols="4">
                 <h4 class="mt-3">Thời gian rời bến</h4>
-                <v-text-field
-                  class="mt-1"
-                  variant="outlined"
-                  placeholder="Thời gian rời bến"
+                <v-select
+                  class="mt-2"
+                  label="Thời gian rời bến"
+                  :items="[
+                    '08:00',
+                    '08:30',
+                    '09:00',
+                    '09:30',
+                    '10:00',
+                    '10:30',
+                    '11:00',
+                    '11:30',
+                    '14:00',
+                    '14:30',
+                    '15:00',
+                    '15:30',
+                    '16:00',
+                    '16:30',
+                    '17:00',
+                    '17:30',
+                  ]"
+                  variant="solo"
                   v-model="businessData['time']"
                   :disabled="isDisable"
-                ></v-text-field>
+                />
               </v-col>
             </v-row>
           </v-col>
@@ -480,10 +498,24 @@ export default {
       this.$router.push("/list");
     },
     checkDisabled(): boolean {
-      return (
-        this.businessData["customers"]?.length > 0 &&
-        this.businessData["meanName"]
-      );
+      if (this.businessData["customers"]) {
+        const customer = JSON.parse(
+          JSON.stringify(this.businessData["customers"])
+        );
+        const checkCustomer = customer.filter(
+          (customer: any) => customer.name && customer.name !== ""
+        );
+        return (
+          checkCustomer.length > 0 &&
+          this.businessData["meanName"] &&
+          this.businessData["captain"] &&
+          this.businessData["fromStation"] &&
+          this.businessData["toStation"] &&
+          this.businessData["time"]
+        );
+      } else {
+        return false;
+      }
     },
   },
   watch: {

@@ -1,5 +1,27 @@
 <template>
   <div class="data-container">
+    <v-alert
+      v-model="alert"
+      close-text="Close Alert"
+      color="deep-purple accent-4"
+      class="alert-forgot"
+      dark
+      dismissible
+    >
+      <div class="d-flex align-center">
+        <span>
+          {{ messageAlert }}
+        </span>
+        <v-btn
+          color="white"
+          size="large"
+          variant="tonal"
+          class="ml-auto"
+          @click="closeAlert()"
+          >Đóng</v-btn
+        >
+      </div>
+    </v-alert>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-text-field
         variant="outlined"
@@ -107,6 +129,8 @@ export default {
       newPassword: "",
       newPasswordRepeat: "",
       isEnterprise: true,
+      messageAlert: "",
+      alert: false,
       passwordRules: [
         (value: any) =>
           (value && value.length >= 6) || "Mật khẩu ít nhất có 6 ký tự",
@@ -145,17 +169,25 @@ export default {
         const params = {
           email: this.email,
           name: this.name,
-          password: this.password,
+          password: this.newPassword,
           phonenumber: this.phonenumber,
           username: this.username,
-          infos_id: this.infos_id,
           role: this.role.en,
         };
         if (this.role.en === "enterprise") {
-          params["company"] = this.company;
+          params["infos_id"] = this.company;
         }
-        await addUser(params);
-        this.$router.push("/users");
+        const actionAddUser = await addUser(params);
+        if (actionAddUser) {
+          this.$router.push("/users");
+        } else {
+          this.alert = true;
+          this.messageAlert =
+            "Bạn tạo người dùng không thành công. Xin thử lại";
+          setTimeout(() => {
+            this.alert = false;
+          }, 3000);
+        }
       }
     },
     async getInfo(): Promise<void> {
@@ -164,6 +196,9 @@ export default {
         ? this.companies.find((company: any) => company.id === this.infos_id)
             .company
         : "";
+    },
+    closeAlert() {
+      this.alert = false;
     },
   },
 };

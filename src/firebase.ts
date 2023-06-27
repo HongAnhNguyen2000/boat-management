@@ -45,7 +45,6 @@ export const checkUser = async (email: any, password: any) => {
 
 export const forgotPassword = async (
   email: any,
-  name: any,
   phonenumber: any,
   password: any
 ) => {
@@ -53,11 +52,7 @@ export const forgotPassword = async (
   const docSnapshots = querySnapshot.docs;
   let user: any = {};
   for (const doc of docSnapshots) {
-    if (
-      doc.get("email") === email &&
-      doc.get("name") === name &&
-      doc.get("phonenumber") === phonenumber
-    ) {
+    if (doc.get("email") === email && doc.get("phonenumber") === phonenumber) {
       user = { ...(await doc.data()), id: doc.id };
     }
   }
@@ -102,7 +97,12 @@ export const updateUser = async (id: string, data: any) => {
 };
 
 export const addUser = async (params: any) => {
-  await addDoc(usersCollection, params);
+  const adduser = await addDoc(usersCollection, params);
+  if (adduser.id) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 export const getListVehicle = async () => {

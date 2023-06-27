@@ -42,13 +42,14 @@ export default {
   },
   created(): void {
     this.getVehicle();
-    console.log("1");
-    if (!this.$store.state.user.loggedIn) {
-      this.$router.push("/");
-    }
   },
   watch: {
     $route(to, from) {
+      if (!(to.path === "/" || to.path === "/forgot")) {
+        if (!this.$store.state.user.loggedIn) {
+          this.$router.push("/");
+        }
+      }
       if (this.$store.state.user.data?.role) {
         this.roleUser = this.$store.state.user.data?.role;
         this.checkRoleUser(this.$store.state.user.data?.role);
@@ -62,9 +63,6 @@ export default {
       }
       if (this.roleUser !== "enterprise" && to.path === "/form") {
         this.$router.push("/list");
-      }
-      if (!this.$store.state.user.loggedIn) {
-        this.$router.push("/");
       }
     },
   },
