@@ -4,7 +4,7 @@
   </v-overlay>
   <div class="data-container">
     <h2 class="mb-5">Danh sách đã đăng ký</h2>
-    <v-table>
+    <v-table class="min-width-table">
       <thead>
         <tr>
           <th

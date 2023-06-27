@@ -126,6 +126,9 @@ export default {
 table tr:nth-child(even) {
   background: #f4f4f4;
 }
+.min-width-table table {
+  min-width: 1300px;
+}
 table thead {
   background-color: #c7c7c794;
 }

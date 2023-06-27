@@ -14,7 +14,7 @@
       Tạo người dùng
     </v-btn>
     <h2 class="mb-5">Danh sách người dùng</h2>
-    <v-table>
+    <v-table class="min-width-table">
       <thead>
         <tr>
           <th

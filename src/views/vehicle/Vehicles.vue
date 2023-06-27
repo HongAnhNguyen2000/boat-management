@@ -14,7 +14,7 @@
       Thêm Phương tiện giao thông
     </v-btn>
     <h2 class="mb-5">Danh sách phương tiện</h2>
-    <v-table>
+    <v-table class="min-width-table">
       <thead>
         <tr>
           <th class="text-left" @click="sortBy('name')" style="cursor: pointer">
