@@ -99,14 +99,13 @@ export default {
           }
         );
       }
-      this.nav.push(
-        {
-          icon: "Người dùng",
-          text: "Cập nhật Thông tin",
-          title: "Cập nhật Thông tin",
-          url: "/update-user",
-          active: false,
-        })
+      this.nav.push({
+        icon: "Người dùng",
+        text: "Cập nhật Thông tin",
+        title: "Cập nhật Thông tin",
+        url: "/update-user",
+        active: false,
+      });
     },
   },
   watch: {
@@ -114,15 +113,19 @@ export default {
       this.checkRoleUser(newVal);
     },
     $route(to, from) {
-      if (this.roleUser !== "manager" && (['/users', '/vehicles'].includes(to.path) || to.path.includes('/vehicle'))) {
+      if (
+        this.roleUser !== "manager" &&
+        (["/users", "/vehicles"].includes(to.path) ||
+          to.path.includes("/vehicle"))
+      ) {
         this.$router.push("/list");
       }
       if (this.roleUser !== "enterprise" && to.path === "/form") {
         this.$router.push("/list");
       }
-      // if (!this.$store.state.user.loggedIn) {
-      //   this.$router.push("/");
-      // }
+      if (!this.$store.state.user.loggedIn) {
+        this.$router.push("/");
+      }
     },
   },
 };
