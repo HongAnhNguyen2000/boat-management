@@ -192,7 +192,7 @@ export default {
     },
     async getVehicles() {
       const getDatas: any = await getListVehicle();
-      this.vehicles = [...getDatas, ...getDatas, ...getDatas];
+      this.vehicles = [...getDatas];
       const listCompany: any = [];
       for (const vehicle of this.vehicles) {
         if (!listCompany.find((e: any) => e.id === vehicle.users_id)) {

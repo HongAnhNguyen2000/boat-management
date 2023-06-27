@@ -209,7 +209,10 @@ export default {
                 margin: [20, 0, 20, 0],
               },
               {
-                text:['Số đăng ký :', {text: `${businessData["meanNumber"]} ` , bold:true}],
+                text: [
+                  "Số đăng ký :",
+                  { text: `${businessData["meanNumber"]} `, bold: true },
+                ],
               },
             ],
             margin: [32, 8, 8, 0],
@@ -549,7 +552,7 @@ export default {
         }
         forms.push({ ...(form as any), vehicle });
       }
-      this.listBussinessData = [...forms, ...forms, ...forms, ...forms];
+      this.listBussinessData = [...forms];
       this.sortBy("created_at");
       this.pages = this.listBussinessData.length / 10 + 1;
       if (this.listBussinessData.length > 0) {

@@ -126,7 +126,7 @@ export default {
     },
     async getUsers() {
       const getDatas: any = await getUsers();
-      this.users = [...getDatas, ...getDatas, ...getDatas];
+      this.users = [...getDatas];
       for (const user of getDatas) {
         if (user.infos_id) {
           const fetInfo = await getInfo(user.infos_id);
