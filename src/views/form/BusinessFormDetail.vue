@@ -201,6 +201,7 @@ export default {
       isNotReset: true,
       isEnterprise: false,
       process: "Chấp nhận",
+      created_at: '',
       userRole: this.$store.state?.user?.data?.role,
       roleSameChange: [
         { role: "manager", permission: "requesting" },
@@ -256,6 +257,7 @@ export default {
       );
       const now = new Date();
       const created_at =
+        this.created_at ? this.created_at : 
         now.toLocaleDateString() + " " + now.toLocaleTimeString();
 
       const setAPIData = {
@@ -331,6 +333,7 @@ export default {
     async getformDetail(): Promise<void> {
       if (this.formID && this.formID !== "") {
         this.businessData = await getFormData(this.formID);
+        this.created_at = this.businessData['created_at']
         this.businessData["customers"] = this.businessData["clients"].filter(
           (e) => e.type === "Customer"
         );

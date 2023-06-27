@@ -259,7 +259,7 @@
             variant="tonal"
             @click="regisNewBusinessForm"
             v-if="isEnterprise"
-            :disabled="isDisable || !checkDisabled()"
+            :disabled="isDisable || checkDisabledButton"
           >
             Đăng kí
           </v-btn>
@@ -313,6 +313,7 @@ export default {
       isDisableProcess: true,
       isNotReset: true,
       isEnterprise: false,
+      checkDisabledButton: true,
       process: "Chấp nhận",
       userRole: this.$store.state?.user?.data?.role,
       roleSameChange: [
@@ -497,7 +498,7 @@ export default {
       await updateFormData(this.formID, data);
       this.$router.push("/list");
     },
-    checkDisabled(): boolean {
+    checkDisabled() {
       if (this.businessData["customers"]) {
         const customer = JSON.parse(
           JSON.stringify(this.businessData["customers"])
@@ -505,16 +506,17 @@ export default {
         const checkCustomer = customer.filter(
           (customer: any) => customer.name && customer.name !== ""
         );
-        return (
-          checkCustomer.length > 0 &&
-          this.businessData["meanName"] &&
-          this.businessData["captain"] &&
-          this.businessData["fromStation"] &&
-          this.businessData["toStation"] &&
-          this.businessData["time"]
-        );
+        const falseTrue = (
+          checkCustomer.length === 0 ||
+          _.isEmpty(this.businessData["meanName"]) ||
+          _.isEmpty(this.businessData["captain"]) ||
+          _.isEmpty(this.businessData["fromStation"]) ||
+          _.isEmpty(this.businessData["toStation"]) ||
+          _.isEmpty(this.businessData["time"]))
+        
+        this.checkDisabledButton = falseTrue;
       } else {
-        return false;
+        this.checkDisabledButton = true;
       }
     },
   },
@@ -526,6 +528,12 @@ export default {
       this.businessData["ownerName"] = newVal["vehicle-owner"];
       this.businessData["tonnage"] = newVal["tonnage"];
       this.businessData["seats"] = newVal["wattage"];
+    },
+    businessData: {
+      handler(newVal){
+        this.checkDisabled();
+      },
+      deep: true
     },
     $route(to, from) {
       this.isNotReset = false;

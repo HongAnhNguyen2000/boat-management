@@ -168,6 +168,7 @@ export default {
   },
   methods: {
     checkValidate() {
+      console.log('this.infos_id', this.infos_id)
       return (
         _.isEmpty(this.email) ||
         _.isEmpty(this.name) ||
@@ -192,7 +193,7 @@ export default {
         password: this.password,
         phonenumber: this.phonenumber,
         username: this.username,
-        infos_id: this.company,
+        infos_id: this.infos_id,
         role: this.role.en,
       };
       await updateUser(this.user_id, params);
