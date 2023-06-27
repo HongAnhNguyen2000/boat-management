@@ -10,13 +10,23 @@
     border="left"
     close-text="Close Alert"
     color="deep-purple accent-4"
+    class="alert-forgot"
     dark
     dismissible
   >
-    {{ message }}
-    <template v-slot:close="{ toggle }">
-      <v-btn @click="closeAlert(toggle)">Đóng</v-btn>
-    </template>
+    <div class="d-flex align-center">
+      <span>
+        {{ message }}
+      </span>
+      <v-btn
+        color="white"
+        size="large"
+        variant="tonal"
+        class="ml-auto"
+        @click="closeAlert()"
+        >Đóng</v-btn
+      >
+    </div>
   </v-alert>
   <div class="container">
     <v-card
