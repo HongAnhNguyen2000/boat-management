@@ -5,67 +5,188 @@
       Boat management
     </v-app-bar-title>
   </v-app-bar>
+  <v-alert
+    v-model="alert"
+    border="left"
+    close-text="Close Alert"
+    color="deep-purple accent-4"
+    dark
+    dismissible
+  >
+    {{ message }}
+    <template v-slot:close="{ toggle }">
+      <v-btn @click="closeAlert(toggle)">Đóng</v-btn>
+    </template>
+  </v-alert>
   <div class="container">
     <v-card
       class="mx-auto pa-12 pb-8"
       elevation="8"
-      max-width="448"
+      max-width="748"
       rounded="lg"
     >
       <h2 class="text-center">Quên mật khẩu</h2>
-      <div class="text-subtitle-1 text-medium-emphasis">Email đăng nhập</div>
-      <v-text-field variant="outlined" placeholder="Email" v-model="email" />
-      <div class="text-subtitle-1 text-medium-emphasis">Mật khẩu</div>
-      <v-text-field
-        variant="outlined"
-        placeholder="Mật khẩu"
-        v-model="password"
-        type="password"
-      />
-      <v-link class="mb-3 text-underline" href="/forgot">Quên mật khẩu</v-link>
+
+      <div class="text-subtitle-1 text-medium-emphasis">
+        <span> Email đăng nhập </span>
+        <v-text-field
+          variant="outlined"
+          placeholder="Email"
+          v-model="email"
+          class="mt-3"
+          :rules="[rules.required, rules.email]"
+        />
+      </div>
+      <div class="text-subtitle-1 text-medium-emphasis">
+        <span> Tên </span>
+        <v-text-field
+          variant="outlined"
+          placeholder="Tên"
+          v-model="name"
+          class="mt-3"
+          :rules="[rules.required]"
+        />
+      </div>
+      <div class="text-subtitle-1 text-medium-emphasis">
+        <span> Số điện thoại </span>
+        <v-text-field
+          variant="outlined"
+          placeholder="Số điện thoại"
+          v-model="phonenumber"
+          class="mt-3"
+          :rules="[rules.required, rules.phonenumber]"
+        />
+      </div>
+      <div class="text-subtitle-1 text-medium-emphasis">
+        <span>Mật khẩu mới</span>
+        <v-text-field
+          variant="outlined"
+          placeholder="Mật khẩu"
+          v-model="password"
+          type="password"
+          :rules="[rules.required, rules.counter]"
+        />
+      </div>
+      <div class="text-subtitle-1 text-medium-emphasis">
+        <span>Mật khẩu mới nhắc lại</span>
+        <v-text-field
+          variant="outlined"
+          placeholder="Mật khẩu"
+          v-model="newPassword"
+          type="password"
+          :rules="[rules.required, rules.counter]"
+        />
+      </div>
+      <v-link class="mb-3 text-underline" @click="backToLogin()"
+        >Quay lại màn hình đăng nhập</v-link
+      >
       <v-btn
         block
         class="mb-8 mt-3"
         color="black"
         size="large"
         variant="tonal"
-        @click="login()"
+        @click="forgot()"
         :disabled="disable"
       >
-        Log In
+        Cập nhật mật khẩu mới
       </v-btn>
     </v-card>
   </div>
 </template>
 
 <script lang="ts">
+import _ from "lodash";
+import { forgotPassword } from "@/firebase";
+
 export default {
   data: () => ({
     visible: false,
     email: "",
+    name: "",
     password: "",
+    newPassword: "",
+    phonenumber: "",
+    message: "",
+    alert: false,
     disable: true,
+    rules: {
+      required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
+      counter: (value: any) =>
+        value.length > 6 || "Xin mời nhập tối thiểu 6 ký tự",
+      email: (value: any) => {
+        const pattern =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return pattern.test(value) || "Email không hợp lệ.";
+      },
+      phonenumber: (value: any) => {
+        const pattern = /([\\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
+        return pattern.test(value) || "Số điện thoại không hợp lệ.";
+      },
+    },
   }),
   watch: {
-    password() {
-      this.validateLogin();
-    },
     email() {
-      this.validateLogin();
+      this.disable = !this.validate();
+    },
+    name() {
+      this.disable = !this.validate();
+    },
+    password() {
+      this.disable = !this.validate();
+    },
+    newPassword() {
+      this.disable = !this.validate();
+    },
+    phonenumber() {
+      this.disable = !this.validate();
     },
   },
   methods: {
-    login() {
-      const loginVal = { email: this.email, password: this.password };
-      this.$store.dispatch("logIn", loginVal);
-      setTimeout(() => {
-        if (this.$store.state.user.loggedIn) {
-          this.$router.push("list");
+    async forgot() {
+      if (this.validate()) {
+        const isForgotOk = await forgotPassword(
+          this.email,
+          this.name,
+          this.phonenumber,
+          this.password
+        );
+        if (isForgotOk) {
+          this.alert = true;
+          this.message = "Bạn đã thay đổi mật khẩu thành công";
+          setTimeout(() => {
+            this.alert = false;
+          }, 1000);
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 1000);
+        } else {
+          this.alert = true;
+          this.message = "Bạn lấy lại mật khẩu không thành công. Xin thử lại";
+          setTimeout(() => {
+            this.alert = false;
+          }, 3000);
         }
-      }, 500);
+      }
     },
-    validateLogin() {
-      this.disable = this.email === "" || this.password === "";
+    closeAlert() {
+      this.alert = false;
+    },
+    validate() {
+      if (
+        !_.isEmpty(this.email) &&
+        !_.isEmpty(this.name) &&
+        !_.isEmpty(this.password) &&
+        !_.isEmpty(this.newPassword) &&
+        !_.isEmpty(this.phonenumber) &&
+        this.newPassword === this.password
+      ) {
+        return true;
+      }
+      return false;
+    },
+    backToLogin() {
+      this.$router.push("/");
     },
   },
 };
@@ -77,5 +198,6 @@ export default {
 }
 .text-underline {
   text-decoration: underline;
+  cursor: pointer;
 }
 </style>

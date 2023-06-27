@@ -44,6 +44,39 @@ export const checkUser = async (email: any, password: any) => {
   return users;
 };
 
+export const forgotPassword = async (
+  email: any,
+  name: any,
+  phonenumber: any,
+  password: any
+) => {
+  const querySnapshot = await getDocs(usersCollection);
+  const docSnapshots = querySnapshot.docs;
+  let user: any = {};
+  for (const doc of docSnapshots) {
+    if (
+      doc.get("email") === email &&
+      doc.get("name") === name &&
+      doc.get("phonenumber") === phonenumber
+    ) {
+      user = { ...(await doc.data()), id: doc.id };
+    }
+  }
+  try {
+    if (user.id) {
+      const docRef = doc(db, "users", user.id);
+      delete user.id;
+      user.password = password;
+      await setDoc(docRef, user);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+  return false;
+};
+
 export const getUser = async (id: string) => {
   if (id) {
     const docRef = doc(db, "users", id);

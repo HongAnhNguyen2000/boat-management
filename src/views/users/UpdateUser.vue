@@ -120,25 +120,26 @@ export default {
           value === this.newPassword || "Mật khẩu xác nhận không trùng khớp.",
       ],
       rules: {
-        required: (value: any) => !!value || "Required.",
-        counter: (value: any) => value.length <= 20 || "Max 20 characters",
+        required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
+        counter: (value: any) =>
+          value.length > 6 || "Xin mời nhập tối thiểu 6 ký tự",
         email: (value: any) => {
           const pattern =
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return pattern.test(value) || "Invalid e-mail.";
+          return pattern.test(value) || "Email không hợp lệ.";
         },
       },
     };
   },
   created() {
-    this.currentRole = this.$store.state?.user?.data.role ?? ''
+    this.currentRole = this.$store.state?.user?.data.role ?? "";
     this.user_id =
       this.$route.params.userID ?? this.$store.state?.user?.data?.id;
     this.getUser();
   },
   watch: {
     $route(to, from) {
-      this.currentRole = this.$store.state?.user?.data?.role ?? ''
+      this.currentRole = this.$store.state?.user?.data?.role ?? "";
       this.user_id =
         this.$route.params.userID ?? this.$store.state?.user?.data?.id;
       this.getUser();

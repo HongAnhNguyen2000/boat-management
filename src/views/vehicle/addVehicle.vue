@@ -134,7 +134,7 @@ export default {
       users: [] as any,
       companies: [] as any,
       rules: {
-        required: (value: any) => !!value || "Required.",
+        required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
       },
     };
   },

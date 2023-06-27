@@ -141,7 +141,7 @@ export default {
       vehicle_id: "" as any,
       company: "" as any,
       rules: {
-        required: (value: any) => !!value || "Required.",
+        required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
       },
     };
   },

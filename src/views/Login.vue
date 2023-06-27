@@ -21,7 +21,9 @@
         v-model="password"
         type="password"
       />
-      <!-- <v-link class="mb-3 text-underline" href="/forgot">Quên mật khẩu</v-link> -->
+      <v-link class="mb-3 text-underline" @click="goForgotPage()"
+        >Quên mật khẩu</v-link
+      >
       <v-btn
         block
         class="mb-8 mt-3"
@@ -65,6 +67,9 @@ export default {
     },
     validateLogin() {
       this.disable = this.email === "" || this.password === "";
+    },
+    goForgotPage() {
+      this.$router.push("/forgot");
     },
   },
 };
