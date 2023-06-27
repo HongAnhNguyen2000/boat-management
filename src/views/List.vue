@@ -497,7 +497,6 @@ export default {
             characterSpacing: 0.4,
           },
         },
-        pageSize: "A4",
         pageMargins: [30, 30, 30, 30],
       };
       const vfsInherit = pdfFonts?.pdfMake?.vfs ?? {
