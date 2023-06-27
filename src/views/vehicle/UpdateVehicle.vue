@@ -88,7 +88,7 @@
       variant="tonal"
       @click="regis"
     >
-      Đăng ký
+      Cập nhật
     </v-btn>
   </div>
 </template>
@@ -99,6 +99,7 @@ import {
   getInfo,
   getInfos,
   getListVehicle,
+  getUser,
   getUsers,
   getVehicle,
   updateVehicle,
@@ -153,8 +154,8 @@ export default {
   },
   watch: {
     company(newVal) {
-      this.usersId = newVal
-    }
+      this.usersId = newVal;
+    },
   },
   methods: {
     async regis() {
@@ -179,42 +180,43 @@ export default {
       const getDatas: any = await getUsers();
       const users = getDatas.filter((data) => data.role === "enterprise");
       this.users = users;
-      const existsCompany: any = []
+      const existsCompany: any = [];
       for (const user of users) {
         if (!existsCompany.includes(user.infos_id)) {
           const fetInfo = await getInfo(user.infos_id);
-          existsCompany.push(user.infos_id)
+          existsCompany.push(user.infos_id);
           this.companies.push({
             ...fetInfo,
             users_id: user.id,
           });
         }
       }
-      this.getVehicle()
+      this.getVehicle();
     },
     async getVehicle(): Promise<void> {
       if (_.isEmpty(this.vehicle_id)) {
         this.$router.push("/vehicles");
       } else {
         const vehicleDetail = await getVehicle(this.vehicle_id);
-        this.registrationNumber = vehicleDetail['registration-number']
-        this.name = vehicleDetail['name']
-        this.insurancePhoto = vehicleDetail['insurance-photo']
-        this.vehicleOwner = vehicleDetail['vehicle-owner']
-        this.tonnage = vehicleDetail['tonnage']
-        this.wattage = vehicleDetail['wattage']
-        this.yearManufacture = vehicleDetail['year-manufacture']
-        this.type = vehicleDetail['type']
-        this.insuranceDeadline = vehicleDetail['insurance-deadline']
-        this.registrationPhoto = vehicleDetail['registration-photo']
-        this.registrationDeadline = vehicleDetail['registration-deadline']
-        this.company = this.getCompany(vehicleDetail['users_id']) ?? ''
-        this.usersId = vehicleDetail['users_id']
+        this.registrationNumber = vehicleDetail["registration-number"];
+        this.name = vehicleDetail["name"];
+        this.insurancePhoto = vehicleDetail["insurance-photo"];
+        this.vehicleOwner = vehicleDetail["vehicle-owner"];
+        this.tonnage = vehicleDetail["tonnage"];
+        this.wattage = vehicleDetail["wattage"];
+        this.yearManufacture = vehicleDetail["year-manufacture"];
+        this.type = vehicleDetail["type"];
+        this.insuranceDeadline = vehicleDetail["insurance-deadline"];
+        this.registrationPhoto = vehicleDetail["registration-photo"];
+        this.registrationDeadline = vehicleDetail["registration-deadline"];
+        this.company = (await this.getCompany(vehicleDetail["users_id"])) ?? "";
+        this.usersId = vehicleDetail["users_id"];
       }
     },
-    getCompany(userId){
-      const company = this.companies.find(company => company.users_id === userId)
-      return company ? company.company : ''
+    async getCompany(userId) {
+      const user: any = await getUser(userId);
+      const company = user.infos_id ? await getInfo(user.infos_id) : "";
+      return user.infos_id ? company.company : "";
     },
   },
 };

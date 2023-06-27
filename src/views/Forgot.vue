@@ -12,6 +12,7 @@
       max-width="448"
       rounded="lg"
     >
+      <h2 class="text-center">Quên mật khẩu</h2>
       <div class="text-subtitle-1 text-medium-emphasis">Email đăng nhập</div>
       <v-text-field variant="outlined" placeholder="Email" v-model="email" />
       <div class="text-subtitle-1 text-medium-emphasis">Mật khẩu</div>
@@ -21,7 +22,7 @@
         v-model="password"
         type="password"
       />
-      <!-- <v-link class="mb-3 text-underline" href="/forgot">Quên mật khẩu</v-link> -->
+      <v-link class="mb-3 text-underline" href="/forgot">Quên mật khẩu</v-link>
       <v-btn
         block
         class="mb-8 mt-3"
@@ -76,6 +77,5 @@ export default {
 }
 .text-underline {
   text-decoration: underline;
-  cursor: pointer;
 }
 </style>
