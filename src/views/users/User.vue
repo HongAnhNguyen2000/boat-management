@@ -21,12 +21,6 @@
         </span>
       </p>
       <p class="mt-3">
-        <span> Tên đăng nhập: </span>
-        <span>
-          {{ username }}
-        </span>
-      </p>
-      <p class="mt-3">
         <span> Vai trò người dùng: </span>
         <span>
           {{ labelType.find((label) => label.en === role)?.vi }}
@@ -69,7 +63,6 @@ export default {
       name: "",
       password: "",
       phonenumber: "",
-      username: "",
       infos_id: "",
       company: "",
       role: "",
@@ -91,7 +84,6 @@ export default {
       this.name = userDetail.name;
       this.password = userDetail.password;
       this.phonenumber = userDetail.phonenumber;
-      this.username = userDetail.username;
       this.infos_id = userDetail.infos_id;
       this.role = userDetail.role;
     },

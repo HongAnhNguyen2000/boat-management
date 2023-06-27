@@ -20,12 +20,6 @@
         v-model="phonenumber"
         :rules="[rules.required]"
       />
-      <v-text-field
-        variant="outlined"
-        placeholder="Tên đăng nhập"
-        v-model="username"
-        :rules="[rules.required]"
-      />
       <div v-if="currentRole !== 'enterprise' && role.en === 'enterprise'">
         <h3>Chọn vai trò</h3>
         <v-select
@@ -102,7 +96,6 @@ export default {
       name: "",
       password: "",
       phonenumber: "",
-      username: "",
       infos_id: "",
       company: "",
       role: {} as any,
@@ -162,9 +155,6 @@ export default {
     phonenumber() {
       this.disabled = this.checkValidate();
     },
-    username() {
-      this.disabled = this.checkValidate();
-    },
   },
   methods: {
     checkValidate() {
@@ -172,7 +162,6 @@ export default {
         _.isEmpty(this.email) ||
         _.isEmpty(this.name) ||
         _.isEmpty(this.phonenumber) ||
-        _.isEmpty(this.username) ||
         this.newPassword !== this.newPasswordRepeat
       );
     },
@@ -191,7 +180,6 @@ export default {
         name: this.name,
         password: this.password,
         phonenumber: this.phonenumber,
-        username: this.username,
         infos_id: this.infos_id,
         role: this.role.en,
       };
@@ -204,7 +192,6 @@ export default {
       this.name = userDetail.name;
       this.password = userDetail.password;
       this.phonenumber = userDetail.phonenumber;
-      this.username = userDetail.username;
       this.infos_id = userDetail.infos_id;
       this.role = this.labelType.find((label) => label.en === userDetail.role);
       this.getInfo();

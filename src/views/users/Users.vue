@@ -31,7 +31,6 @@
           </th>
           <th class="text-left">Tên</th>
           <th class="text-left">Số điện thoại</th>
-          <th class="text-left">Tên người dùng</th>
           <th class="text-left">Công ty</th>
           <th class="text-left" @click="sortBy('role')" style="cursor: pointer">
             <span style="display: inline-block">Vai trò</span>
@@ -54,7 +53,6 @@
           <td>{{ item.email }}</td>
           <td>{{ item.name }}</td>
           <td>{{ item.phonenumber }}</td>
-          <td>{{ item.username }}</td>
           <td>{{ item.company ? item.company : "" }}</td>
           <td>{{ labelType.find((label) => label.en === item.role)?.vi }}</td>
         </tr>

@@ -42,12 +42,6 @@
         v-model="phonenumber"
         :rules="[rules.required]"
       />
-      <v-text-field
-        variant="outlined"
-        placeholder="Tên đăng nhập"
-        v-model="username"
-        :rules="[rules.required]"
-      />
       <div>
         <h3>Chọn vai trò</h3>
         <v-select
@@ -120,7 +114,6 @@ export default {
       name: "",
       password: "",
       phonenumber: "",
-      username: "",
       infos_id: "",
       company: "",
       role: { en: "enterprise", vi: "Doanh nghiệp" } as any,
@@ -177,9 +170,6 @@ export default {
     phonenumber() {
       this.disabled = this.checkValidate();
     },
-    username() {
-      this.disabled = this.checkValidate();
-    },
   },
   methods: {
     checkValidate() {
@@ -188,7 +178,6 @@ export default {
         _.isEmpty(this.name) ||
         _.isEmpty(this.newPassword) ||
         _.isEmpty(this.phonenumber) ||
-        _.isEmpty(this.username) ||
         this.newPassword !== this.newPasswordRepeat
       );
     },
@@ -202,7 +191,6 @@ export default {
           name: this.name,
           password: this.newPassword,
           phonenumber: this.phonenumber,
-          username: this.username,
           role: this.role.en,
         };
         if (this.role.en === "enterprise") {

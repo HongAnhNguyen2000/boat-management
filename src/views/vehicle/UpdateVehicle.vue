@@ -86,7 +86,7 @@
           item-value="id"
           item-text="company"
           item-title="company"
-          :value="vehicle.company"
+          :value="vehicle['company']"
           v-model="vehicle.infosId"
           variant="solo"
         />
