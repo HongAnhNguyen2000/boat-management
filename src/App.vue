@@ -122,3 +122,8 @@ export default {
   },
 };
 </script>
+<style>
+table tr:nth-child(even) {
+  background: #f4f4f4;
+}
+</style>
