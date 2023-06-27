@@ -1,5 +1,6 @@
 <template>
   <div class="data-container">
+    <h2 class="mb-5">Cập nhật người dùng</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-text-field
         variant="outlined"
@@ -76,6 +77,7 @@
       color="black"
       size="large"
       variant="tonal"
+      :disabled="disabled"
       @click="regis"
     >
       Cập nhật Người dùng
@@ -111,6 +113,7 @@ export default {
       newPassword: "",
       newPasswordRepeat: "",
       alert: false,
+      disabled: true,
       passwordRules: [
         (value: any) =>
           (value && value.length >= 6) || "Mật khẩu ít nhất có 6 ký tự",
@@ -144,8 +147,35 @@ export default {
         this.$route.params.userID ?? this.$store.state?.user?.data?.id;
       this.getUser();
     },
+    email() {
+      this.disabled = this.checkValidate();
+    },
+    name() {
+      this.disabled = this.checkValidate();
+    },
+    newPassword() {
+      this.disabled = this.checkValidate();
+    },
+    newPasswordRepeat() {
+      this.disabled = this.checkValidate();
+    },
+    phonenumber() {
+      this.disabled = this.checkValidate();
+    },
+    username() {
+      this.disabled = this.checkValidate();
+    },
   },
   methods: {
+    checkValidate() {
+      return (
+        _.isEmpty(this.email) ||
+        _.isEmpty(this.name) ||
+        _.isEmpty(this.phonenumber) ||
+        _.isEmpty(this.username) ||
+        this.newPassword !== this.newPasswordRepeat
+      );
+    },
     validate() {
       if (
         (this.newPassword || this.newPasswordRepeat) &&

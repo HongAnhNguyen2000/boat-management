@@ -1,5 +1,6 @@
 <template>
   <div class="data-container">
+    <h2 class="mb-5">Tạo phương tiện mới</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-text-field
         variant="outlined"
@@ -86,6 +87,7 @@
       color="black"
       size="large"
       variant="tonal"
+      :disabled="disabled"
       @click="regis"
     >
       Đăng ký
@@ -101,6 +103,7 @@ import {
   getListVehicle,
   getUsers,
 } from "@/firebase";
+import _ from "lodash";
 export default {
   data() {
     return {
@@ -133,6 +136,7 @@ export default {
       usersId: "",
       users: [] as any,
       companies: [] as any,
+      disabled: true,
       rules: {
         required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
       },
@@ -141,7 +145,57 @@ export default {
   created() {
     this.getUsers();
   },
+  watch: {
+    registrationNumber() {
+      this.disabled = this.validate();
+    },
+    insuranceDeadline() {
+      this.disabled = this.validate();
+    },
+    insurancePhoto() {
+      this.disabled = this.validate();
+    },
+    name() {
+      this.disabled = this.validate();
+    },
+    registrationDeadline() {
+      this.disabled = this.validate();
+    },
+    registrationPhoto() {
+      this.disabled = this.validate();
+    },
+    tonnage() {
+      this.disabled = this.validate();
+    },
+    type() {
+      this.disabled = this.validate();
+    },
+    vehicleOwner() {
+      this.disabled = this.validate();
+    },
+    wattage() {
+      this.disabled = this.validate();
+    },
+    yearManufacture() {
+      this.disabled = this.validate();
+    },
+  },
   methods: {
+    validate() {
+      return (
+        _.isEmpty(this.registrationNumber) ||
+        _.isEmpty(this.insuranceDeadline) ||
+        _.isEmpty(this.insurancePhoto) ||
+        _.isEmpty(this.name) ||
+        _.isEmpty(this.registrationDeadline) ||
+        _.isEmpty(this.registrationPhoto) ||
+        _.isEmpty(this.tonnage) ||
+        _.isEmpty(this.type) ||
+        _.isEmpty(this.vehicleOwner) ||
+        _.isEmpty(this.wattage) ||
+        _.isEmpty(this.yearManufacture)
+      );
+    },
     async regis() {
       const params = {
         "registration-number": this.registrationNumber,

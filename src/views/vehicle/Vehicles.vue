@@ -13,6 +13,7 @@
       <v-icon class="white--text mr-2">mdi-plus</v-icon>
       Thêm Phương tiện giao thông
     </v-btn>
+    <h2 class="mb-5">Danh sách phương tiện</h2>
     <v-table>
       <thead>
         <tr>
