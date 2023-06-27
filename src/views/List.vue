@@ -61,7 +61,7 @@
       </tbody>
     </v-table>
     <div class="text-center" v-if="pages > 1">
-      <v-pagination v-model="page" :length="pages - 1"></v-pagination>
+      <v-pagination v-model="page" :length="pages"></v-pagination>
     </div>
   </div>
 </template>
@@ -557,7 +557,12 @@ export default {
       }
       this.listBussinessData = [...forms];
       this.sortBy("created_at");
-      this.pages = this.listBussinessData.length / 10 + 1;
+      console.log(this.listBussinessData.length % 10)
+
+      this.pages = this.listBussinessData.length / 10;
+      if (this.listBussinessData.length % 10 > 0) {
+        this.pages += 1
+      }
       if (this.listBussinessData.length > 0) {
         this.showListBussinessData = [...this.listBussinessData].slice(
           (this.page - 1) * 10,

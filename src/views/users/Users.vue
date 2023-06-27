@@ -61,7 +61,7 @@
       </tbody>
     </v-table>
     <div class="text-center" v-if="pages > 1">
-      <v-pagination v-model="page" :length="pages - 1"></v-pagination>
+      <v-pagination v-model="page" :length="pages"></v-pagination>
     </div>
   </div>
 </template>
@@ -139,7 +139,10 @@ export default {
         }
       }
       this.sortBy("role");
-      this.pages = this.users.length / 10 + 1;
+      this.pages = this.users.length / 10;
+      if (this.users.length % 10 > 0) {
+        this.pages += 1
+      }
       if (this.users.length > 0) {
         this.showUsers = [...this.users].slice(
           (this.page - 1) * 10,

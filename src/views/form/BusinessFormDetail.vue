@@ -239,7 +239,7 @@ export default {
       const list = await getListVehicle();
       this.vehicle = list.filter(
         (detailVehicle) =>
-          detailVehicle.users_id === this.$store.state?.user?.data.id
+          detailVehicle.users_id === this.$store.state.user?.data?.id
       );
     },
     handleData() {

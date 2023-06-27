@@ -97,9 +97,10 @@ export default {
     },
     async getInfo(): Promise<void> {
       const companies = await getInfos();
-      this.company = companies.find(
+      const company = companies.find(
         (company: any) => company.id === this.infos_id
-      ).company;
+      );
+      this.company = company ? company.company : ''
     },
   },
 };
