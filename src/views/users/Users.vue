@@ -26,6 +26,7 @@
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
             </div>
+            <span v-else> - </span>
           </th>
           <th class="text-left">Tên</th>
           <th class="text-left">Số điện thoại</th>
@@ -37,6 +38,7 @@
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
             </div>
+            <span v-else> - </span>
           </th>
           <th class="text-left"></th>
         </tr>

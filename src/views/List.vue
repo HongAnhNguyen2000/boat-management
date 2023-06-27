@@ -19,6 +19,7 @@
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
             </div>
+            <span v-else> - </span>
           </th>
           <th class="text-left">Thuyền trưởng</th>
           <th class="text-left">Số đăng ký</th>
@@ -32,6 +33,7 @@
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
             </div>
+            <span v-else> - </span>
           </th>
           <th class="text-left"></th>
         </tr>

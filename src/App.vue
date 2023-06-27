@@ -126,4 +126,7 @@ export default {
 table tr:nth-child(even) {
   background: #f4f4f4;
 }
+table thead {
+  background-color: #c7c7c794;
+}
 </style>
