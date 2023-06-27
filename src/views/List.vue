@@ -116,7 +116,6 @@ export default {
   },
 
   methods: {
-    onChangeLabel(type: string) {},
     sortBy(field: string) {
       if (this.currentSort === field) {
         this.isSortASC = !this.isSortASC;

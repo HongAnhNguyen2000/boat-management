@@ -12,12 +12,12 @@
       max-width="448"
       rounded="lg"
     >
-      <div class="text-subtitle-1 text-medium-emphasis">Account</div>
+      <div class="text-subtitle-1 text-medium-emphasis">Email đăng nhập</div>
       <v-text-field variant="outlined" placeholder="Email" v-model="email" />
-      <div class="text-subtitle-1 text-medium-emphasis">Password</div>
+      <div class="text-subtitle-1 text-medium-emphasis">Mật khẩu</div>
       <v-text-field
         variant="outlined"
-        placeholder="Password"
+        placeholder="Mật khẩu"
         v-model="password"
         type="password"
       />

@@ -19,12 +19,12 @@ const routes = [
       {
         path: "/form",
         name: "Business form",
-        component: () => import("@/views/BusinessForm.vue"),
+        component: () => import("@/views/form/BusinessForm.vue"),
       },
       {
         path: "/form/:formID",
         name: "Business form Detail",
-        component: () => import("@/views/BusinessForm.vue"),
+        component: () => import("@/views/form/BusinessFormDetail.vue"),
       },
       {
         path: "/update-user",

@@ -3,65 +3,25 @@
     <div class="grey lighten-4 nft-page create-form-page contentsWrapStyle">
       <h2>Danh sách hành khách vận tải đường thủy nội địa</h2>
       <div v-if="isNotReset">
-        <v-row>
-          <v-col cols="6" class="pt-3">
-            <h3>Chọn phương tiện</h3>
-            <v-select
-              :disabled="isDisable"
-              class="mt-2"
-              label="Phương tiện"
-              :items="vehicle"
-              :item-title="'name'"
-              v-model="typeofVehicle"
-              variant="solo"
-              return-object
-            />
-          </v-col>
-        </v-row>
         <v-row class="mt-5">
-          <v-col cols="8" class="pt-3">
+          <v-col cols="6" class="pt-3">
             <h3>Tên phương tiện</h3>
-            <v-text-field
-              class="mt-2"
-              variant="outlined"
-              placeholder="Tên phương tiện"
-              v-model="businessData['meanName']"
-              disabled
-            ></v-text-field>
+            <p>{{ businessData["meanName"] }}</p>
           </v-col>
-          <v-col cols="4" class="pt-3">
+          <v-col cols="6" class="pt-3">
             <h3>Số đăng kí</h3>
-            <v-text-field
-              class="mt-2"
-              variant="outlined"
-              placeholder="Số đăng kí"
-              v-model="businessData['meanNumber']"
-              disabled
-            ></v-text-field>
+            <p>{{ businessData["meanNumber"] }}</p>
           </v-col>
         </v-row>
 
         <v-row class="mt-3">
           <v-col cols="6" class="pt-3">
             <h3>Tên thuyền trưởng</h3>
-            <v-text-field
-              class="mt-2"
-              variant="outlined"
-              placeholder="Tên thuyền trưởng"
-              v-model="businessData['captain']"
-              :disabled="isDisable"
-            ></v-text-field>
+            <p>{{ businessData["captain"] }}</p>
           </v-col>
           <v-col cols="6" class="pt-3">
             <h3>Tên chủ tàu</h3>
-
-            <v-text-field
-              class="mt-2"
-              variant="outlined"
-              placeholder="Tên chủ tàu"
-              v-model="businessData['ownerName']"
-              disabled
-            ></v-text-field>
+            <p>{{ businessData["ownerName"] }}</p>
           </v-col>
         </v-row>
 
@@ -71,21 +31,11 @@
             <v-row mt="2">
               <v-col cols="6" class="mt-3">
                 <h4>Đơn vị (tấn)</h4>
-                <v-text-field
-                  class="mt-2"
-                  variant="outlined"
-                  v-model="businessData['tonnage']"
-                  disabled
-                ></v-text-field>
+                <p>{{ businessData["tonnage"] }}</p>
               </v-col>
               <v-col cols="6" class="mt-3">
                 <h4>Đơn vị (ghế)</h4>
-                <v-text-field
-                  class="mt-2"
-                  variant="outlined"
-                  v-model="businessData['seats']"
-                  disabled
-                ></v-text-field>
+                <p>{{ businessData["seats"] }}</p>
               </v-col>
             </v-row>
           </v-col>
@@ -98,15 +48,6 @@
                 <tr>
                   <th>STT</th>
                   <th>Tên Hướng dẫn viên</th>
-                  <th>
-                    <v-btn
-                      variant="outlined"
-                      @click="onAddNewGuide"
-                      :disabled="isDisable"
-                    >
-                      +
-                    </v-btn>
-                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -115,25 +56,7 @@
                   :key="index"
                 >
                   <td>{{ index + 1 }}</td>
-                  <td>
-                    <v-text-field
-                      density="compact"
-                      class="mt-5"
-                      variant="outlined"
-                      placeholder=""
-                      v-model="item.name"
-                      :disabled="isDisable"
-                    ></v-text-field>
-                  </td>
-                  <td>
-                    <v-btn
-                      variant="outlined"
-                      @click="onDeleteGuide(item.id)"
-                      :disabled="isDisable"
-                    >
-                      -
-                    </v-btn>
-                  </td>
+                  <td>{{ item.name }}</td>
                 </tr>
               </tbody>
             </v-table>
@@ -145,14 +68,6 @@
                 <tr>
                   <th>STT</th>
                   <th>Tên nhân viên phục vụ</th>
-                  <th>
-                    <v-btn
-                      variant="outlined"
-                      @click="onAddNewEmployee"
-                      :disabled="isDisable"
-                      >+</v-btn
-                    >
-                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -161,77 +76,63 @@
                   :key="index"
                 >
                   <td>{{ index + 1 }}</td>
-                  <td>
-                    <v-text-field
-                      density="compact"
-                      class="mt-5"
-                      variant="outlined"
-                      placeholder=""
-                      v-model="item.name"
-                      :disabled="isDisable"
-                    ></v-text-field>
-                  </td>
-                  <td>
-                    <v-btn
-                      variant="outlined"
-                      @click="onDeleteEmployee(item.id)"
-                      :disabled="isDisable"
-                    >
-                      -
-                    </v-btn>
-                  </td>
+                  <td>{{ item.name }}</td>
                 </tr>
               </tbody>
             </v-table>
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row class="mt-5">
           <v-col cols="12" class="pt-0">
             <h3>Bến tàu</h3>
             <v-row mt="2">
               <v-col cols="4" class="mt-3">
                 <h4>Bến rời</h4>
-                <v-select
-                  class="mt-2"
-                  label="Bến rời"
-                  :items="['Nha Trang', 'Khánh Hòa']"
-                  variant="solo"
-                  v-model="businessData['fromStation']"
-                  :disabled="isDisable"
-                />
+                <span>{{ businessData["fromStation"] }}</span>
               </v-col>
               <v-col cols="4" class="mt-3">
                 <h4>Bến đến</h4>
-                <v-select
-                  class="mt-2"
-                  label="Bến đến"
-                  :items="['Hòn Tắm', 'Khánh Hòa']"
-                  variant="solo"
-                  v-model="businessData['toStation']"
-                  :disabled="isDisable"
-                />
+                <span>{{ businessData["toStation"] }}</span>
               </v-col>
               <v-col cols="4">
                 <h4 class="mt-3">Thời gian rời bến</h4>
-                <v-text-field
-                  class="mt-1"
-                  variant="outlined"
-                  placeholder="Thời gian rời bến"
-                  v-model="businessData['time']"
-                  :disabled="isDisable"
-                ></v-text-field>
+                <span>{{ businessData["time"] }}</span>
               </v-col>
             </v-row>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" class="pt-0">
-            <customer-table-vue
-              :customers="businessData['customers']"
-              @onChangeCustomerData="onChangeCustomerData"
-              :disabled="isDisable"
-            />
+            <v-table>
+              <thead>
+                <tr>
+                  <th class="text-left">STT</th>
+                  <th class="text-left">Họ và tên khách</th>
+                  <th class="text-left">Năm sinh</th>
+                  <th class="text-left">Giới tính</th>
+                  <th class="text-left">Số CMND(hộ chiếu)</th>
+                  <th class="text-left">Quốc tịch</th>
+                  <th class="text-left">Nơi tạm trú</th>
+                  <th class="text-left">Ghi chú</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(item, index) in businessData['customers']"
+                  :key="index"
+                >
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.birthYear }}</td>
+                  <td>{{ item.gender }}</td>
+                  <td>{{ item.cardId }}</td>
+                  <td>{{ item.nation }}</td>
+                  <td>{{ item.place }}</td>
+                  <td>{{ item.note }}</td>
+                </tr>
+              </tbody>
+            </v-table>
           </v-col>
         </v-row>
         <div class="d-flex flex-row mt-15 button-regis">
@@ -270,8 +171,8 @@
   </div>
 </template>
 <script lang="ts">
-import CustomerTableVue from "../components/CustomerTable.vue";
-import { CustomerData } from "../CommonFile";
+import CustomerTableVue from "../../components/CustomerTable.vue";
+import { CustomerData } from "../../CommonFile";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import {
