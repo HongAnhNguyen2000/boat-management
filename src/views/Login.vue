@@ -56,14 +56,16 @@ export default {
     },
   },
   methods: {
-    login() {
+    async login() {
       const loginVal = { email: this.email, password: this.password };
-      this.$store.dispatch("logIn", loginVal);
-      setTimeout(() => {
-        if (this.$store.state.user.loggedIn) {
-          this.$router.push("list");
-        }
-      }, 500);
+      const loggedIn = await this.$store.dispatch("logIn", loginVal);
+      if (loggedIn) {
+        setTimeout(() => {
+          if (this.$store.state.user.loggedIn) {
+            this.$router.push("list");
+          }
+        }, 500);
+      }
     },
     validateLogin() {
       this.disable = this.email === "" || this.password === "";

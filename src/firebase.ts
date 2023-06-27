@@ -33,7 +33,6 @@ const vehicleCollection = collection(db, "vehicle");
 const formCollection = collection(db, "register-leave-wharf");
 
 export const checkUser = async (email: any, password: any) => {
-  const users = ref([]);
   const querySnapshot = await getDocs(usersCollection);
   const docSnapshots = querySnapshot.docs;
   for (const doc of docSnapshots) {
@@ -41,7 +40,7 @@ export const checkUser = async (email: any, password: any) => {
       return { ...(await doc.data()), id: doc.id };
     }
   }
-  return users;
+  return {};
 };
 
 export const forgotPassword = async (

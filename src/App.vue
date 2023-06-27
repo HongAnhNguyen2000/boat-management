@@ -37,22 +37,36 @@ export default {
       vehicle: [] as any,
       isLogginUrl: this.$route.path === "/",
       nav: [] as NavType[],
+      roleUser: "",
     };
   },
   created(): void {
     this.getVehicle();
+    console.log("1");
     if (!this.$store.state.user.loggedIn) {
       this.$router.push("/");
     }
   },
-  computed: {
-    roleUser() {
-      return this.$store.state.user.data?.role || "";
+  watch: {
+    $route(to, from) {
+      if (this.$store.state.user.data?.role) {
+        this.roleUser = this.$store.state.user.data?.role;
+        this.checkRoleUser(this.$store.state.user.data?.role);
+      }
+      if (
+        this.roleUser !== "manager" &&
+        (["/users", "/vehicles"].includes(to.path) ||
+          to.path.includes("/vehicle"))
+      ) {
+        this.$router.push("/list");
+      }
+      if (this.roleUser !== "enterprise" && to.path === "/form") {
+        this.$router.push("/list");
+      }
+      if (!this.$store.state.user.loggedIn) {
+        this.$router.push("/");
+      }
     },
-  },
-  async mounted() {
-    await this.$nextTick();
-    this.checkRoleUser(this.roleUser);
   },
   methods: {
     async getVehicle() {
@@ -106,26 +120,6 @@ export default {
         url: "/update-user",
         active: false,
       });
-    },
-  },
-  watch: {
-    roleUser(newVal) {
-      this.checkRoleUser(newVal);
-    },
-    $route(to, from) {
-      if (
-        this.roleUser !== "manager" &&
-        (["/users", "/vehicles"].includes(to.path) ||
-          to.path.includes("/vehicle"))
-      ) {
-        this.$router.push("/list");
-      }
-      if (this.roleUser !== "enterprise" && to.path === "/form") {
-        this.$router.push("/list");
-      }
-      if (!this.$store.state.user.loggedIn) {
-        this.$router.push("/");
-      }
     },
   },
 };

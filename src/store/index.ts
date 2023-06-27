@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import _ from "lodash";
 import { checkUser } from "@/firebase";
 import BusinessModule from "./modules/BusinessModule";
 import VuexPersist from "vuex-persist";
@@ -40,13 +41,14 @@ const store = createStore({
   },
   actions: {
     async logIn(context, { email, password }) {
-      const user = await checkUser(email, password);
-      if (user) {
+      const user: any = await checkUser(email, password);
+      if (!_.isEmpty(user)) {
         context.commit("SET_USER", user);
         context.commit("SET_LOGGED_IN", true);
+        return true;
       } else {
         router.push("/");
-        throw new Error("login failed");
+        return false;
       }
     },
 
