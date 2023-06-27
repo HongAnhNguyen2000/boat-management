@@ -16,11 +16,7 @@
     <v-table>
       <thead>
         <tr>
-          <th
-            class="text-left"
-            @click="sortBy('name')"
-            style="cursor: pointer"
-          >
+          <th class="text-left" @click="sortBy('name')" style="cursor: pointer">
             <span style="display: inline-block">Tên phương tiện</span>
             <div v-if="currentSort === 'name'" style="display: inline-block">
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
@@ -28,48 +24,81 @@
             </div>
           </th>
           <th class="text-left">Số đăng ký</th>
-          <th class="text-left" @click="sortBy('vehicle-owner')" style="cursor: pointer">
+          <th
+            class="text-left"
+            @click="sortBy('vehicle-owner')"
+            style="cursor: pointer"
+          >
             Chủ phương tiện
-            <div v-if="currentSort === 'vehicle-owner'" style="display: inline-block">
+            <div
+              v-if="currentSort === 'vehicle-owner'"
+              style="display: inline-block"
+            >
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
             </div>
           </th>
-          <th class="text-left" @click="sortBy('tonnage')" style="cursor: pointer">
+          <th
+            class="text-left"
+            @click="sortBy('tonnage')"
+            style="cursor: pointer"
+          >
             Trọng tải
             <div v-if="currentSort === 'tonnage'" style="display: inline-block">
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
-            </div>  
+            </div>
           </th>
-          <th class="text-left" @click="sortBy('wattage')" style="cursor: pointer">
+          <th
+            class="text-left"
+            @click="sortBy('wattage')"
+            style="cursor: pointer"
+          >
             Công suất
             <div v-if="currentSort === 'wattage'" style="display: inline-block">
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
-            </div> 
+            </div>
           </th>
-          <th class="text-left" @click="sortBy('year-manufacture')" style="cursor: pointer">
+          <th
+            class="text-left"
+            @click="sortBy('year-manufacture')"
+            style="cursor: pointer"
+          >
             Năm sản xuất
-            <div v-if="currentSort === 'year-manufacture'" style="display: inline-block">
+            <div
+              v-if="currentSort === 'year-manufacture'"
+              style="display: inline-block"
+            >
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
-            </div> 
+            </div>
           </th>
-          <th class="text-left" >Loại phương tiện</th>
-          <th class="text-left" @click="sortBy('company')" style="cursor: pointer">
+          <th class="text-left">Loại phương tiện</th>
+          <th
+            class="text-left"
+            @click="sortBy('company')"
+            style="cursor: pointer"
+          >
             Công ty
             <div v-if="currentSort === 'company'" style="display: inline-block">
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
-            </div> 
+            </div>
           </th>
-          <th class="text-left" @click="sortBy('insurance-deadline')" style="cursor: pointer">
+          <th
+            class="text-left"
+            @click="sortBy('insurance-deadline')"
+            style="cursor: pointer"
+          >
             Hạn đăng kiểm
-            <div v-if="currentSort === 'insurance-deadline'" style="display: inline-block">
+            <div
+              v-if="currentSort === 'insurance-deadline'"
+              style="display: inline-block"
+            >
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>
-            </div> 
+            </div>
           </th>
         </tr>
       </thead>
@@ -81,14 +110,14 @@
           style="cursor: pointer"
         >
           <td>{{ item.name }}</td>
-          <td>{{ item['registration-number'] }}</td>
-          <td>{{ item['vehicle-owner'] }}</td>
+          <td>{{ item["registration-number"] }}</td>
+          <td>{{ item["vehicle-owner"] }}</td>
           <td>{{ item.tonnage }}</td>
           <td>{{ item.wattage }}</td>
-          <td>{{ item['year-manufacture'] }}</td>
+          <td>{{ item["year-manufacture"] }}</td>
           <td>{{ item.type }}</td>
           <td>{{ item.company }}</td>
-          <td>{{ item['insurance-deadline'] }}</td>
+          <td>{{ item["insurance-deadline"] }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -123,7 +152,10 @@ export default {
       if (this.vehicles.length > 0) {
         this.isReload = false;
         this.isLoading = true;
-        this.showVehicles = [...this.vehicles].slice((newVal - 1) * 10, newVal * 10);
+        this.showVehicles = [...this.vehicles].slice(
+          (newVal - 1) * 10,
+          newVal * 10
+        );
         setTimeout(() => {
           this.isReload = true;
           this.isLoading = false;
@@ -161,9 +193,17 @@ export default {
     async getVehicles() {
       const getDatas: any = await getListVehicle();
       this.vehicles = [...getDatas, ...getDatas, ...getDatas];
+      const listCompany: any = [];
       for (const vehicle of this.vehicles) {
-        const company = await this.getCompany(vehicle.users_id)
-        vehicle.company = company
+        if (!listCompany.find((e: any) => e.id === vehicle.users_id)) {
+          const company = await this.getCompany(vehicle.users_id);
+          vehicle.company = company;
+          listCompany.push({ id: vehicle.users_id, company: company });
+        } else {
+          vehicle.company = listCompany.find(
+            (e) => e.id === vehicle.users_id
+          ).company;
+        }
       }
       this.sortBy("name");
       this.pages = this.vehicles.length / 10 + 1;
@@ -175,13 +215,13 @@ export default {
       }
       this.isLoading = false;
     },
-    async getCompany(userId){
-      const user:any = await getUser(userId)
+    async getCompany(userId) {
+      const user: any = await getUser(userId);
       if (user) {
-        const company = user.infos_id ? await getInfo(user.infos_id) : ''
-        return user.infos_id ? company.company : ''
+        const company = user.infos_id ? await getInfo(user.infos_id) : "";
+        return user.infos_id ? company.company : "";
       }
-      return ''
+      return "";
     },
     gotoDetail(id) {
       this.$router.push("/vehicle/" + id);
