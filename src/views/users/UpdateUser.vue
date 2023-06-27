@@ -168,7 +168,6 @@ export default {
   },
   methods: {
     checkValidate() {
-      console.log('this.infos_id', this.infos_id)
       return (
         _.isEmpty(this.email) ||
         _.isEmpty(this.name) ||

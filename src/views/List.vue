@@ -557,7 +557,6 @@ export default {
       }
       this.listBussinessData = [...forms];
       this.sortBy("created_at");
-      console.log(this.listBussinessData.length % 10)
 
       this.pages = this.listBussinessData.length / 10;
       if (this.listBussinessData.length % 10 > 0) {
