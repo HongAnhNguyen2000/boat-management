@@ -16,6 +16,7 @@
         label="Số đăng ký*"
         v-model="vehicle.registrationNumber"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
@@ -23,6 +24,7 @@
         label="Hạn bảo hiểm*"
         v-model="vehicle.insuranceDeadline"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
@@ -30,6 +32,7 @@
         label="Ảnh bảo hiểm*"
         v-model="vehicle.insurancePhoto"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
@@ -37,6 +40,7 @@
         label="Hạn đăng kiểm*"
         v-model="vehicle.registrationDeadline"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
@@ -44,6 +48,7 @@
         label="Ảnh đăng kiểm*"
         v-model="vehicle.registrationPhoto"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
@@ -51,6 +56,7 @@
         label="Trọng tải*"
         v-model="vehicle.tonnage"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
@@ -58,6 +64,7 @@
         label="Loại phương tiện*"
         v-model="vehicle.type"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
@@ -65,6 +72,7 @@
         label="Chủ phương tiện*"
         v-model="vehicle.vehicleOwner"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
@@ -72,6 +80,7 @@
         label="Công suất*"
         v-model="vehicle.wattage"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"

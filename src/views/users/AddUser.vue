@@ -26,21 +26,26 @@
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-text-field
         variant="outlined"
-        placeholder="Email"
+        placeholder="Email*"
+        label="Email*"
         v-model="email"
         :rules="[rules.required, rules.email]"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Tên"
+        placeholder="Tên*"
+        label="Tên*"
         v-model="name"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
-        placeholder="Số điện thoại"
+        placeholder="Số điện thoại*"
+        label="Số điện thoại*"
         v-model="phonenumber"
         :rules="[rules.required]"
+        class="mt-3"
       />
       <div>
         <h3>Chọn vai trò</h3>
@@ -74,6 +79,7 @@
         type="password"
         v-model="newPassword"
         :rules="passwordRules"
+        class="mt-3"
       />
       <v-text-field
         variant="outlined"
@@ -81,6 +87,7 @@
         type="password"
         :rules="confirmPasswordRules"
         v-model="newPasswordRepeat"
+        class="mt-3"
       />
     </div>
     <v-btn
