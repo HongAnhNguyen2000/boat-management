@@ -2,7 +2,7 @@
   <v-app-bar flat>
     <v-app-bar-title>
       <v-icon icon="mdi-circle-slice-4" />
-      Boat management
+      Quản lý bến tàu
     </v-app-bar-title>
   </v-app-bar>
   <v-alert
@@ -55,19 +55,24 @@
         @click="login()"
         :disabled="disable"
       >
-        Log In
+        Đăng nhập
       </v-btn>
     </v-card>
   </div>
 
   <v-dialog v-model="open" width="auto">
     <v-card>
-      <v-card-text class="d-flex justify-center align-center">
-        <p>Liên lạc với ban quản lý qua số điện thoại:</p>
-        <br />
-        <a href="">{{ contactNumber }}</a>
-        <br />
-        <p>Để thay đổi mật khẩu</p>
+      <v-card-text
+        class="d-flex flex-column justify-center align-center flex-wrap"
+      >
+        <h3>
+          Liên lạc với ban quản lý qua số điện thoại sau để thay đổi mật khẩu
+        </h3>
+        <a :href="'tel:' + contactNumber" class="contact-number">
+          <v-icon size="large" color="green-darken-2" icon="mdi-phone"></v-icon>
+
+          {{ contactNumber }}
+        </a>
       </v-card-text>
       <div class="d-flex justify-center align-center">
         <v-btn
@@ -156,5 +161,12 @@ export default {
 .text-underline {
   text-decoration: underline;
   cursor: pointer;
+}
+.contact-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: green;
+  text-decoration: none;
+  margin-top: 15px;
 }
 </style>
