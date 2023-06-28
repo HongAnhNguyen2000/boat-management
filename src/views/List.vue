@@ -15,12 +15,10 @@
           </th>
           <th class="text-left">Thuyền trưởng</th>
           <th class="text-left">Số đăng ký</th>
-          <th class="text-left">Loại phương tiện</th>
+          <th class="text-left">Phương tiện</th>
           <th class="text-left">Bến rời</th>
           <th class="text-left">Bến đến</th>
-          <th class="text-left">Thời gian xuất phát</th>
-
-          <th class="text-left"></th>
+          <th class="text-left" colspan="2">Giờ xuất bến</th>
         </tr>
       </thead>
       <tbody v-if="showListBussinessData.length > 0 && isReload">
@@ -31,13 +29,14 @@
           style="cursor: pointer"
         >
           <td>
-            <span
-              :style="`background-color:${item.backgroundColor}; color: ${item.color}`"
-              style="padding: 3px 5px; border-radius: 6px"
-              class="d-inline text-center justify-center"
+            <v-btn
+              :color="item.backgroundColor"
+              class="text-none text-subtitle-1 text-white"
+              variant="flat"
+              width="130px"
             >
               {{ item.typeConvert ?? "" }}
-            </span>
+            </v-btn>
           </td>
           <td>{{ item.created_at }}</td>
           <td>{{ item.captain }}</td>
@@ -94,36 +93,31 @@ export default {
           en: "processing",
           vi: "Đang xử lý",
           sorting: 1,
-          backgroundColor: "#FFFF00",
-          color: "black",
+          backgroundColor: "#ebd742",
         },
         {
           en: "requesting",
           vi: "Đang yêu cầu",
           sorting: 2,
           backgroundColor: "#1E90FF",
-          color: "white",
         },
         {
           en: "accept",
           vi: "Chấp thuận",
           sorting: 4,
           backgroundColor: "#32CD32",
-          color: "white",
         },
         {
           en: "reject",
           vi: "Từ chối",
           sorting: 5,
           backgroundColor: "#FF0000",
-          color: "white",
         },
         {
           en: "purchased",
           vi: "Đã thanh toán",
           sorting: 3,
           backgroundColor: "#1E90FF",
-          color: "white",
         },
       ],
     };
@@ -599,9 +593,7 @@ export default {
         form["backgroundColor"] = this.labelType.find(
           (label) => label.en === form.type
         )?.backgroundColor;
-        form["color"] = this.labelType.find(
-          (label) => label.en === form.type
-        )?.color;
+
         form["sorting"] = this.labelType.find(
           (label) => label.en === form.type
         )?.sorting;
