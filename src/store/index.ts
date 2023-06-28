@@ -18,6 +18,7 @@ const store = createStore({
     user: {
       loggedIn: false,
       data: null,
+      justLogOut: null as any
     },
   },
   getters: {
@@ -32,10 +33,14 @@ const store = createStore({
     SET_USER(state, data) {
       state.user.data = data;
     },
+    SET_LOGOUT(state) {
+      state.user.justLogOut = true;
+    },
     reset(state) {
       state.user = {
         loggedIn: false,
         data: null,
+        justLogOut: null
       };
     },
   },
@@ -54,6 +59,7 @@ const store = createStore({
 
     logOut(context) {
       context.commit("SET_USER", null);
+      context.commit("SET_LOGOUT");
       router.push("/");
     },
     reset({ commit }) {

@@ -5,7 +5,28 @@
       Quản lý bến tàu
     </v-app-bar-title>
   </v-app-bar>
-  
+  <v-alert
+    v-model="alertOut"
+    close-text="Close Alert"
+    color="red accent-4 mb-5"
+    class="alert-forgot"
+    dark
+    dismissible
+  >
+    <div class="d-flex align-center">
+      <span>
+        Bạn vừa mới đăng xuất thành công.
+      </span>
+      <v-btn
+        color="white"
+        size="large"
+        variant="tonal"
+        class="ml-auto"
+        @click="closeAlertOut()"
+        >Đóng</v-btn
+      >
+    </div>
+  </v-alert>
   <div class="container">
     <v-card
       class="mx-auto pa-12 pb-8"
@@ -99,8 +120,9 @@ export default {
     password: "",
     disable: true,
     message: "",
-    alert: true,
+
     alertError: false,
+    alertOut: false,
     open: false,
     contactNumber: "",
   }),
@@ -114,6 +136,7 @@ export default {
   },
   created(): void {
     this.getUsers();
+    this.$store.state.user.justLogOut
   },
 
   methods: {
@@ -121,13 +144,13 @@ export default {
       const loginVal = { email: this.email, password: this.password };
       const loggedIn = await this.$store.dispatch("logIn", loginVal);
       if (loggedIn) {
-        this.alert = true;
+        this.alertError = true;
         this.message = "Bạn đăng nhập thành công xin đợi giây lát để chuyển trang";
         setTimeout(() => {
           if (this.$store.state.user.loggedIn) {
             this.$router.push("list");
           }
-          this.alert = false;
+          this.alertError = false;
         }, 500);
       } else {
         this.alertError = true;
@@ -153,7 +176,10 @@ export default {
       this.open = true;
     },
     closeAlert() {
-      this.alert = false;
+      this.alertError = false;
+    },
+    closeAlertOut() {
+      this.alertOut = false;
     },
   },
 };
