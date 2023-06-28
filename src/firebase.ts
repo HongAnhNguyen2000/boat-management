@@ -84,6 +84,7 @@ export const getUsers = async () => {
   for (const doc of querySnapshot.docs) {
     list.push({ ...doc.data(), id: doc.id });
   }
+  console.log(list);
   return list ?? [];
 };
 

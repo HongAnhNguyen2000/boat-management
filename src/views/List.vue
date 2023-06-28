@@ -173,6 +173,11 @@ export default {
     async onGenPDF(formId: string): Promise<void> {
       const businessData = await getFormData(formId);
       const dateCreatedAt = moment(businessData["created_at"]);
+      console.log(
+        "date created at",
+        isNaN(dateCreatedAt.date()),
+        dateCreatedAt.date()
+      );
       const employees = businessData["clients"].filter(
         (item) => item.type === "employee"
       );
@@ -501,7 +506,13 @@ export default {
               {
                 stack: [
                   {
-                    text: `Khánh Hòa, ngày ${dateCreatedAt.date()} tháng ${dateCreatedAt.month()} năm ${dateCreatedAt.year()}`,
+                    text: `Khánh Hòa, ngày ${
+                      !isNaN(dateCreatedAt.date()) ? dateCreatedAt.date() : ""
+                    } tháng ${
+                      !isNaN(dateCreatedAt.month()) ? dateCreatedAt.month() : ""
+                    } năm ${
+                      !isNaN(dateCreatedAt.year()) ? dateCreatedAt.year() : ""
+                    }`,
                     italics: true,
                   },
                   {
