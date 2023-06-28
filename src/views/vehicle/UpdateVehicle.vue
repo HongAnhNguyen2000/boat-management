@@ -1,4 +1,26 @@
 <template>
+    <v-alert
+    v-model="alert"
+    close-text="Close Alert"
+    color="deep-purple accent-4"
+    class="alert-forgot"
+    dark
+    dismissible
+  >
+    <div class="d-flex align-center">
+      <span>
+        {{ messageAlert }}
+      </span>
+      <v-btn
+        color="white"
+        size="large"
+        variant="tonal"
+        class="ml-auto"
+        @click="closeAlert()"
+        >Đóng</v-btn
+      >
+    </div>
+  </v-alert>
   <div class="data-container">
     <h2 class="mb-5">Cập nhật phương tiện</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
@@ -17,6 +39,28 @@
         :rules="[rules.required]"
         class="mt-3"
       />
+      <div class="mt-3 mb-8">
+        <date-picker 
+          v-model="vehicle.insuranceDeadline" 
+          locale="vi"
+          format="dd/MM/yyyy"
+          placeholder="Hạn bảo hiểm*" 
+          label="Hạn bảo hiểm*" 
+          
+          auto-apply partial-flow :flow="['calendar']"
+        />
+      </div> 
+      <div class="mt-3 mb-8">
+        <date-picker 
+          v-model="vehicle.registrationDeadline" 
+          locale="vi"
+          format="dd/MM/yyyy"
+          placeholder="Hạn đăng kiểm*" 
+          label="Hạn đăng kiểm*" 
+          class="mt-3"
+          auto-apply partial-flow :flow="['calendar']"
+        />
+      </div> 
       <v-text-field
         variant="outlined"
         placeholder="Hạn bảo hiểm*"
@@ -38,7 +82,7 @@
         placeholder="Trọng tải*"
         label="Trọng tải*"
         v-model="vehicle.tonnage"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.isNumber]"
         class="mt-3"
       />
       <v-text-field
@@ -62,7 +106,7 @@
         placeholder="Công suất*"
         label="Công suất*"
         v-model="vehicle.wattage"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.isNumber]"
         class="mt-3"
       />
       <v-text-field
@@ -88,7 +132,7 @@
     <v-btn
       block
       class="mb-8"
-      color="black"
+      color="green"
       size="large"
       variant="tonal"
       @click="regis"
@@ -133,11 +177,15 @@ export default {
         yearManufacture: "",
         infosId: "",
       },
+      messageAlert: "",
+      alert: false,
       companies: [] as any,
       vehicle_id: "" as any,
       disabled: true,
       rules: {
         required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
+        isNumber: (value: any) =>
+          /^\d+$/.test(value) || "Xin mời nhập đúng định dạng",
       },
     };
   },
@@ -152,9 +200,7 @@ export default {
   watch: {
     vehicle: {
       handler(newVal) {
-        console.log(this.vehicle["company"]);
-        console.log(this.vehicle["infosId"]);
-        this.disabled = !this.validate();
+        this.disabled = this.validate();
       },
       deep: true,
     },
@@ -162,24 +208,24 @@ export default {
   methods: {
     validate() {
       return (
-        !_.isEmpty(this.vehicle["registrationNumber"]) &&
-        !_.isEmpty(this.vehicle["insuranceDeadline"]) &&
-        !_.isEmpty(this.vehicle["name"]) &&
-        !_.isEmpty(this.vehicle["registrationDeadline"]) &&
-        !_.isEmpty(this.vehicle["tonnage"]) &&
-        !_.isEmpty(this.vehicle["type"]) &&
-        !_.isEmpty(this.vehicle["vehicleOwner"]) &&
-        !_.isEmpty(this.vehicle["wattage"]) &&
-        !_.isEmpty(this.vehicle["yearManufacture"]) &&
-        !_.isEmpty(this.vehicle["infosId"])
+        _.isEmpty(this.vehicle["registrationNumber"]) ||
+        _.isEmpty(this.vehicle["insuranceDeadline"].toString()) ||
+        _.isEmpty(this.vehicle["name"]) ||
+        _.isEmpty(this.vehicle["registrationDeadline"].toString()) ||
+        _.isEmpty(this.vehicle["tonnage"]) ||
+        _.isEmpty(this.vehicle["type"]) ||
+        _.isEmpty(this.vehicle["vehicleOwner"]) ||
+        _.isEmpty(this.vehicle["wattage"]) ||
+        this.rules.isNumber(this.vehicle["wattage"]) !== true ||
+        this.rules.isNumber(this.vehicle["tonnage"]) !== true ||
+        _.isEmpty(this.vehicle["yearManufacture"].toString()) ||
+        _.isEmpty(this.vehicle["infosId"])
       );
     },
     async regis() {
       const params = {
         "registration-number": this.vehicle["registrationNumber"],
-        "insurance-deadline": this.vehicle["insuranceDeadline"],
         name: this.vehicle["name"],
-        "registration-deadline": this.vehicle["registrationDeadline"],
         tonnage: this.vehicle["tonnage"],
         type: this.vehicle["type"],
         "vehicle-owner": this.vehicle["vehicleOwner"],
@@ -187,8 +233,39 @@ export default {
         "year-manufacture": this.vehicle["yearManufacture"],
         infos_id: this.vehicle["infosId"],
       };
-      await updateVehicle(this.vehicle_id, params);
-      this.$router.push("/vehicles");
+      if(this.vehicle["registrationDeadline"]){
+        const now = new Date(this.vehicle["registrationDeadline"]);
+        params["registration-deadline"] = `${("0" + now.getDate()).slice(-2)}/${(
+          "0" +
+          (now.getMonth() + 1)
+        ).slice(
+          -2
+        )}/${now.getFullYear()}`;
+      }
+      if(this.vehicle["insuranceDeadline"]){
+        const now = new Date(this.vehicle["insuranceDeadline"]);
+         params["insurance-deadline"] = `${("0" + now.getDate()).slice(-2)}/${(
+          "0" +
+          (now.getMonth() + 1)
+        ).slice(
+          -2
+        )}/${now.getFullYear()}`;
+      }
+      const actionUpdateVehicle = await updateVehicle(this.vehicle_id, params);
+      if (actionUpdateVehicle) {
+          this.alert = true;
+          this.messageAlert = "Bạn cập nhật phương tiện thành công";
+          setTimeout(() => {
+            this.$router.push("/vehicles");
+          }, 2000);
+        } else {
+          this.alert = true;
+          this.messageAlert =
+            "Bạn cập nhật phương tiện không thành công. Xin thử lại";
+          setTimeout(() => {
+            this.alert = false;
+          }, 3000);
+        }
     },
     async getVehicle(): Promise<void> {
       if (_.isEmpty(this.vehicle_id)) {

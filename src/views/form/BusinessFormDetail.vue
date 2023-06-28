@@ -47,7 +47,7 @@
               <thead>
                 <tr>
                   <th>STT</th>
-                  <th>Tên Hướng dẫn viên</th>
+                  <th>Tên hướng dẫn viên</th>
                 </tr>
               </thead>
               <tbody>
@@ -140,20 +140,10 @@
           </v-col>
         </v-row>
         <div class="d-flex flex-row mt-15 button-regis">
-          <v-btn
-            class="mb-8 mt-5"
-            color="black"
-            variant="tonal"
-            @click="regisNewBusinessForm"
-            v-if="isEnterprise"
-            :disabled="isDisable || !checkDisabled()"
-          >
-            Đăng kí
-          </v-btn>
           <div v-if="isDisable && !isEnterprise">
             <v-btn
               class="mb-8 mt-5 ml-5"
-              color="primary"
+              color="green"
               variant="tonal"
               :disabled="isDisableProcess"
               @click="accepted"

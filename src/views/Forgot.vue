@@ -82,7 +82,7 @@
       <v-btn
         block
         class="mb-8 mt-3"
-        color="black"
+        color="green"
         size="large"
         variant="tonal"
         @click="forgot()"

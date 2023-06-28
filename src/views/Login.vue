@@ -5,28 +5,7 @@
       Quản lý bến tàu
     </v-app-bar-title>
   </v-app-bar>
-  <v-alert
-    v-model="alert"
-    close-text="Close Alert"
-    color="deep-purple accent-4"
-    class="alert-forgot"
-    dark
-    dismissible
-  >
-    <div class="d-flex align-center">
-      <span>
-        {{ message }}
-      </span>
-      <v-btn
-        color="white"
-        size="large"
-        variant="tonal"
-        class="ml-auto"
-        @click="closeAlert()"
-        >Đóng</v-btn
-      >
-    </div>
-  </v-alert>
+  
   <div class="container">
     <v-card
       class="mx-auto pa-12 pb-8"
@@ -34,6 +13,28 @@
       max-width="448"
       rounded="lg"
     >
+      <v-alert
+        v-model="alertError"
+        close-text="Close Alert"
+        color="red accent-4 mb-5"
+        class="alert-forgot"
+        dark
+        dismissible
+      >
+        <div class="d-flex align-center">
+          <span>
+            {{ message }}
+          </span>
+          <v-btn
+            color="white"
+            size="large"
+            variant="tonal"
+            class="ml-auto"
+            @click="closeAlert()"
+            >Đóng</v-btn
+          >
+        </div>
+      </v-alert>
       <div class="text-subtitle-1 text-medium-emphasis">Email đăng nhập</div>
       <v-text-field variant="outlined" placeholder="Email" v-model="email" />
       <div class="text-subtitle-1 text-medium-emphasis">Mật khẩu</div>
@@ -49,7 +50,7 @@
       <v-btn
         block
         class="mb-8 mt-3"
-        color="black"
+        color="green"
         size="large"
         variant="tonal"
         @click="login()"
@@ -98,7 +99,8 @@ export default {
     password: "",
     disable: true,
     message: "",
-    alert: false,
+    alert: true,
+    alertError: false,
     open: false,
     contactNumber: "",
   }),
@@ -119,16 +121,19 @@ export default {
       const loginVal = { email: this.email, password: this.password };
       const loggedIn = await this.$store.dispatch("logIn", loginVal);
       if (loggedIn) {
+        this.alert = true;
+        this.message = "Bạn đăng nhập thành công xin đợi giây lát để chuyển trang";
         setTimeout(() => {
           if (this.$store.state.user.loggedIn) {
             this.$router.push("list");
           }
+          this.alert = false;
         }, 500);
       } else {
-        this.alert = true;
+        this.alertError = true;
         this.message = "Bạn đăng nhập sai xin mời thử lại";
         setTimeout(() => {
-          this.alert = false;
+          this.alertError = false;
         }, 3000);
       }
     },

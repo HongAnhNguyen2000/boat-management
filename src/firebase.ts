@@ -135,8 +135,15 @@ export const getVehicle = async (id: string) => {
 };
 
 export const updateVehicle = async (id: string, data: any) => {
+  let result = false;
   const docRef = doc(db, "vehicle", id);
-  await setDoc(docRef, data);
+  await setDoc(docRef, data).then(() => {
+    result = true;
+  })
+  .catch((error) => {
+    result = false;
+  });
+  return result;
 };
 
 export const getPlaces = async () => {
@@ -167,7 +174,15 @@ export const getInfo = async (id: string) => {
 };
 
 export const addVehicle = async (params: any) => {
-  await addDoc(vehicleCollection, params);
+  let result = false;
+
+  await addDoc(vehicleCollection, params).then(() => {
+      result = true;
+    })
+    .catch((error) => {
+      result = false;
+    });
+  return result;
 };
 
 export const addBussinessData = async (params: any) => {

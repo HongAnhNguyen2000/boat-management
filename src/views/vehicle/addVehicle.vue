@@ -1,4 +1,26 @@
 <template>
+  <v-alert
+    v-model="alert"
+    close-text="Close Alert"
+    color="deep-purple accent-4"
+    class="alert-forgot"
+    dark
+    dismissible
+  >
+    <div class="d-flex align-center">
+      <span>
+        {{ messageAlert }}
+      </span>
+      <v-btn
+        color="white"
+        size="large"
+        variant="tonal"
+        class="ml-auto"
+        @click="closeAlert()"
+        >Đóng</v-btn
+      >
+    </div>
+  </v-alert>
   <div class="data-container">
     <h2 class="mb-5">Tạo phương tiện mới</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
@@ -45,7 +67,7 @@
         placeholder="Trọng tải*"
         label="Trọng tải*"
         v-model="vehicle.tonnage"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.isNumber]"
         class="mt-3"
       />
       <v-text-field
@@ -69,7 +91,7 @@
         placeholder="Công suất*"
         label="Công suất*"
         v-model="vehicle.wattage"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.isNumber]"
         class="mt-3"
       />
       <vue-date-picker v-model="vehicle.yearManufacture" 
@@ -83,7 +105,7 @@
         <h3>Chọn công ty</h3>
         <v-select
           class="mt-2"
-          label="Công ty"
+          label="Công ty*"
           :items="companies"
           item-value="id"
           item-text="company"
@@ -96,7 +118,7 @@
     <v-btn
       block
       class="mb-8"
-      color="black"
+      color="green"
       size="large"
       variant="tonal"
       :disabled="disabled"
@@ -132,6 +154,8 @@ export default {
           active: false,
         },
       ],
+      messageAlert: "",
+      alert: false,
       vehicle: {
         registrationNumber: "",
         insuranceDeadline: "",
@@ -148,6 +172,8 @@ export default {
       disabled: true,
       rules: {
         required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
+        isNumber: (value: any) =>
+          /^\d+$/.test(value) || "Xin mời nhập đúng định dạng",
       },
     };
   },
@@ -157,25 +183,26 @@ export default {
   watch: {
     vehicle: {
       handler(newVal) {
-        this.disabled = !this.validate();
+        this.disabled = this.validate();
       },
       deep: true,
     },
   },
   methods: {
     validate() {
-      console.log(this.vehicle["yearManufacture"])
       return (
-        !_.isEmpty(this.vehicle["registrationNumber"]) &&
-        !_.isEmpty(this.vehicle["insuranceDeadline"]) &&
-        !_.isEmpty(this.vehicle["name"]) &&
-        !_.isEmpty(this.vehicle["registrationDeadline"]) &&
-        !_.isEmpty(this.vehicle["tonnage"]) &&
-        !_.isEmpty(this.vehicle["type"]) &&
-        !_.isEmpty(this.vehicle["vehicleOwner"]) &&
-        !_.isEmpty(this.vehicle["wattage"]) &&
-        !_.isEmpty(this.vehicle["yearManufacture"]) &&
-        !_.isEmpty(this.vehicle["infosId"])
+        _.isEmpty(this.vehicle["registrationNumber"]) ||
+        _.isEmpty(this.vehicle["insuranceDeadline"].toString()) ||
+        _.isEmpty(this.vehicle["name"]) ||
+        _.isEmpty(this.vehicle["registrationDeadline"].toString()) ||
+        _.isEmpty(this.vehicle["tonnage"]) ||
+        _.isEmpty(this.vehicle["type"]) ||
+        _.isEmpty(this.vehicle["vehicleOwner"]) ||
+        _.isEmpty(this.vehicle["wattage"]) ||
+        this.rules.isNumber(this.vehicle["wattage"]) !== true ||
+        this.rules.isNumber(this.vehicle["tonnage"]) !== true ||
+        _.isEmpty(this.vehicle["yearManufacture"].toString()) ||
+        _.isEmpty(this.vehicle["infosId"])
       );
     },
     async regis() {
@@ -208,11 +235,28 @@ export default {
           -2
         )}/${now.getFullYear()}`;
       }
-      await addVehicle(params);
-      this.$router.push("/vehicles");
+      const actionAddVehicle = await addVehicle(params);
+      if (actionAddVehicle) {
+          this.alert = true;
+          this.messageAlert = "Bạn tạo phương tiện thành công";
+          setTimeout(() => {
+            this.$router.push("/vehicles");
+          }, 2000);
+        } else {
+          this.alert = true;
+          this.messageAlert =
+            "Bạn tạo phương tiện không thành công. Xin thử lại";
+          setTimeout(() => {
+            this.alert = false;
+          }, 3000);
+        }
     },
     async getCompanies() {
       this.companies = await getInfos();
+    },
+
+    closeAlert() {
+      this.alert = false;
     },
   },
 };

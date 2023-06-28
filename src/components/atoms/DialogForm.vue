@@ -82,11 +82,11 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue-darken-1" variant="text" @click="onClosePopUp">
+        <v-btn color="red" variant="text" @click="onClosePopUp">
           đóng
         </v-btn>
         <v-btn
-          color="blue-darken-1"
+          color="green"
           variant="text"
           @click="onActionButton"
           :disabled="checkDisabledButton"

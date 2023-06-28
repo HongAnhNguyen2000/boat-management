@@ -93,7 +93,7 @@
     <v-btn
       block
       class="mb-8"
-      color="black"
+      color="green"
       size="large"
       variant="tonal"
       :disabled="disabled"

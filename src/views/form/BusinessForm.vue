@@ -119,7 +119,7 @@
               <thead>
                 <tr>
                   <th>STT</th>
-                  <th>Tên Hướng dẫn viên</th>
+                  <th>Tên hướng dẫn viên</th>
                   <th>
                     <v-btn
                       color="green"
@@ -271,7 +271,7 @@
         <div class="d-flex flex-row mt-15 button-regis">
           <v-btn
             class="mb-8 mt-5"
-            color="black"
+            color="green"
             variant="tonal"
             @click="regisNewBusinessForm"
             v-if="isEnterprise"

@@ -18,7 +18,7 @@
           <th class="text-left">Loại phương tiện</th>
           <th class="text-left">Bến rời</th>
           <th class="text-left">Bến đến</th>
-          <th class="text-left">Thời gian xuất phát</th>
+          <th class="text-left" width="10%">Thời gian xuất phát</th>
 
           <th class="text-left"></th>
         </tr>

@@ -5,7 +5,7 @@
   <div class="data-container">
     <v-btn
       class="mb-8"
-      color="black"
+      color="green"
       size="large"
       variant="tonal"
       @click="createUser"

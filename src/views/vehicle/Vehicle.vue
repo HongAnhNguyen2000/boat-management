@@ -60,7 +60,7 @@
     <div>
       <v-btn
         class="mt-8 button-action"
-        color="black"
+        color="green"
         variant="tonal"
         @click="regis"
       >
