@@ -1,5 +1,27 @@
 <template>
-  <div class="data-container">
+  <v-alert
+    v-model="alert"
+    close-text="Close Alert"
+    color="deep-purple accent-4"
+    class="alert-forgot"
+    dark
+    dismissible
+  >
+    <div class="d-flex align-center">
+      <span>
+        {{ messageAlert }}
+      </span>
+      <v-btn
+        color="white"
+        size="large"
+        variant="tonal"
+        class="ml-auto"
+        @click="closeAlert()"
+        >Đóng</v-btn
+      >
+    </div>
+  </v-alert>
+  <div class="data-container" style="max-width: 768px; margin: auto">
     <h2 class="mb-5">Cập nhật người dùng</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-text-field
@@ -18,7 +40,7 @@
         variant="outlined"
         placeholder="Số điện thoại"
         v-model="phonenumber"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.phonenumber]"
       />
       <div v-if="currentRole !== 'enterprise' && role.en === 'enterprise'">
         <h3>Chọn vai trò</h3>
@@ -58,7 +80,7 @@
         />
         <v-text-field
           variant="outlined"
-          placeholder="Mật khẩu mới nhắc lại"
+          placeholder="Nhập lại mật khẩu"
           type="password"
           :rules="confirmPasswordRules"
           v-model="newPasswordRepeat"
@@ -105,6 +127,7 @@ export default {
       message: "",
       newPassword: "",
       newPasswordRepeat: "",
+      messageAlert: "",
       alert: false,
       disabled: true,
       passwordRules: [
@@ -123,6 +146,10 @@ export default {
           const pattern =
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Email không hợp lệ.";
+        },
+        phonenumber: (value: any) => {
+          const pattern = /([\\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
+          return pattern.test(value) || "Số điện thoại không hợp lệ.";
         },
       },
     };
@@ -158,10 +185,13 @@ export default {
   },
   methods: {
     checkValidate() {
+      const testPhone = this.rules.phonenumber(this.phonenumber);
       return (
         _.isEmpty(this.email) ||
         _.isEmpty(this.name) ||
         _.isEmpty(this.phonenumber) ||
+        (typeof testPhone === "boolean" && !testPhone) ||
+        typeof testPhone === "string" ||
         this.newPassword !== this.newPasswordRepeat
       );
     },
@@ -183,8 +213,21 @@ export default {
         infos_id: this.infos_id,
         role: this.role.en,
       };
-      await updateUser(this.user_id, params);
-      this.$router.push("/users");
+      const actionUpdateUser = await updateUser(this.user_id, params);
+      if (actionUpdateUser) {
+        this.alert = true;
+        this.messageAlert = "Bạn cập nhật người dùng thành công";
+        setTimeout(() => {
+          this.$router.push("/users");
+        }, 2000);
+      } else {
+        this.alert = true;
+        this.messageAlert =
+          "Bạn cập nhật người dùng không thành công. Xin thử lại";
+        setTimeout(() => {
+          this.alert = false;
+        }, 3000);
+      }
     },
     async getUser(): Promise<void> {
       const userDetail = await getUser(this.user_id);
@@ -202,6 +245,9 @@ export default {
         ? this.companies.find((company: any) => company.id === this.infos_id)
             .company
         : "";
+    },
+    closeAlert() {
+      this.alert = false;
     },
   },
 };

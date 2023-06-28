@@ -165,6 +165,7 @@
               color="error"
               variant="tonal"
               @click="denie"
+              v-if="businessData.type !== 'reject'"
             >
               Từ chối
             </v-btn>
@@ -175,7 +176,6 @@
   </div>
 </template>
 <script lang="ts">
-import CustomerTableVue from "../../components/CustomerTable.vue";
 import { CustomerData } from "../../CommonFile";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
@@ -187,7 +187,6 @@ import {
 } from "@/firebase";
 
 export default {
-  components: { CustomerTableVue },
   data() {
     return {
       businessData: {} as any,
@@ -201,7 +200,7 @@ export default {
       isNotReset: true,
       isEnterprise: false,
       process: "Chấp nhận",
-      created_at: '',
+      created_at: "",
       userRole: this.$store.state?.user?.data?.role,
       roleSameChange: [
         { role: "manager", permission: "requesting" },
@@ -256,9 +255,14 @@ export default {
         (item) => item.nation === "Nước ngoài"
       );
       const now = new Date();
-      const created_at =
-        this.created_at ? this.created_at : 
-        now.toLocaleDateString() + " " + now.toLocaleTimeString();
+      const created_at = this.created_at
+        ? this.created_at
+        : `${("0" + now.getDate()).slice(-2)}/${(
+            "0" +
+            (now.getMonth() + 1)
+          ).slice(
+            -2
+          )}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
 
       const setAPIData = {
         ...this.businessData,
@@ -333,7 +337,7 @@ export default {
     async getformDetail(): Promise<void> {
       if (this.formID && this.formID !== "") {
         this.businessData = await getFormData(this.formID);
-        this.created_at = this.businessData['created_at']
+        this.created_at = this.businessData["created_at"];
         this.businessData["customers"] = this.businessData["clients"].filter(
           (e) => e.type === "Customer"
         );

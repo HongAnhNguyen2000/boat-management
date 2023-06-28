@@ -26,23 +26,9 @@
       />
       <v-text-field
         variant="outlined"
-        placeholder="Ảnh bảo hiểm*"
-        label="Ảnh bảo hiểm*"
-        v-model="vehicle.insurancePhoto"
-        :rules="[rules.required]"
-      />
-      <v-text-field
-        variant="outlined"
         placeholder="Hạn đăng kiểm*"
         label="Hạn đăng kiểm*"
         v-model="vehicle.registrationDeadline"
-        :rules="[rules.required]"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Ảnh đăng kiểm*"
-        label="Ảnh đăng kiểm*"
-        v-model="vehicle.registrationPhoto"
         :rules="[rules.required]"
       />
       <v-text-field
@@ -108,10 +94,7 @@
 </template>
 
 <script lang="ts">
-import {
-  addVehicle,
-  getInfos,
-} from "@/firebase";
+import { addVehicle, getInfos } from "@/firebase";
 import _ from "lodash";
 export default {
   data() {
@@ -134,16 +117,14 @@ export default {
       vehicle: {
         registrationNumber: "",
         insuranceDeadline: "",
-        insurancePhoto: "",
         name: "",
         registrationDeadline: "",
-        registrationPhoto: "",
         tonnage: "",
         type: "",
         vehicleOwner: "",
         wattage: "",
         yearManufacture: "",
-        infosId: ''
+        infosId: "",
       },
       companies: [] as any,
       disabled: true,
@@ -157,49 +138,45 @@ export default {
   },
   watch: {
     vehicle: {
-      handler(newVal){
+      handler(newVal) {
         this.disabled = !this.validate();
       },
-      deep: true
+      deep: true,
     },
   },
   methods: {
     validate() {
       return (
-        !_.isEmpty(this.vehicle['registrationNumber']) &&
-        !_.isEmpty(this.vehicle['insuranceDeadline']) &&
-        !_.isEmpty(this.vehicle['insurancePhoto']) &&
-        !_.isEmpty(this.vehicle['name']) &&
-        !_.isEmpty(this.vehicle['registrationDeadline']) &&
-        !_.isEmpty(this.vehicle['registrationPhoto']) &&
-        !_.isEmpty(this.vehicle['tonnage']) &&
-        !_.isEmpty(this.vehicle['type']) &&
-        !_.isEmpty(this.vehicle['vehicleOwner']) &&
-        !_.isEmpty(this.vehicle['wattage']) &&
-        !_.isEmpty(this.vehicle['yearManufacture']) &&
-        !_.isEmpty(this.vehicle['infosId'])
+        !_.isEmpty(this.vehicle["registrationNumber"]) &&
+        !_.isEmpty(this.vehicle["insuranceDeadline"]) &&
+        !_.isEmpty(this.vehicle["name"]) &&
+        !_.isEmpty(this.vehicle["registrationDeadline"]) &&
+        !_.isEmpty(this.vehicle["tonnage"]) &&
+        !_.isEmpty(this.vehicle["type"]) &&
+        !_.isEmpty(this.vehicle["vehicleOwner"]) &&
+        !_.isEmpty(this.vehicle["wattage"]) &&
+        !_.isEmpty(this.vehicle["yearManufacture"]) &&
+        !_.isEmpty(this.vehicle["infosId"])
       );
     },
     async regis() {
       const params = {
-        "registration-number": this.vehicle['registrationNumber'],
-        "insurance-deadline": this.vehicle['insuranceDeadline'],
-        "insurance-photo": this.vehicle['insurancePhoto'],
-        'name': this.vehicle['name'],
-        "registration-deadline": this.vehicle['registrationDeadline'],
-        "registration-photo": this.vehicle['registrationPhoto'],
-        'tonnage': this.vehicle['tonnage'],
-        'type': this.vehicle['type'],
-        "vehicle-owner": this.vehicle['vehicleOwner'],
-        'wattage': this.vehicle['wattage'],
-        "year-manufacture": this.vehicle['yearManufacture'],
-        'infos_id': this.vehicle['infosId'],
+        "registration-number": this.vehicle["registrationNumber"],
+        "insurance-deadline": this.vehicle["insuranceDeadline"],
+        name: this.vehicle["name"],
+        "registration-deadline": this.vehicle["registrationDeadline"],
+        tonnage: this.vehicle["tonnage"],
+        type: this.vehicle["type"],
+        "vehicle-owner": this.vehicle["vehicleOwner"],
+        wattage: this.vehicle["wattage"],
+        "year-manufacture": this.vehicle["yearManufacture"],
+        infos_id: this.vehicle["infosId"],
       };
       await addVehicle(params);
       this.$router.push("/vehicles");
     },
     async getCompanies() {
-      this.companies = await getInfos()
+      this.companies = await getInfos();
     },
   },
 };

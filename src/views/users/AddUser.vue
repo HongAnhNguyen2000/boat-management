@@ -1,27 +1,27 @@
 <template>
-  <div class="data-container">
-    <v-alert
-      v-model="alert"
-      close-text="Close Alert"
-      color="deep-purple accent-4"
-      class="alert-forgot"
-      dark
-      dismissible
-    >
-      <div class="d-flex align-center">
-        <span>
-          {{ messageAlert }}
-        </span>
-        <v-btn
-          color="white"
-          size="large"
-          variant="tonal"
-          class="ml-auto"
-          @click="closeAlert()"
-          >Đóng</v-btn
-        >
-      </div>
-    </v-alert>
+  <v-alert
+    v-model="alert"
+    close-text="Close Alert"
+    color="deep-purple accent-4"
+    class="alert-forgot"
+    dark
+    dismissible
+  >
+    <div class="d-flex align-center">
+      <span>
+        {{ messageAlert }}
+      </span>
+      <v-btn
+        color="white"
+        size="large"
+        variant="tonal"
+        class="ml-auto"
+        @click="closeAlert()"
+        >Đóng</v-btn
+      >
+    </div>
+  </v-alert>
+  <div class="data-container" style="max-width: 768px; margin: auto">
     <h2 class="mb-5">Tạo người dùng mới</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-text-field
@@ -40,7 +40,7 @@
         variant="outlined"
         placeholder="Số điện thoại"
         v-model="phonenumber"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.phonenumber]"
       />
       <div>
         <h3>Chọn vai trò</h3>
@@ -77,7 +77,7 @@
       />
       <v-text-field
         variant="outlined"
-        placeholder="Mật khẩu mới nhắc lại"
+        placeholder="Nhập lại mật khẩu"
         type="password"
         :rules="confirmPasswordRules"
         v-model="newPasswordRepeat"
@@ -138,11 +138,15 @@ export default {
       rules: {
         required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
         counter: (value: any) =>
-          value.length > 6 || "Xin mời nhập tối thiểu 6 ký tự",
+          value.length >= 6 || "Xin mời nhập tối thiểu 6 ký tự",
         email: (value: any) => {
           const pattern =
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Email không hợp lệ.";
+        },
+        phonenumber: (value: any) => {
+          const pattern = /([\\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
+          return pattern.test(value) || "Số điện thoại không hợp lệ.";
         },
       },
     };
@@ -173,11 +177,14 @@ export default {
   },
   methods: {
     checkValidate() {
+      const testPhone = this.rules.phonenumber(this.phonenumber);
       return (
         _.isEmpty(this.email) ||
         _.isEmpty(this.name) ||
         _.isEmpty(this.newPassword) ||
         _.isEmpty(this.phonenumber) ||
+        (typeof testPhone === "boolean" && !testPhone) ||
+        typeof testPhone === "string" ||
         this.newPassword !== this.newPasswordRepeat
       );
     },
@@ -198,7 +205,11 @@ export default {
         }
         const actionAddUser = await addUser(params);
         if (actionAddUser) {
-          this.$router.push("/users");
+          this.alert = true;
+          this.messageAlert = "Bạn tạo người dùng thành công";
+          setTimeout(() => {
+            this.$router.push("/users");
+          }, 2000);
         } else {
           this.alert = true;
           this.messageAlert =

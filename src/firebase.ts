@@ -25,10 +25,8 @@ const firebaseApp = initializeApp(config);
 
 const db = getFirestore(firebaseApp);
 const usersCollection = collection(db, "users");
-const clientsCollection = collection(db, "clients");
 const infosCollection = collection(db, "infos");
 const placesCollection = collection(db, "places");
-const statusCollection = collection(db, "status");
 const vehicleCollection = collection(db, "vehicle");
 const formCollection = collection(db, "register-leave-wharf");
 
@@ -92,24 +90,36 @@ export const getUsers = async () => {
 export const updateUser = async (id: string, data: any) => {
   if (id) {
     const docRef = doc(db, "users", id);
-    await setDoc(docRef, data);
+    let result = false;
+    await setDoc(docRef, data)
+      .then(() => {
+        result = true;
+      })
+      .catch((error) => {
+        result = false;
+      });
+    return result;
   }
+  return false;
 };
 
 export const addUser = async (params: any) => {
-  const adduser = await addDoc(usersCollection, params);
-  if (adduser.id) {
-    return true;
-  } else {
-    return false;
-  }
+  let result = false;
+  await addDoc(usersCollection, params)
+    .then(() => {
+      result = true;
+    })
+    .catch((error) => {
+      result = false;
+    });
+  return result;
 };
 
 export const getListVehicle = async () => {
   const querySnapshot = await getDocs(vehicleCollection);
   const list: any = [];
   for (const doc of querySnapshot.docs) {
-    list.push({ ...await doc.data(), id: doc.id });
+    list.push({ ...(await doc.data()), id: doc.id });
   }
   return list ?? [];
 };
@@ -141,7 +151,7 @@ export const getInfos = async () => {
   const querySnapshot = await getDocs(infosCollection);
   const list: any = [];
   for (const doc of querySnapshot.docs) {
-    list.push({ ...await doc.data(), id: doc.id });
+    list.push({ ...(await doc.data()), id: doc.id });
   }
   return list ?? [];
 };
@@ -160,7 +170,15 @@ export const addVehicle = async (params: any) => {
 };
 
 export const addBussinessData = async (params: any) => {
-  await addDoc(formCollection, params);
+  let result = false;
+  await addDoc(formCollection, params)
+    .then(() => {
+      result = true;
+    })
+    .catch((error) => {
+      result = false;
+    });
+  return result;
 };
 
 export const getBussinessData = async () => {
