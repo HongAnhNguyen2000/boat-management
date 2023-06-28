@@ -612,6 +612,9 @@ export default {
         this.checkDisabledButton = true;
       }
     },
+    closeAlert() {
+      this.alert = false;
+    },
   },
   watch: {
     typeofVehicle(newVal): void {

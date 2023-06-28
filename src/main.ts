@@ -7,6 +7,8 @@
 // Components
 import App from './App.vue'
 import '@mdi/font/css/materialdesignicons.css'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 // Composables
 import { createApp } from 'vue'
@@ -18,6 +20,7 @@ import store from './store'
 import { PDFPlugin } from 'vue3-pdfmake';
 
 const app = createApp(App)
+app.component('VueDatePicker', VueDatePicker);
 app.provide("$store", store);
 registerPlugins(app)
 app.use(router)

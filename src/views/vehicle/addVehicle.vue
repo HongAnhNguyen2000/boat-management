@@ -18,22 +18,28 @@
         :rules="[rules.required]"
         class="mt-3"
       />
-      <v-text-field
-        variant="outlined"
-        placeholder="Hạn bảo hiểm*"
-        label="Hạn bảo hiểm*"
-        v-model="vehicle.insuranceDeadline"
-        :rules="[rules.required]"
-        class="mt-3"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Hạn đăng kiểm*"
-        label="Hạn đăng kiểm*"
-        v-model="vehicle.registrationDeadline"
-        :rules="[rules.required]"
-        class="mt-3"
-      />
+      <div class="mt-3 mb-8">
+        <date-picker 
+          v-model="vehicle.insuranceDeadline" 
+          locale="vi"
+          format="dd/MM/yyyy"
+          placeholder="Hạn bảo hiểm*" 
+          label="Hạn bảo hiểm*" 
+          
+          auto-apply partial-flow :flow="['calendar']"
+        />
+      </div> 
+      <div class="mt-3 mb-8">
+        <date-picker 
+          v-model="vehicle.registrationDeadline" 
+          locale="vi"
+          format="dd/MM/yyyy"
+          placeholder="Hạn đăng kiểm*" 
+          label="Hạn đăng kiểm*" 
+          class="mt-3"
+          auto-apply partial-flow :flow="['calendar']"
+        />
+      </div> 
       <v-text-field
         variant="outlined"
         placeholder="Trọng tải*"
@@ -66,13 +72,14 @@
         :rules="[rules.required]"
         class="mt-3"
       />
-      <v-text-field
-        variant="outlined"
-        placeholder="Năm sản xuất*"
-        label="Năm sản xuất*"
-        v-model="vehicle.yearManufacture"
-      />
-      <div>
+      <vue-date-picker v-model="vehicle.yearManufacture" 
+        locale="vi"
+        format="yyyy"
+        placeholder="Năm sản xuất*" 
+        label="Năm sản xuất*" 
+        class="mt-3"
+        year-picker />
+      <div class="mt-3">
         <h3>Chọn công ty</h3>
         <v-select
           class="mt-2"
@@ -103,7 +110,11 @@
 <script lang="ts">
 import { addVehicle, getInfos } from "@/firebase";
 import _ from "lodash";
+import Datepicker from '@vuepic/vue-datepicker';
 export default {
+  components: {
+    'date-picker': Datepicker
+  },
   data() {
     return {
       dialog: false,
@@ -153,6 +164,7 @@ export default {
   },
   methods: {
     validate() {
+      console.log(this.vehicle["yearManufacture"])
       return (
         !_.isEmpty(this.vehicle["registrationNumber"]) &&
         !_.isEmpty(this.vehicle["insuranceDeadline"]) &&
@@ -167,11 +179,10 @@ export default {
       );
     },
     async regis() {
+      
       const params = {
         "registration-number": this.vehicle["registrationNumber"],
-        "insurance-deadline": this.vehicle["insuranceDeadline"],
         name: this.vehicle["name"],
-        "registration-deadline": this.vehicle["registrationDeadline"],
         tonnage: this.vehicle["tonnage"],
         type: this.vehicle["type"],
         "vehicle-owner": this.vehicle["vehicleOwner"],
@@ -179,6 +190,24 @@ export default {
         "year-manufacture": this.vehicle["yearManufacture"],
         infos_id: this.vehicle["infosId"],
       };
+      if(this.vehicle["registrationDeadline"]){
+        const now = new Date(this.vehicle["registrationDeadline"]);
+        params["registration-deadline"] = `${("0" + now.getDate()).slice(-2)}/${(
+          "0" +
+          (now.getMonth() + 1)
+        ).slice(
+          -2
+        )}/${now.getFullYear()}`;
+      }
+      if(this.vehicle["insuranceDeadline"]){
+        const now = new Date(this.vehicle["insuranceDeadline"]);
+         params["insurance-deadline"] = `${("0" + now.getDate()).slice(-2)}/${(
+          "0" +
+          (now.getMonth() + 1)
+        ).slice(
+          -2
+        )}/${now.getFullYear()}`;
+      }
       await addVehicle(params);
       this.$router.push("/vehicles");
     },
@@ -192,5 +221,10 @@ export default {
 .data-container {
   margin: 2rem;
   padding: 40px 56px;
+}
+</style>
+<style>
+input.dp__pointer {
+  height: 60px;
 }
 </style>
