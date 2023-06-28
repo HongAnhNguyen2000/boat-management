@@ -295,6 +295,9 @@ export default {
     async getCompanies() {
       this.companies = await getInfos();
     },
+    closeAlert() {
+      this.alert = false;
+    },
   },
 };
 </script>
