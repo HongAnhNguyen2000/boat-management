@@ -11,7 +11,7 @@
   </div>
   <v-table
     fixed-header
-    :height="dataCustomers && dataCustomers.length > 0 ? '300px' : '56px'"
+    :height="dataCustomers && dataCustomers.length > 0 ? 'auto' : '56px'"
     mt="2"
     class="customer-table"
   >

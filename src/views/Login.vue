@@ -8,14 +8,14 @@
   <v-alert
     v-model="alertOut"
     close-text="Close Alert"
-    color="red accent-4 mb-5"
+    color="deep-purple accent-4 mb-5"
     class="alert-forgot"
     dark
     dismissible
   >
     <div class="d-flex align-center">
       <span>
-        Bạn vừa mới đăng xuất thành công.
+        {{messageOut}}
       </span>
       <v-btn
         color="white"
@@ -120,6 +120,7 @@ export default {
     password: "",
     disable: true,
     message: "",
+    messageOut: "Bạn vừa mới đăng xuất thành công.",
 
     alertError: false,
     alertOut: false,
@@ -136,7 +137,12 @@ export default {
   },
   created(): void {
     this.getUsers();
-    this.$store.state.user.justLogOut
+    if(this.$store.state.user.justLogOut){
+      this.alertOut = true;
+      setTimeout(() => {
+        this.alertOut = false;
+      }, 2000);
+    }
   },
 
   methods: {
@@ -144,14 +150,14 @@ export default {
       const loginVal = { email: this.email, password: this.password };
       const loggedIn = await this.$store.dispatch("logIn", loginVal);
       if (loggedIn) {
-        this.alertError = true;
-        this.message = "Bạn đăng nhập thành công xin đợi giây lát để chuyển trang";
+        this.alertOut = true;
+        this.messageOut = "Bạn đăng nhập thành công xin đợi giây lát để chuyển trang";
         setTimeout(() => {
           if (this.$store.state.user.loggedIn) {
             this.$router.push("list");
           }
-          this.alertError = false;
-        }, 500);
+          this.alertOut = false;
+        }, 1000);
       } else {
         this.alertError = true;
         this.message = "Bạn đăng nhập sai xin mời thử lại";
