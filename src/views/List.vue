@@ -7,28 +7,11 @@
     <v-table class="min-width-table">
       <thead>
         <tr>
-          <th class="text-left" @click="sortBy('type')" style="cursor: pointer">
+          <th class="text-left" style="cursor: pointer">
             <span style="display: inline-block"> Trạng thái </span>
-            <div v-if="currentSort === 'type'" style="display: inline-block">
-              <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
-              <v-icon icon="mdi-chevron-up" v-else></v-icon>
-            </div>
-            <span v-else> - </span>
           </th>
-          <th
-            class="text-left"
-            @click="sortBy('created_at')"
-            style="cursor: pointer"
-          >
+          <th class="text-left" style="cursor: pointer">
             <span style="display: inline-block"> Thời gian tạo </span>
-            <div
-              v-if="currentSort === 'created_at'"
-              style="display: inline-block"
-            >
-              <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
-              <v-icon icon="mdi-chevron-up" v-else></v-icon>
-            </div>
-            <span v-else> - </span>
           </th>
           <th class="text-left">Thuyền trưởng</th>
           <th class="text-left">Số đăng ký</th>
@@ -36,7 +19,7 @@
           <th class="text-left">Bến rời</th>
           <th class="text-left">Bến đến</th>
           <th class="text-left">Thời gian xuất phát</th>
-          
+
           <th class="text-left"></th>
         </tr>
       </thead>
@@ -47,7 +30,15 @@
           @click="gotoDetail(item.id)"
           style="cursor: pointer"
         >
-          <td>{{ labelType.find((label) => label.en === item.type)?.vi }}</td>
+          <td>
+            <span
+              :style="`background-color:${item.backgroundColor}; color: ${item.color}`"
+              style="padding: 3px 5px; border-radius: 6px"
+              class="d-inline text-center justify-center"
+            >
+              {{ item.typeConvert ?? "" }}
+            </span>
+          </td>
           <td>{{ item.created_at }}</td>
           <td>{{ item.captain }}</td>
           <td><div v-html="item.vehicle['registration-number'] ?? ''" /></td>
@@ -56,7 +47,17 @@
           <td>{{ item.fromStation }}</td>
           <td>{{ item.time }}</td>
           <td>
-            <v-btn @click.stop="onGenPDF(item.id)">Xem trước</v-btn>
+            <v-btn
+              @click.stop="onGenPDF(item.id)"
+              class="pa-0"
+              style="min-width: 36px; background-color: #11ba06; color: white"
+            >
+              <v-icon icon="mdi-eye-outline" /><v-tooltip
+                activator="parent"
+                location="end"
+                >Xem trước</v-tooltip
+              ></v-btn
+            >
           </td>
         </tr>
       </tbody>
@@ -85,14 +86,45 @@ export default {
       isReload: true,
       isSortASC: true,
       currentSort: "",
+      fieldsSort: ["typeConvert", "created_at"],
       page: 1,
       pages: 1,
       labelType: [
-        { en: "processing", vi: "Đang xử lý" },
-        { en: "requesting", vi: "Đang yêu cầu" },
-        { en: "accept", vi: "Chấp thuận" },
-        { en: "reject", vi: "Từ chối" },
-        { en: "purchased", vi: "Đã thanh toán" },
+        {
+          en: "processing",
+          vi: "Đang xử lý",
+          sorting: 1,
+          backgroundColor: "#FFFF00",
+          color: "black",
+        },
+        {
+          en: "requesting",
+          vi: "Đang yêu cầu",
+          sorting: 2,
+          backgroundColor: "#1E90FF",
+          color: "white",
+        },
+        {
+          en: "accept",
+          vi: "Chấp thuận",
+          sorting: 4,
+          backgroundColor: "#32CD32",
+          color: "white",
+        },
+        {
+          en: "reject",
+          vi: "Từ chối",
+          sorting: 5,
+          backgroundColor: "#FF0000",
+          color: "white",
+        },
+        {
+          en: "purchased",
+          vi: "Đã thanh toán",
+          sorting: 3,
+          backgroundColor: "#1E90FF",
+          color: "white",
+        },
       ],
     };
   },
@@ -120,17 +152,13 @@ export default {
   },
 
   methods: {
-    sortBy(field: string) {
-      if (this.currentSort === field) {
-        this.isSortASC = !this.isSortASC;
-      } else {
-        this.currentSort = field;
-        this.isSortASC = true;
-      }
+    sortBy(field: string, sorted: string[]) {
+      this.fieldsSort = this.fieldsSort.filter((item) => item !== field);
+      this.fieldsSort.unshift(field);
       this.listBussinessData = _.orderBy(
         [...this.listBussinessData],
-        [field],
-        [this.isSortASC ? "desc" : "asc"]
+        this.fieldsSort,
+        sorted
       );
       if (this.listBussinessData.length > 0) {
         this.showListBussinessData = [...this.listBussinessData].slice(
@@ -145,6 +173,11 @@ export default {
     async onGenPDF(formId: string): Promise<void> {
       const businessData = await getFormData(formId);
       const dateCreatedAt = moment(businessData["created_at"]);
+      console.log(
+        "date created at",
+        isNaN(dateCreatedAt.date()),
+        dateCreatedAt.date()
+      );
       const employees = businessData["clients"].filter(
         (item) => item.type === "employee"
       );
@@ -473,7 +506,13 @@ export default {
               {
                 stack: [
                   {
-                    text: `Khánh Hòa, ngày ${dateCreatedAt.date()} tháng ${dateCreatedAt.month()} năm ${dateCreatedAt.year()}`,
+                    text: `Khánh Hòa, ngày ${
+                      !isNaN(dateCreatedAt.date()) ? dateCreatedAt.date() : ""
+                    } tháng ${
+                      !isNaN(dateCreatedAt.month()) ? dateCreatedAt.month() : ""
+                    } năm ${
+                      !isNaN(dateCreatedAt.year()) ? dateCreatedAt.year() : ""
+                    }`,
                     italics: true,
                   },
                   {
@@ -554,14 +593,26 @@ export default {
             (vehicle) => vehicle["idVehicle"] === form["idVehicle"]
           );
         }
+        form["typeConvert"] = this.labelType.find(
+          (label) => label.en === form.type
+        )?.vi;
+        form["backgroundColor"] = this.labelType.find(
+          (label) => label.en === form.type
+        )?.backgroundColor;
+        form["color"] = this.labelType.find(
+          (label) => label.en === form.type
+        )?.color;
+        form["sorting"] = this.labelType.find(
+          (label) => label.en === form.type
+        )?.sorting;
         forms.push({ ...(form as any), vehicle });
       }
       this.listBussinessData = [...forms];
-      this.sortBy("type");
+      this.sortBy("sorting", ["asc", "asc"]);
 
       this.pages = this.listBussinessData.length / 10;
       if (this.listBussinessData.length % 10 > 0) {
-        this.pages += 1
+        this.pages += 1;
       }
       if (this.listBussinessData.length > 0) {
         this.showListBussinessData = [...this.listBussinessData].slice(

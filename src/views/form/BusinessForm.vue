@@ -1,15 +1,37 @@
 <template>
   <div class="data-container">
+    <v-alert
+      v-model="alert"
+      close-text="Close Alert"
+      color="deep-purple accent-4"
+      class="alert-forgot"
+      dark
+      dismissible
+    >
+      <div class="d-flex align-center">
+        <span>
+          {{ messageAlert }}
+        </span>
+        <v-btn
+          color="white"
+          size="large"
+          variant="tonal"
+          class="ml-auto"
+          @click="closeAlert()"
+          >Đóng</v-btn
+        >
+      </div>
+    </v-alert>
     <div class="grey lighten-4 nft-page create-form-page contentsWrapStyle">
       <h2>Danh sách hành khách vận tải đường thủy nội địa</h2>
       <div v-if="isNotReset">
         <v-row>
           <v-col cols="6" class="pt-3">
-            <h3>Chọn phương tiện</h3>
+            <h3>Chọn phương tiện*</h3>
             <v-select
               :disabled="isDisable"
               class="mt-2"
-              label="Phương tiện"
+              placeholder="Phương tiện"
               :items="vehicle"
               :item-title="'name'"
               v-model="typeofVehicle"
@@ -43,22 +65,22 @@
 
         <v-row class="mt-3">
           <v-col cols="6" class="pt-3">
-            <h3>Tên thuyền trưởng</h3>
+            <h3>Tên thuyền trưởng*</h3>
             <v-text-field
               class="mt-2"
               variant="outlined"
-              placeholder="Tên thuyền trưởng"
+              placeholder="Tên thuyền trưởng*"
               v-model="businessData['captain']"
               :disabled="isDisable"
             ></v-text-field>
           </v-col>
           <v-col cols="6" class="pt-3">
-            <h3>Tên chủ tàu</h3>
+            <h3>Chủ phương tiện</h3>
 
             <v-text-field
               class="mt-2"
               variant="outlined"
-              placeholder="Tên chủ tàu"
+              placeholder="Chủ phương tiện"
               v-model="businessData['ownerName']"
               disabled
             ></v-text-field>
@@ -100,9 +122,10 @@
                   <th>Tên Hướng dẫn viên</th>
                   <th>
                     <v-btn
+                      color="green"
                       variant="outlined"
                       @click="onAddNewGuide"
-                      :disabled="isDisable"
+                      :disabled="isDisableAddNewGuide"
                     >
                       +
                     </v-btn>
@@ -130,6 +153,7 @@
                       variant="outlined"
                       @click="onDeleteGuide(item.id)"
                       :disabled="isDisable"
+                      color="red"
                     >
                       -
                     </v-btn>
@@ -147,9 +171,10 @@
                   <th>Tên nhân viên phục vụ</th>
                   <th>
                     <v-btn
+                      color="green"
                       variant="outlined"
                       @click="onAddNewEmployee"
-                      :disabled="isDisable"
+                      :disabled="isDisableAddNewEmployee"
                       >+</v-btn
                     >
                   </th>
@@ -176,6 +201,7 @@
                       variant="outlined"
                       @click="onDeleteEmployee(item.id)"
                       :disabled="isDisable"
+                      color="red"
                     >
                       -
                     </v-btn>
@@ -191,50 +217,40 @@
             <h3>Bến tàu</h3>
             <v-row mt="2">
               <v-col cols="4" class="mt-3">
-                <h4>Bến rời</h4>
+                <h4>Bến rời*</h4>
                 <v-select
                   class="mt-2"
-                  label="Bến rời"
-                  :items="['Nha Trang', 'Khánh Hòa']"
+                  label="Bến rời*"
+                  :items="['Nha Trang']"
                   variant="solo"
                   v-model="businessData['fromStation']"
                   :disabled="isDisable"
                 />
               </v-col>
               <v-col cols="4" class="mt-3">
-                <h4>Bến đến</h4>
+                <h4>Bến đến*</h4>
                 <v-select
                   class="mt-2"
-                  label="Bến đến"
-                  :items="['Hòn Tắm', 'Khánh Hòa']"
+                  label="Bến đến*"
+                  :items="[
+                    'Hòn Tắm',
+                    'Hòn Tre',
+                    'Hòn Thì',
+                    'Hòn Đỏ',
+                    'Hòn Mỹ Giang',
+                    'Hòn Mun',
+                  ]"
                   variant="solo"
                   v-model="businessData['toStation']"
                   :disabled="isDisable"
                 />
               </v-col>
               <v-col cols="4">
-                <h4 class="mt-3">Thời gian rời bến</h4>
+                <h4 class="mt-3">Thời gian rời bến*</h4>
                 <v-select
                   class="mt-2"
-                  label="Thời gian rời bến"
-                  :items="[
-                    '08:00',
-                    '08:30',
-                    '09:00',
-                    '09:30',
-                    '10:00',
-                    '10:30',
-                    '11:00',
-                    '11:30',
-                    '14:00',
-                    '14:30',
-                    '15:00',
-                    '15:30',
-                    '16:00',
-                    '16:30',
-                    '17:00',
-                    '17:30',
-                  ]"
+                  label="Thời gian rời bến*"
+                  :items="times"
                   variant="solo"
                   v-model="businessData['time']"
                   :disabled="isDisable"
@@ -298,6 +314,7 @@ import {
   getFormData,
   updateFormData,
 } from "@/firebase";
+import { json } from "stream/consumers";
 
 export default {
   components: { CustomerTableVue },
@@ -314,7 +331,11 @@ export default {
       isNotReset: true,
       isEnterprise: false,
       checkDisabledButton: true,
+      isDisableAddNewEmployee: false,
+      isDisableAddNewGuide: false,
       process: "Chấp nhận",
+      messageAlert: "",
+      alert: false,
       userRole: this.$store.state?.user?.data?.role,
       roleSameChange: [
         { role: "manager", permission: "requesting" },
@@ -322,12 +343,44 @@ export default {
         { role: "border", permission: "semniaccept" },
         { role: "accountant", permission: "processing" },
       ],
+      times: [
+        "08:00",
+        "08:30",
+        "09:00",
+        "09:30",
+        "10:00",
+        "10:30",
+        "11:00",
+        "11:30",
+        "14:00",
+        "14:30",
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30",
+        "17:00",
+        "17:30",
+      ],
     };
   },
   created(): void {
     this.init();
+    this.getTimeToday();
   },
   methods: {
+    getTimeToday() {
+      const d = new Date();
+      const m = d.getMinutes();
+      let h = d.getHours();
+      if (h === 0) {
+        h = 24;
+      }
+
+      const currentTime = h + "" + m;
+      this.times = this.times.filter((time) => {
+        return parseInt(time.replace(":", "")) > parseInt(currentTime);
+      });
+    },
     init() {
       this.getVehicle();
       this.formID = this.$route.params.formID;
@@ -369,9 +422,30 @@ export default {
         (item) => item.nation === "Nước ngoài"
       );
       const now = new Date();
-      const created_at =
-        now.toLocaleDateString() + " " + now.toLocaleTimeString();
-
+      const created_at = `${("0" + now.getDate()).slice(-2)}/${(
+        "0" +
+        (now.getMonth() + 1)
+      ).slice(
+        -2
+      )}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+      const shipEmployees = [...this.businessData["shipEmployees"]];
+      if (!_.isEmpty(shipEmployees)) {
+        this.businessData["shipEmployees"] = shipEmployees.filter(
+          (employee) => employee.name !== ""
+        );
+      }
+      const guides = [...this.businessData["guides"]];
+      if (!_.isEmpty(guides)) {
+        this.businessData["guides"] = guides.filter(
+          (guide) => guide.name !== ""
+        );
+      }
+      const customers = [...this.businessData["customers"]];
+      if (!_.isEmpty(customers)) {
+        this.businessData["customers"] = customers.filter(
+          (customer) => customer.name !== ""
+        );
+      }
       const setAPIData = {
         ...this.businessData,
         clients: clientData.flat(1),
@@ -395,14 +469,22 @@ export default {
       delete setAPIData["customers"];
       return setAPIData;
     },
-    regisNewBusinessForm(): void {
+    async regisNewBusinessForm() {
       const setAPIData = this.handleData();
       const data = { ...setAPIData, type: "requesting" };
-      try {
-        addBussinessData(data);
-        this.$router.push("/list");
-      } catch (err) {
-        console.log(err);
+      const createForm = await addBussinessData(data);
+      if (createForm) {
+        this.alert = true;
+        this.messageAlert = "Bạn tạo bản đăng ký thành công";
+        setTimeout(() => {
+          this.$router.push("/list");
+        }, 2000);
+      } else {
+        this.alert = true;
+        this.messageAlert = "Bạn tạo bản đăng ký không thành công. Xin thử lại";
+        setTimeout(() => {
+          this.alert = false;
+        }, 3000);
       }
     },
     onChangeCustomerData(value: CustomerData): void {
@@ -499,6 +581,17 @@ export default {
       this.$router.push("/list");
     },
     checkDisabled() {
+      if (this.businessData["shipEmployees"]) {
+        const shipEmployees = JSON.parse(
+          JSON.stringify(this.businessData["shipEmployees"])
+        );
+        this.isDisableAddNewEmployee =
+          shipEmployees[shipEmployees.length - 1].name === "";
+      }
+      if (this.businessData["guides"]) {
+        const guides = JSON.parse(JSON.stringify(this.businessData["guides"]));
+        this.isDisableAddNewGuide = guides[guides.length - 1].name === "";
+      }
       if (this.businessData["customers"]) {
         const customer = JSON.parse(
           JSON.stringify(this.businessData["customers"])
@@ -506,14 +599,14 @@ export default {
         const checkCustomer = customer.filter(
           (customer: any) => customer.name && customer.name !== ""
         );
-        const falseTrue = (
+        const falseTrue =
           checkCustomer.length === 0 ||
           _.isEmpty(this.businessData["meanName"]) ||
           _.isEmpty(this.businessData["captain"]) ||
           _.isEmpty(this.businessData["fromStation"]) ||
           _.isEmpty(this.businessData["toStation"]) ||
-          _.isEmpty(this.businessData["time"]))
-        
+          _.isEmpty(this.businessData["time"]);
+
         this.checkDisabledButton = falseTrue;
       } else {
         this.checkDisabledButton = true;
@@ -530,10 +623,10 @@ export default {
       this.businessData["seats"] = newVal["wattage"];
     },
     businessData: {
-      handler(newVal){
+      handler(newVal) {
         this.checkDisabled();
       },
-      deep: true
+      deep: true,
     },
     $route(to, from) {
       this.isNotReset = false;

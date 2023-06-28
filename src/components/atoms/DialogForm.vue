@@ -15,18 +15,22 @@
             <v-col cols="6" sm="6" md="6" class="name-field">
               <v-text-field
                 variant="outlined"
-                label="Họ tên khách hàng"
+                label="Họ tên khách hàng*"
+                placeholder="Họ tên khách hàng*"
                 v-model="customerData['name']"
                 required
-              ></v-text-field>
+                :rules="[rules.required, rules.counter]"
+              />
             </v-col>
             <v-col cols="6" sm="6" md="6" class="birth-field">
               <v-text-field
                 variant="outlined"
-                label="Năm sinh"
+                label="Năm sinh*"
+                placeholder="Năm sinh*"
                 v-model="customerData['birthYear']"
                 required
-              ></v-text-field>
+                :rules="[rules.required, rules.counterBirth, rules.isNumber]"
+              />
             </v-col>
           </v-row>
 
@@ -36,7 +40,7 @@
               variant="outlined"
               v-model="customerData['cardId']"
               required
-            ></v-text-field>
+            />
           </v-row>
           <v-row>
             <v-text-field
@@ -44,7 +48,7 @@
               variant="outlined"
               v-model="customerData['place']"
               required
-            ></v-text-field>
+            />
           </v-row>
           <v-row>
             <v-text-field
@@ -52,24 +56,26 @@
               variant="outlined"
               v-model="customerData['note']"
               required
-            ></v-text-field>
+            />
           </v-row>
           <v-row>
             <v-col cols="6" class="name-field">
               <v-select
                 :items="['Nam', 'Nữ']"
-                label="Giới tính"
+                label="Giới tính*"
                 v-model="customerData['gender']"
                 required
-              ></v-select>
+                :rules="[rules.required]"
+              />
             </v-col>
             <v-col cols="6" class="birth-field">
               <v-select
                 :items="['Việt Nam', 'Nước ngoài']"
-                label="Quốc tịch"
+                label="Quốc tịch*"
                 required
                 v-model="customerData['nation']"
-              ></v-select>
+                :rules="[rules.required]"
+              />
             </v-col>
           </v-row>
         </v-container>
@@ -79,7 +85,12 @@
         <v-btn color="blue-darken-1" variant="text" @click="onClosePopUp">
           đóng
         </v-btn>
-        <v-btn color="blue-darken-1" variant="text" @click="onActionButton">
+        <v-btn
+          color="blue-darken-1"
+          variant="text"
+          @click="onActionButton"
+          :disabled="checkDisabledButton"
+        >
           lưu
         </v-btn>
       </v-card-actions>
@@ -89,6 +100,7 @@
 
 <script lang="ts">
 import { v4 as uuidv4 } from "uuid";
+import _ from "lodash";
 export default {
   props: {
     setOpen: {
@@ -108,14 +120,50 @@ export default {
     return {
       openProp: this.setOpen,
       customerData: {},
+      checkDisabledButton: true,
+      rules: {
+        required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
+        counter: (value: any) =>
+          value.length > 1 || "Xin mời nhập tối thiểu 2 ký tự",
+        isNumber: (value: any) =>
+          /^\d+$/.test(value) || "Xin mời nhập đúng định dạng",
+        counterBirth: (value: any) =>
+          value.length === 4 || "Xin mời nhập 4 ký tự",
+      },
     };
   },
   created(): void {
     this.init();
   },
+  watch: {
+    customerData: {
+      handler(newVal) {
+        this.checkDisabled();
+      },
+      deep: true,
+    },
+    setOpen(newValue: boolean): void {
+      this.openProp = newValue;
+    },
+    customerValue(newVal): void {
+      this.customerData = newVal;
+    },
+  },
   methods: {
     init(): void {
       this.customerData = { ...this.customerValue };
+    },
+    checkDisabled() {
+      const falseTrue =
+        _.isEmpty(this.customerData["name"]) ||
+        _.isEmpty(this.customerData["birthYear"]) ||
+        _.isEmpty(this.customerData["gender"]) ||
+        !/^\d+$/.test(this.customerData["birthYear"]) ||
+        this.customerData["name"]?.length < 2 ||
+        this.customerData["birthYear"]?.length !== 4 ||
+        _.isEmpty(this.customerData["nation"]);
+
+      this.checkDisabledButton = falseTrue;
     },
     regisNewCustomer(): void {
       const newCustomer = {
@@ -137,14 +185,6 @@ export default {
     },
     onClosePopUp(): void {
       this.$emit("onHandleActionDialog", false);
-    },
-  },
-  watch: {
-    setOpen(newValue: boolean): void {
-      this.openProp = newValue;
-    },
-    customerValue(newVal): void {
-      this.customerData = newVal;
     },
   },
 };

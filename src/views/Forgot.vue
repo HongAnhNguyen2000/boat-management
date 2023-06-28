@@ -67,7 +67,7 @@
         />
       </div>
       <div class="text-subtitle-1 text-medium-emphasis">
-        <span>Mật khẩu mới nhắc lại</span>
+        <span>Nhập lại mật khẩu</span>
         <v-text-field
           variant="outlined"
           placeholder="Mật khẩu"
@@ -111,7 +111,7 @@ export default {
     rules: {
       required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
       counter: (value: any) =>
-        value.length > 6 || "Xin mời nhập tối thiểu 6 ký tự",
+        value.length >= 6 || "Xin mời nhập tối thiểu 6 ký tự",
       email: (value: any) => {
         const pattern =
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
