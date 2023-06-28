@@ -39,6 +39,7 @@
         <td>{{ item.place }}</td>
         <td>{{ item.note }}</td>
         <td>
+          <div class="d-flex">
           <v-btn
             variant="outlined"
             @click="onShowDialog(item.id)"
@@ -54,6 +55,7 @@
             :disabled="disabled"
             >Xoá</v-btn
           >
+          </div>
         </td>
       </tr>
     </tbody>
