@@ -138,10 +138,10 @@ export default {
     this.getUsers();
     if (this.$store.state.user.justLogOut) {
       this.alertColor = "green";
-
       this.alertOut = true;
       setTimeout(() => {
         this.alertOut = false;
+        this.$store.dispatch("reset");
       }, 2000);
     }
   },
