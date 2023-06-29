@@ -244,16 +244,15 @@ export default {
       };
       if (this.vehicle["registrationDeadline"]) {
         const now = new Date(this.vehicle["registrationDeadline"]);
-        params["registration-deadline"] = `${("0" + now.getDate()).slice(
+        params["registration-deadline"] = `${("0" + (now.getMonth() + 1)).slice(
           -2
-        )}/${("0" + (now.getMonth() + 1)).slice(-2)}/${now.getFullYear()}`;
+        )}/${("0" + now.getDate()).slice(-2)}/${now.getFullYear()}`;
       }
       if (this.vehicle["insuranceDeadline"]) {
         const now = new Date(this.vehicle["insuranceDeadline"]);
-        params["insurance-deadline"] = `${("0" + now.getDate()).slice(-2)}/${(
-          "0" +
-          (now.getMonth() + 1)
-        ).slice(-2)}/${now.getFullYear()}`;
+        params["insurance-deadline"] = `${("0" + (now.getMonth() + 1)).slice(
+          -2
+        )}/${("0" + now.getDate()).slice(-2)}/${now.getFullYear()}`;
       }
       const actionAddVehicle = await addVehicle(params);
       if (actionAddVehicle) {
