@@ -87,14 +87,14 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red" variant="text" @click="onClosePopUp"> đóng </v-btn>
+        <v-btn color="red" variant="text" @click="onClosePopUp"> Đóng </v-btn>
         <v-btn
           color="green"
           variant="text"
           @click="onActionButton"
           :disabled="checkDisabledButton"
         >
-          lưu
+          Lưu
         </v-btn>
       </v-card-actions>
     </v-card>
