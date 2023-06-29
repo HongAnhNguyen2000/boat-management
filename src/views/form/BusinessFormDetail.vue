@@ -146,20 +146,20 @@
           <div v-if="isDisable && !isEnterprise">
             <v-btn
               class="mb-8 mt-5 ml-5"
+              color="error"
+              variant="tonal"
+              @click="denie"
+            >
+              Từ chối
+            </v-btn>
+            <v-btn
+              class="mb-8 mt-5 ml-5"
               color="green"
               variant="tonal"
               :disabled="isDisableProcess"
               @click="accepted"
             >
               {{ process }}
-            </v-btn>
-            <v-btn
-              class="mb-8 mt-5 ml-5"
-              color="error"
-              variant="tonal"
-              @click="denie"
-            >
-              Từ chối
             </v-btn>
           </div>
         </div>
