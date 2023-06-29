@@ -141,7 +141,9 @@
         </v-row>
         <div
           class="d-flex flex-row mt-15 button-regis"
-          v-if="businessData.type !== 'reject'"
+          v-if="
+            businessData.type !== 'reject' && businessData.type !== 'accept'
+          "
         >
           <div v-if="isDisable && !isEnterprise">
             <v-btn
@@ -159,7 +161,12 @@
               :disabled="isDisableProcess"
               @click="accepted"
             >
-              {{ process }}
+              <span v-if="!isDisableProcess">
+                {{ process }}
+              </span>
+              <span v-else>
+                {{ labelType.find((e) => e.en === businessData["type"])?.vi }}
+              </span>
             </v-btn>
           </div>
         </div>
@@ -197,8 +204,39 @@ export default {
       roleSameChange: [
         { role: "manager", permission: "requesting" },
         { role: "authority", permission: "purchased" },
-        { role: "border", permission: "semniaccept" },
         { role: "accountant", permission: "processing" },
+      ],
+      labelType: [
+        {
+          en: "processing",
+          vi: "Đang xử lý",
+          sorting: 1,
+          backgroundColor: "#ebd742",
+        },
+        {
+          en: "requesting",
+          vi: "Đang yêu cầu",
+          sorting: 2,
+          backgroundColor: "#1E90FF",
+        },
+        {
+          en: "accept",
+          vi: "Chấp thuận",
+          sorting: 4,
+          backgroundColor: "#32CD32",
+        },
+        {
+          en: "reject",
+          vi: "Từ chối",
+          sorting: 5,
+          backgroundColor: "#FF0000",
+        },
+        {
+          en: "purchased",
+          vi: "Đã thanh toán",
+          sorting: 3,
+          backgroundColor: "#1E90FF",
+        },
       ],
     };
   },
@@ -359,12 +397,8 @@ export default {
           type = "purchased";
           break;
 
-        case "border":
-          type = "accept";
-          break;
-
         case "authority":
-          type = "semniaccept";
+          type = "accept";
           break;
 
         default:

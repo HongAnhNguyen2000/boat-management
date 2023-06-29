@@ -342,7 +342,6 @@ export default {
       roleSameChange: [
         { role: "manager", permission: "requesting" },
         { role: "authority", permission: "purchased" },
-        { role: "border", permission: "semniaccept" },
         { role: "accountant", permission: "processing" },
       ],
       times: [
@@ -562,12 +561,8 @@ export default {
           type = "purchased";
           break;
 
-        case "border":
-          type = "accept";
-          break;
-
         case "authority":
-          type = "semniaccept";
+          type = "accept";
           break;
 
         default:
