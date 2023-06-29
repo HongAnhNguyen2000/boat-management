@@ -4,7 +4,15 @@
   </v-overlay>
   <div class="data-container">
     <h2 class="mb-5">Danh sách đã đăng ký</h2>
-    <v-table class="min-width-table">
+    <v-text-field
+      v-model="search"
+      append-icon="mdi-magnify"
+      label="Tìm kiếm"
+      variant="outlined"
+      hide-details
+    ></v-text-field>
+
+    <v-table class="min-width-table mt-3">
       <thead>
         <tr>
           <th class="text-left" style="cursor: pointer">
@@ -85,6 +93,7 @@ export default {
       isReload: true,
       isSortASC: true,
       currentSort: "",
+      search: "",
       fieldsSort: ["typeConvert", "created_at"],
       page: 1,
       pages: 1,
@@ -143,6 +152,9 @@ export default {
         }, 500);
       }
     },
+    search(newVal) {
+      this.searchBy(newVal);
+    },
   },
 
   methods: {
@@ -160,6 +172,18 @@ export default {
           this.page * 10
         );
       }
+    },
+    searchBy(value: string) {
+      const returnSearched = [...this.listBussinessData].filter((obj) =>
+        Object.values(obj).some((val) => {
+          if (typeof val === "string") {
+            return val.includes(value);
+          } else {
+            return String(val).includes(value);
+          }
+        })
+      );
+      this.showListBussinessData = returnSearched;
     },
     onChangeContentPDF(newVal) {
       this.contentPDF = newVal;
@@ -618,13 +642,12 @@ export default {
 <style scoped>
 .data-container {
   margin: 2rem;
-  padding:  0px 30px 56px 30px;
+  padding: 0px 30px 56px 30px;
 }
 @media screen and (max-width: 830px) {
   .data-container {
     padding: 0;
     margin: 2rem;
-
   }
 }
 </style>
