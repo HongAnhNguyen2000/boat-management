@@ -139,8 +139,19 @@
             </v-table>
           </v-col>
         </v-row>
-        <div class="d-flex flex-row mt-15 button-regis">
+        <div
+          class="d-flex flex-row mt-15 button-regis"
+          v-if="businessData.type !== 'reject'"
+        >
           <div v-if="isDisable && !isEnterprise">
+            <v-btn
+              class="mb-8 mt-5 ml-5"
+              color="error"
+              variant="tonal"
+              @click="denie"
+            >
+              Từ chối
+            </v-btn>
             <v-btn
               class="mb-8 mt-5 ml-5"
               color="green"
@@ -149,15 +160,6 @@
               @click="accepted"
             >
               {{ process }}
-            </v-btn>
-            <v-btn
-              class="mb-8 mt-5 ml-5"
-              color="error"
-              variant="tonal"
-              @click="denie"
-              v-if="businessData.type !== 'reject'"
-            >
-              Từ chối
             </v-btn>
           </div>
         </div>
