@@ -48,13 +48,10 @@
         <v-col cols="6">
           <h4>Hạn bảo hiểm <span style="color: red">*</span></h4>
 
-          <date-picker
+          <vue-date-picker
             v-model="vehicle.insuranceDeadline"
             locale="vi"
             format="dd/MM/yyyy"
-            auto-apply
-            partial-flow
-            :flow="['calendar']"
           />
         </v-col>
         <v-col cols="6">
@@ -63,9 +60,6 @@
             v-model="vehicle.registrationDeadline"
             locale="vi"
             format="dd/MM/yyyy"
-            auto-apply
-            partial-flow
-            :flow="['calendar']"
           />
         </v-col>
       </v-row>
@@ -303,5 +297,12 @@ export default {
 <style>
 input.dp__pointer {
   height: 60px;
+}
+button.dp__action_select {
+  color: white;
+  height: 30px;
+}
+.dp__action_cancel {
+  height: 30px;
 }
 </style>
