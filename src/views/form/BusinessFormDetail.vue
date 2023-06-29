@@ -34,7 +34,7 @@
                 <p>{{ businessData["tonnage"] }}</p>
               </v-col>
               <v-col cols="6" class="mt-3">
-                <h4>Đơn vị (ghế)</h4>
+                <h4>Công suất (ghế)</h4>
                 <p>{{ businessData["seats"] }}</p>
               </v-col>
             </v-row>

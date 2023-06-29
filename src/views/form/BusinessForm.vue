@@ -101,7 +101,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="6" class="mt-3">
-                <h4>Đơn vị (ghế)</h4>
+                <h4>Công suất (ghế)</h4>
                 <v-text-field
                   class="mt-2"
                   variant="outlined"

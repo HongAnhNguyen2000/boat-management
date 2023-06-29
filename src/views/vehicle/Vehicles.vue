@@ -200,20 +200,22 @@ export default {
       }, 500);
     },
     async getCompanies() {
-      this.companies = await getInfos()
+      this.companies = await getInfos();
     },
     async getVehicles() {
       const getDatas: any = await getListVehicle();
       await this.getCompanies();
       for (const vehicle of getDatas) {
-        vehicle.company = this.companies.find(company => company.id === vehicle['infos_id']).company
+        vehicle.company = this.companies.find(
+          (company) => company.id === vehicle["infos_id"]
+        ).company;
       }
       this.vehicles = [...getDatas];
 
       this.sortBy("name");
       this.pages = this.vehicles.length / 10;
       if (this.vehicles.length % 10 > 0) {
-        this.pages += 1
+        this.pages += 1;
       }
       if (this.vehicles.length > 0) {
         this.showVehicles = [...this.vehicles].slice(
@@ -244,5 +246,10 @@ export default {
 .data-container {
   margin: 2rem;
   padding: 40px 56px;
+}
+@media screen and (max-width: 830px) {
+  .data-container {
+    padding: 0;
+  }
 }
 </style>
