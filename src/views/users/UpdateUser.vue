@@ -52,7 +52,7 @@
             :rules="[rules.required, rules.phonenumber]"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" v-if="currentRole === 'manager'">
           <h4>Chọn vai trò</h4>
           <v-select
             label="Vai trò người dùng"
@@ -75,7 +75,8 @@
             item-value="id"
             item-text="company"
             item-title="company"
-            v-model="company"
+            v-model="infos_id"
+            :value="company"
             variant="solo"
           />
         </v-col>
