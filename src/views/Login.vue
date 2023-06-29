@@ -17,13 +17,6 @@
       <span>
         {{ messageOut }}
       </span>
-      <v-btn
-        color="white"
-        size="large"
-        variant="tonal"
-        class="ml-auto"
-        @click="closeAlertOut()"
-        >Đóng</v-btn
       >
     </div>
   </v-alert>
@@ -45,13 +38,6 @@
           <span>
             {{ message }}
           </span>
-          <v-btn
-            color="white"
-            size="large"
-            variant="tonal"
-            class="ml-auto"
-            @click="closeAlert()"
-            >Đóng</v-btn
           >
         </div>
       </v-alert>

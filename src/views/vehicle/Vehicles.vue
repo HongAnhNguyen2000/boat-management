@@ -31,7 +31,7 @@
             @click="sortBy('vehicle-owner')"
             style="cursor: pointer"
           >
-            Chủ phương tiện
+            Tên chủ tàu
             <div
               v-if="currentSort === 'vehicle-owner'"
               style="display: inline-block"
@@ -250,6 +250,7 @@ export default {
 @media screen and (max-width: 830px) {
   .data-container {
     padding: 0;
+    margin: 2rem;
   }
 }
 </style>

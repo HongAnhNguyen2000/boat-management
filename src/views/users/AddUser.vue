@@ -11,13 +11,6 @@
       <span>
         {{ messageAlert }}
       </span>
-      <v-btn
-        color="white"
-        size="large"
-        variant="tonal"
-        class="ml-auto"
-        @click="closeAlert()"
-        >Đóng</v-btn
       >
     </div>
   </v-alert>
@@ -276,6 +269,7 @@ export default {
 @media screen and (max-width: 830px) {
   .data-container {
     padding: 0;
+    margin: 2rem;
   }
 }
 </style>

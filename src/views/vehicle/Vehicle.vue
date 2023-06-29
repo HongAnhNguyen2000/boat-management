@@ -15,7 +15,7 @@
         </span>
       </p>
       <p class="mt-3">
-        <span> Chủ phương tiện: </span>
+        <span> Tên chủ tàu: </span>
         <span>
           {{ vehicleOwner }}
         </span>
@@ -135,6 +135,7 @@ p {
 @media screen and (max-width: 830px) {
   .data-container {
     padding: 0;
+    margin: 2rem;
   }
 }
 

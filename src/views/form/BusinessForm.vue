@@ -12,13 +12,6 @@
         <span>
           {{ messageAlert }}
         </span>
-        <v-btn
-          color="white"
-          size="large"
-          variant="tonal"
-          class="ml-auto"
-          @click="closeAlert()"
-          >Đóng</v-btn
         >
       </div>
     </v-alert>
@@ -74,12 +67,11 @@
             ></v-text-field>
           </v-col>
           <v-col cols="6" class="pt-3">
-            <h3>Chủ phương tiện</h3>
+            <h3>Tên chủ tàu</h3>
 
             <v-text-field
               class="mt-2"
               variant="outlined"
-              placeholder="Chủ phương tiện"
               v-model="businessData['ownerName']"
               disabled
             ></v-text-field>
@@ -676,6 +668,7 @@ export default {
 @media screen and (max-width: 830px) {
   .data-container {
     padding: 0;
+    margin: 2rem;
   }
 }
 

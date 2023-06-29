@@ -623,6 +623,8 @@ export default {
 @media screen and (max-width: 830px) {
   .data-container {
     padding: 0;
+    margin: 2rem;
+
   }
 }
 </style>

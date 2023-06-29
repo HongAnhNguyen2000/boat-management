@@ -11,13 +11,6 @@
       <span>
         {{ messageAlert }}
       </span>
-      <v-btn
-        color="white"
-        size="large"
-        variant="tonal"
-        class="ml-auto"
-        @click="closeAlert()"
-        >Đóng</v-btn
       >
     </div>
   </v-alert>
@@ -62,7 +55,7 @@
       </v-row>
 
       <v-row>
-        <v-col cols="6">
+        <v-col cols="12" sm="6">
           <v-row>
             <v-col cols="4">
               <h4>Trọng tải <span style="color: red">*</span></h4>
@@ -96,7 +89,7 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" sm="6">
           <h4>Chọn công ty</h4>
           <v-select
             :items="companies"
@@ -121,7 +114,7 @@
         </v-col>
         <v-col cols="6">
           <h4>
-            Chủ phương tiện
+            Tên chủ tàu
             <span style="color: red">*</span>
           </h4>
 
@@ -310,6 +303,7 @@ export default {
 @media screen and (max-width: 830px) {
   .data-container {
     padding: 0;
+    margin: 2rem;
   }
 }
 </style>
