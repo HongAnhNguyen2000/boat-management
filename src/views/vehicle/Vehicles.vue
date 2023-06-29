@@ -46,7 +46,7 @@
             @click="sortBy('tonnage')"
             style="cursor: pointer"
           >
-            Trọng tải
+            Trọng tải(tấn)
             <div v-if="currentSort === 'tonnage'" style="display: inline-block">
               <v-icon icon="mdi-chevron-down" v-if="isSortASC"></v-icon>
               <v-icon icon="mdi-chevron-up" v-else></v-icon>

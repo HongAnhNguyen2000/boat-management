@@ -3,15 +3,40 @@
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </v-overlay>
   <div class="data-container">
-    <h2 class="mb-5">Danh sách đã đăng ký</h2>
-    <v-text-field
-      v-model="search"
-      append-icon="mdi-magnify"
-      label="Tìm kiếm"
-      variant="outlined"
-      hide-details
-      class="search-box"
-    />
+    <v-btn
+      class="mb-8"
+      color="green"
+      size="large"
+      variant="tonal"
+      @click="createForm"
+      v-if="isShowAddForm"
+    >
+      <v-icon class="white--text mr-2">mdi-plus</v-icon>
+      Tạo mới danh sách
+    </v-btn>
+    <h2 class="mb-5">
+      Danh sách đã đăng ký hành khách vận tải đường thuỷ nội địa
+    </h2>
+    <div class="d-flex action-form" style="justify-content: space-between">
+      <v-combobox
+        v-model="filterType"
+        :items="labelType"
+        item-value="en"
+        item-title="vi"
+        label="Lọc trạng thái"
+        multiple
+        chips
+        class="filter-box"
+      />
+      <v-text-field
+        v-model="search"
+        prepend-inner-icon="mdi-magnify"
+        label="Tìm kiếm"
+        variant="outlined"
+        hide-details
+        class="search-box"
+      />
+    </div>
 
     <v-table class="min-width-table mt-3">
       <thead>
@@ -40,8 +65,8 @@
           <td>
             <v-btn
               :color="item.backgroundColor"
-              class="text-none text-subtitle-1 text-white"
-              variant="flat"
+              class="text-none text-subtitle-1 color-black"
+              variant="tonal"
               width="130px"
             >
               {{ item.typeConvert ?? "" }}
@@ -66,6 +91,14 @@
                 >Xem trước</v-tooltip
               ></v-btn
             >
+            <v-btn
+              v-if="item.type !== 'accept' && item.type !== 'reject'"
+              @click.stop="gotoDetail(item.id)"
+              class="ml-3"
+              style="min-width: 36px; background-color: #11ba06; color: white"
+            >
+              Xử lý
+            </v-btn>
           </td>
         </tr>
       </tbody>
@@ -74,28 +107,56 @@
       <v-pagination v-model="page" :length="pages"></v-pagination>
     </div>
   </div>
+  <v-dialog v-model="open" width="auto">
+    <div v-if="isShowAddForm" style="overflow-y: scroll; background: white">
+      <form-add
+        @closePopup="closePopup"
+        @resetPopup="resetPopup"
+        v-if="currentId === ''"
+      />
+      <form-detail @closePopup="closePopup" :currentId="currentId" v-else />
+    </div>
+    <div v-else style="overflow-y: scroll; background: white">
+      <form-detail
+        @closePopup="closePopup"
+        :currentId="currentId"
+        @resetPopup="resetPopup"
+      />
+    </div>
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import { getBussinessData, getFormData, getVehicle } from "@/firebase";
+import BusinessForm from "@/views/form/BusinessForm.vue";
+import BusinessFormDetail from "@/views/form/BusinessFormDetail.vue";
 import * as pdfMake from "pdfmake/build/pdfmake";
 import _ from "lodash";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import moment from "moment";
 
 export default {
+  components: {
+    "form-add": BusinessForm,
+    "form-detail": BusinessFormDetail,
+  },
   data() {
     return {
       listBussinessData: [] as any,
+      listBussinessDataClone: [] as any,
       showListBussinessData: [] as any,
       vehicles: [] as any,
       contentPDF: {} as any,
       isLoading: true,
       isReload: true,
       isSortASC: true,
+      isShowAddForm: false,
+      open: false,
       currentSort: "",
+      currentId: "",
       search: "",
-      fieldsSort: ["typeConvert", "created_at"],
+      filterType: [],
+      fieldsSort: ["typeConvert", "sortTime"],
       page: 1,
       pages: 1,
       labelType: [
@@ -103,37 +164,38 @@ export default {
           en: "processing",
           vi: "Đang xử lý",
           sorting: 1,
-          backgroundColor: "#ebd742",
+          backgroundColor: "amber",
         },
         {
           en: "requesting",
           vi: "Đang yêu cầu",
           sorting: 2,
-          backgroundColor: "#1E90FF",
-        },
-        {
-          en: "accept",
-          vi: "Chấp thuận",
-          sorting: 4,
-          backgroundColor: "#32CD32",
-        },
-        {
-          en: "reject",
-          vi: "Từ chối",
-          sorting: 5,
-          backgroundColor: "#FF0000",
+          backgroundColor: "blue",
         },
         {
           en: "purchased",
           vi: "Đã thanh toán",
           sorting: 3,
-          backgroundColor: "#1E90FF",
+          backgroundColor: "blue",
+        },
+        {
+          en: "accept",
+          vi: "Chấp thuận",
+          sorting: 4,
+          backgroundColor: "green",
+        },
+        {
+          en: "reject",
+          vi: "Từ chối",
+          sorting: 5,
+          backgroundColor: "red",
         },
       ],
     };
   },
   created(): void {
     this.getBussinessData();
+    this.isShowAddForm = this.$store.state.user.data?.role === "enterprise";
     if (!this.$store.state.user.loggedIn) {
       this.$router.push("/");
     }
@@ -153,6 +215,21 @@ export default {
         }, 500);
       }
     },
+    filterType(newVal) {
+      if (!_.isEmpty(newVal)) {
+        this.search = "";
+      }
+      const filterArray = JSON.parse(JSON.stringify(newVal));
+      if (filterArray.length > 0) {
+        const accecptType = filterArray.map((arr) => arr.en);
+        this.listBussinessData = [...this.listBussinessDataClone].filter(
+          (data) => accecptType.includes(data.type)
+        );
+      } else {
+        this.listBussinessData = [...this.listBussinessDataClone];
+      }
+      this.sortBy("sorting", ["asc", "asc"]);
+    },
     search(newVal) {
       this.searchBy(newVal);
     },
@@ -167,6 +244,10 @@ export default {
         this.fieldsSort,
         sorted
       );
+      this.pages = this.listBussinessData.length / 10;
+      if (this.listBussinessData.length % 10 > 0) {
+        this.pages += 1;
+      }
       if (this.listBussinessData.length > 0) {
         this.showListBussinessData = [...this.listBussinessData].slice(
           (this.page - 1) * 10,
@@ -615,9 +696,12 @@ export default {
         form["sorting"] = this.labelType.find(
           (label) => label.en === form.type
         )?.sorting;
+        form["sortTime"] = moment(form.created_at, "DD/MM/YYYY");
+        console.log(form.created_at, form["sortTime"]);
         forms.push({ ...(form as any), vehicle });
       }
       this.listBussinessData = [...forms];
+      this.listBussinessDataClone = [...forms];
       this.sortBy("sorting", ["asc", "asc"]);
 
       this.pages = this.listBussinessData.length / 10;
@@ -633,7 +717,21 @@ export default {
       this.isLoading = false;
     },
     gotoDetail(id) {
-      this.$router.push("form/" + id);
+      this.open = true;
+      this.currentId = id;
+    },
+    createForm() {
+      this.currentId = "";
+      this.open = true;
+      // this.$router.push("/form");
+    },
+    closePopup(currentId = "") {
+      this.open = false;
+      this.currentId = currentId;
+    },
+    resetPopup() {
+      this.getBussinessData();
+      this.open = false;
     },
   },
 };
@@ -649,9 +747,37 @@ export default {
     margin: 2rem;
   }
 }
+.color-black {
+  color: black;
+}
 </style>
 
 <style>
+.search-box {
+  width: 25%;
+  margin-left: auto;
+  flex: unset;
+}
+.search-box .v-field__field {
+  align-items: center;
+}
+
+.filter-box {
+  width: 25%;
+  margin-right: auto;
+  flex: unset;
+}
+@media screen and (max-width: 500px) {
+  .action-form {
+    flex-direction: column;
+  }
+  .search-box {
+    width: 100%;
+  }
+  .filter-box {
+    width: 100%;
+  }
+}
 .search-box input[type="text"] {
   min-height: auto;
   padding: 10px;

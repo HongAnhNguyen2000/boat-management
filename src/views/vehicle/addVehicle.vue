@@ -11,11 +11,10 @@
       <span>
         {{ messageAlert }}
       </span>
-      >
     </div>
   </v-alert>
   <div class="data-container">
-    <h2 class="mb-5">Tạo phương tiện mới</h2>
+    <h2 class="mb-5">Thêm Phương tiện giao thông</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-row>
         <v-col cols="6">
@@ -41,7 +40,7 @@
         <v-col cols="12" sm="6">
           <v-row>
             <v-col cols="4">
-              <h4>Trọng tải <span style="color: red">*</span></h4>
+              <h4>Trọng tải (tấn) <span style="color: red">*</span></h4>
 
               <v-text-field
                 variant="outlined"
@@ -68,6 +67,9 @@
                 locale="vi"
                 format="yyyy"
                 year-picker
+                :max-date="new Date()"
+                select-text="Chọn"
+                cancel-text="Đóng"
               />
             </v-col>
           </v-row>
@@ -93,6 +95,17 @@
             v-model="vehicle.insuranceDeadline"
             locale="vi"
             format="dd-MM-yyyy"
+            select-text="Chọn"
+            cancel-text="Đóng"
+            :day-names="[
+              'Thứ 2',
+              'Thứ 3',
+              'Thứ 4',
+              'Thứ 5',
+              'Thứ 6',
+              'Thứ 7',
+              'Chủ Nhật',
+            ]"
           />
         </v-col>
         <v-col cols="6">
@@ -101,6 +114,17 @@
             v-model="vehicle.registrationDeadline"
             locale="vi"
             format="dd-MM-yyyy"
+            select-text="Chọn"
+            cancel-text="Đóng"
+            :day-names="[
+              'Thứ 2',
+              'Thứ 3',
+              'Thứ 4',
+              'Thứ 5',
+              'Thứ 6',
+              'Thứ 7',
+              'Chủ Nhật',
+            ]"
           />
         </v-col>
       </v-row>
@@ -136,7 +160,7 @@
         class="mb-8 mt-5"
         width="150px"
         color="green"
-        variant="tonal"
+        variant="elevated"
         :disabled="disabled"
         @click="regis"
       >
@@ -296,5 +320,8 @@ button.dp__action_select {
 }
 .dp__action_cancel {
   height: 30px;
+}
+.dp__calendar_header_item {
+  width: auto;
 }
 </style>

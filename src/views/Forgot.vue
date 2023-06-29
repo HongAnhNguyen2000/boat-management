@@ -20,7 +20,7 @@
       <v-btn
         color="white"
         size="large"
-        variant="tonal"
+        variant="elevated"
         class="ml-auto"
         @click="closeAlert()"
         >Đóng</v-btn
@@ -84,7 +84,7 @@
         class="mb-8 mt-3"
         color="green"
         size="large"
-        variant="tonal"
+        variant="elevated"
         @click="forgot()"
         :disabled="disable"
       >

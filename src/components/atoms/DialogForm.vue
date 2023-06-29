@@ -34,10 +34,29 @@
           </v-row>
 
           <v-row>
+            <v-col cols="6" class="name-field">
+              <v-select
+                :items="['Nam', 'Nữ']"
+                label="Giới tính *"
+                v-model="customerData['gender']"
+                required
+                :rules="[rules.required]"
+              />
+            </v-col>
+            <v-col cols="6" class="birth-field">
+              <v-autocomplete
+                label="Quốc tịch *"
+                :items="countries"
+                variant="outlined"
+                v-model="customerData['nation']"
+              ></v-autocomplete>
+            </v-col>
+          </v-row>
+
+          <v-row>
             <v-col cols="6" sm="6" md="6" class="name-field">
               <h4>Căn cước công dân</h4>
               <v-text-field
-                label="CCCD"
                 variant="outlined"
                 v-model="customerData['cardId']"
                 required
@@ -56,30 +75,9 @@
             <v-col cols="12" class="note-field">
               <h4>Ghi chú</h4>
               <v-text-field
-                label="Ghi chú"
                 variant="outlined"
                 v-model="customerData['note']"
                 required
-              />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="6" class="name-field">
-              <v-select
-                :items="['Nam', 'Nữ']"
-                label="Giới tính *"
-                v-model="customerData['gender']"
-                required
-                :rules="[rules.required]"
-              />
-            </v-col>
-            <v-col cols="6" class="birth-field">
-              <v-select
-                :items="['Việt Nam', 'Nước ngoài']"
-                label="Quốc tịch *"
-                required
-                v-model="customerData['nation']"
-                :rules="[rules.required]"
               />
             </v-col>
           </v-row>
@@ -104,6 +102,7 @@
 <script lang="ts">
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
+import { CONTRIES } from "../../CommonFile";
 export default {
   props: {
     setOpen: {
@@ -123,6 +122,7 @@ export default {
     return {
       openProp: this.setOpen,
       customerData: {},
+      countries: CONTRIES,
       checkDisabledButton: true,
       rules: {
         required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",

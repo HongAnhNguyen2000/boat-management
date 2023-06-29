@@ -11,7 +11,6 @@
       <span>
         {{ messageAlert }}
       </span>
-      >
     </div>
   </v-alert>
   <div class="data-container">
@@ -58,7 +57,7 @@
         <v-col cols="12" sm="6">
           <v-row>
             <v-col cols="4">
-              <h4>Trọng tải <span style="color: red">*</span></h4>
+              <h4>Trọng tải (tấn) <span style="color: red">*</span></h4>
 
               <v-text-field
                 variant="outlined"
@@ -134,7 +133,7 @@
       class="mb-8"
       color="green"
       size="large"
-      variant="tonal"
+      variant="elevated"
       @click="regis"
       :disabled="disabled"
     >
@@ -212,12 +211,28 @@ export default {
   },
   methods: {
     validate() {
-      console.log(this.vehicle["insuranceDeadline"].toString());
+      let checkInsuranceDeadline = false;
+      let checkRegistrationDeadline = false;
+      if (typeof this.vehicle["insuranceDeadline"] === "string") {
+        checkInsuranceDeadline = _.isEmpty(this.vehicle["insuranceDeadline"]);
+      } else {
+        checkInsuranceDeadline = this.vehicle["insuranceDeadline"] === null;
+      }
+      if (typeof this.vehicle["registrationDeadline"] === "string") {
+        checkRegistrationDeadline = _.isEmpty(
+          this.vehicle["registrationDeadline"]
+        );
+      } else {
+        console.log(this.vehicle["registrationDeadline"]);
+        checkRegistrationDeadline =
+          this.vehicle["registrationDeadline"] === null;
+      }
+      console.log("checkRegistrationDeadline", checkRegistrationDeadline);
       return (
         _.isEmpty(this.vehicle["registrationNumber"]) ||
-        _.isEmpty(this.vehicle["insuranceDeadline"].toString()) ||
+        checkInsuranceDeadline ||
         _.isEmpty(this.vehicle["name"]) ||
-        _.isEmpty(this.vehicle["registrationDeadline"].toString()) ||
+        checkRegistrationDeadline ||
         _.isEmpty(this.vehicle["tonnage"]) ||
         _.isEmpty(this.vehicle["type"]) ||
         _.isEmpty(this.vehicle["vehicleOwner"]) ||
@@ -251,6 +266,7 @@ export default {
           -2
         )}/${("0" + now.getDate()).slice(-2)}/${now.getFullYear()}`;
       }
+      console.log(params);
       const actionUpdateVehicle = await updateVehicle(this.vehicle_id, params);
       if (actionUpdateVehicle) {
         this.colorAlert = "green";

@@ -1,113 +1,135 @@
 <template>
-  <div class="data-container">
-    <div class="grey lighten-4 nft-page create-form-page contentsWrapStyle">
-      <h2>Danh sách hành khách vận tải đường thủy nội địa</h2>
+  <div class="data-container form-detail">
+    <div
+      class="grey lighten-4 nft-page create-form-page contentsWrapStyle"
+      style="position: relative"
+    >
+      <v-btn
+        color="black"
+        variant="elevated"
+        @click="closePopup"
+        style="
+          height: 40px;
+          width: 38px;
+          position: absolute;
+          right: 0;
+          min-width: unset;
+          top: 0;
+        "
+      >
+        <v-icon icon="mdi mdi-close" />
+      </v-btn>
+      <div class="d-flex header-detail">
+        <h2>Danh sách hành khách vận tải đường thủy nội địa</h2>
+        <v-btn
+          :color="businessData.backgroundColor"
+          class="text-none text-subtitle-1 color-black ml-4"
+          variant="tonal"
+          width="130px"
+        >
+          {{ businessData.typeConvert ?? "" }}
+        </v-btn>
+      </div>
       <div v-if="isNotReset">
         <v-row class="mt-5">
-          <v-col cols="6" class="pt-3">
-            <h3>Tên phương tiện</h3>
-            <p>{{ businessData["meanName"] }}</p>
-          </v-col>
-          <v-col cols="6" class="pt-3">
-            <h3>Số đăng kí</h3>
-            <p>{{ businessData["meanNumber"] }}</p>
-          </v-col>
-        </v-row>
-
-        <v-row class="mt-3">
-          <v-col cols="6" class="pt-3">
-            <h3>Tên thuyền trưởng</h3>
-            <p>{{ businessData["captain"] }}</p>
-          </v-col>
-          <v-col cols="6" class="pt-3">
-            <h3>Tên chủ tàu</h3>
-            <p>{{ businessData["ownerName"] }}</p>
-          </v-col>
-        </v-row>
-
-        <v-row>
-          <v-col cols="6" class="pt-0">
-            <h3>Trọng tải đăng ký</h3>
-            <v-row mt="2">
-              <v-col cols="6" class="mt-3">
+          <v-col cols="12" md="6" class="pt-3">
+            <v-row class="mt-0">
+              <v-col cols="12" md="6" class="pt-3 d-flex align-center">
+                <h3>Tên phương tiện:</h3>
+                <p class="ml-3">{{ businessData["meanName"] }}</p>
+              </v-col>
+              <v-col cols="12" md="6" class="pt-3 d-flex align-center">
+                <h3>Số đăng kí:</h3>
+                <p class="ml-3">{{ businessData["meanNumber"] }}</p>
+              </v-col>
+              <v-col cols="12" md="6" class="pt-3 d-flex align-center">
+                <h3>Tên thuyền trưởng:</h3>
+                <p class="ml-3">{{ businessData["captain"] }}</p>
+              </v-col>
+              <v-col cols="12" md="6" class="pt-3 d-flex align-center">
+                <h3>Tên chủ tàu:</h3>
+                <p class="ml-3">{{ businessData["ownerName"] }}</p>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" class="mt-1"> <h3>Trọng tải đăng ký</h3></v-col>
+              <v-col cols="12" md="6" class="mt-2 d-flex align-center">
                 <h4>Đơn vị (tấn)</h4>
-                <p>{{ businessData["tonnage"] }}</p>
+                <p class="ml-3">{{ businessData["tonnage"] }}</p>
               </v-col>
-              <v-col cols="6" class="mt-3">
+              <v-col cols="12" md="6" class="mt-2 d-flex align-center">
                 <h4>Công suất (ghế)</h4>
-                <p>{{ businessData["seats"] }}</p>
+                <p class="ml-3">{{ businessData["seats"] }}</p>
               </v-col>
             </v-row>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6">
-            <h4>Hướng dẫn viên</h4>
-            <v-table class="table-customer mt-2">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>Tên hướng dẫn viên</th>
-                </tr>
-              </thead>
-              <tbody>
-                <template
-                  v-for="(item, index) in businessData['guides']"
-                  :key="item.name + index"
-                >
-                  <tr v-if="item.name && item.name != ''">
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.name }}</td>
-                  </tr>
-                </template>
-              </tbody>
-            </v-table>
-          </v-col>
-          <v-col cols="6">
-            <h4>Nhân viên</h4>
-            <v-table class="table-customer mt-2">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>Tên nhân viên phục vụ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <template
-                  v-for="(item, index) in businessData['shipEmployees']"
-                  :key="item.name + index"
-                >
-                  <tr v-if="item.name && item.name != ''">
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.name }}</td>
-                  </tr>
-                </template>
-              </tbody>
-            </v-table>
-          </v-col>
-        </v-row>
 
-        <v-row class="mt-5">
-          <v-col cols="12" class="pt-0">
-            <h3>Bến tàu</h3>
-            <v-row mt="2">
-              <v-col cols="4" class="mt-3">
-                <h4>Bến rời</h4>
-                <span>{{ businessData["fromStation"] }}</span>
+            <v-row>
+              <v-col cols="12" md="6">
+                <h4>Hướng dẫn viên</h4>
+                <v-table class="table-customer mt-2">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Tên hướng dẫn viên</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template
+                      v-for="(item, index) in businessData['guides']"
+                      :key="item.name + index"
+                    >
+                      <tr v-if="item.name && item.name != ''">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ item.name }}</td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </v-table>
               </v-col>
-              <v-col cols="4" class="mt-3">
-                <h4>Bến đến</h4>
-                <span>{{ businessData["toStation"] }}</span>
+              <v-col cols="12" md="6">
+                <h4>Nhân viên</h4>
+                <v-table class="table-customer mt-2">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Tên nhân viên phục vụ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template
+                      v-for="(item, index) in businessData['shipEmployees']"
+                      :key="item.name + index"
+                    >
+                      <tr v-if="item.name && item.name != ''">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ item.name }}</td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </v-table>
               </v-col>
-              <v-col cols="4">
-                <h4 class="mt-3">Thời gian rời bến</h4>
-                <span>{{ businessData["time"] }}</span>
+            </v-row>
+            <v-row class="mt-5">
+              <v-col cols="12" class="pt-0">
+                <h3>Bến tàu</h3>
+                <v-row mt="2">
+                  <v-col cols="12" md="4" class="mt-3 d-flex align-center">
+                    <h4>Bến rời</h4>
+                    <span class="ml-3">{{ businessData["fromStation"] }}</span>
+                  </v-col>
+                  <v-col cols="12" md="4" class="mt-3 d-flex align-center">
+                    <h4>Bến đến</h4>
+                    <span class="ml-3">{{ businessData["toStation"] }}</span>
+                  </v-col>
+                  <v-col cols="12" md="4" class="mt-3 d-flex align-center">
+                    <h4>Thời gian rời bến</h4>
+                    <span class="ml-3">{{ businessData["time"] }}</span>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" class="pt-0">
+          <v-col cols="12" md="6" class="pt-3">
             <v-table>
               <thead>
                 <tr>
@@ -139,25 +161,35 @@
             </v-table>
           </v-col>
         </v-row>
-        <div
-          class="d-flex flex-row mt-15 button-regis"
-          v-if="
-            businessData.type !== 'reject' && businessData.type !== 'accept'
-          "
-        >
+
+        <v-row>
+          <v-col cols="12" class="pt-0"> </v-col>
+        </v-row>
+        <div class="d-flex flex-row mt-15 button-regis" v-if="disabledAction">
+          <div>
+            <v-btn
+              class="mb-8 mt-5"
+              color="black"
+              variant="elevated"
+              @click="closePopup"
+              style="width: 80px; height: 60px"
+            >
+              Đóng
+            </v-btn>
+          </div>
           <div v-if="isDisable && !isEnterprise">
             <v-btn
-              class="mb-8 mt-5 ml-5"
+              class="mb-8 mt-5 ml-5 button-cta"
               color="error"
-              variant="tonal"
+              variant="elevated"
               @click="denie"
             >
               Từ chối
             </v-btn>
             <v-btn
-              class="mb-8 mt-5 ml-5"
+              class="mb-8 mt-5 ml-5 button-cta"
               color="green"
-              variant="tonal"
+              variant="elevated"
               :disabled="isDisableProcess"
               @click="accepted"
             >
@@ -186,6 +218,12 @@ import {
 } from "@/firebase";
 
 export default {
+  props: {
+    currentId: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       businessData: {} as any,
@@ -196,6 +234,7 @@ export default {
       isDisable: false,
       deniedFlag: false,
       isDisableProcess: true,
+      disabledAction: false,
       isNotReset: true,
       isEnterprise: false,
       process: "Chấp nhận",
@@ -246,12 +285,12 @@ export default {
   methods: {
     init() {
       this.getVehicle();
-      this.formID = this.$route.params.formID;
+      // this.formID = this.$route.params.formID;
+      this.formID = this.currentId;
       this.getformDetail();
       this.isDisable = !_.isEmpty(this.formID);
       this.userRole = this.$store.state?.user?.data?.role;
       this.isEnterprise = this.userRole === "enterprise";
-      this.deniedFlag = this.businessData["type"] === "accept";
       switch (this.userRole) {
         case "manager":
           this.process = "Đang xử lý";
@@ -322,7 +361,7 @@ export default {
       const data = { ...setAPIData, type: "requesting" };
       try {
         addBussinessData(data);
-        this.$router.push("/list");
+        this.resetPopup();
       } catch (err) {
         console.log(err);
       }
@@ -366,6 +405,7 @@ export default {
     },
     async getformDetail(): Promise<void> {
       if (this.formID && this.formID !== "") {
+        this.isNotReset = false;
         this.businessData = await getFormData(this.formID);
         this.created_at = this.businessData["created_at"];
         this.businessData["customers"] = this.businessData["clients"].filter(
@@ -384,6 +424,20 @@ export default {
         );
         this.isDisableProcess =
           theRole?.permission !== this.businessData["type"];
+
+        this.deniedFlag = this.businessData["type"] === "accept";
+        this.disabledAction =
+          this.businessData.type !== "reject" &&
+          this.businessData.type !== "accept";
+        this.businessData["typeConvert"] = this.labelType.find(
+          (label) => label.en === this.businessData.type
+        )?.vi;
+        this.businessData["backgroundColor"] = this.labelType.find(
+          (label) => label.en === this.businessData.type
+        )?.backgroundColor;
+        setTimeout(() => {
+          this.isNotReset = true;
+        }, 500);
       }
     },
     async accepted(): Promise<void> {
@@ -408,20 +462,26 @@ export default {
       const setAPIData = this.handleData();
       const data = { ...setAPIData, type: type };
       await updateFormData(this.formID, data);
-      this.$router.push("/list");
+      this.resetPopup();
     },
     async denie(): Promise<void> {
       const type = "reject";
       const setAPIData = this.handleData();
       const data = { ...setAPIData, type: type };
       await updateFormData(this.formID, data);
-      this.$router.push("/list");
+      this.resetPopup();
     },
     checkDisabled(): boolean {
       return (
         this.businessData["customers"]?.length > 0 &&
         this.businessData["meanName"]
       );
+    },
+    closePopup() {
+      this.$emit("closePopup", this.currentId);
+    },
+    resetPopup() {
+      this.$emit("resetPopup", this.currentId);
     },
   },
   watch: {
@@ -457,6 +517,10 @@ export default {
   margin: "2rem";
   padding: "40px 56px";
 }
+.data-container.form-detail {
+  padding-top: 20px;
+  overflow-y: scroll;
+}
 </style>
 
 <style>
@@ -484,10 +548,26 @@ export default {
   margin-top: 20px;
 }
 .button-regis {
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 .table-customer {
   border: 1px solid #e3e1e1;
+}
+.button-cta {
+  width: 180px;
+  height: 60px !important;
+}
+.header-detail {
+  min-width: 768px;
+}
+@media screen and (max-width: 830px) {
+  .header-detail {
+    min-width: unset;
+    flex-direction: column;
+    padding-right: 40px;
+  }
+  .header-detail .v-btn {
+    margin-left: 0 !important;
+  }
 }
 </style>

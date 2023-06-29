@@ -37,7 +37,7 @@
       <v-btn
         class="mt-8 button-action"
         color="green"
-        variant="tonal"
+        variant="elevated"
         @click="regis"
       >
         Cập nhật Người dùng

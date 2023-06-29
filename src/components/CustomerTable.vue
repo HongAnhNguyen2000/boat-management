@@ -14,6 +14,7 @@
     :height="dataCustomers && dataCustomers.length > 0 ? 'auto' : '56px'"
     mt="2"
     class="customer-table"
+    style="min-width: 1000px"
   >
     <thead>
       <tr>
@@ -45,16 +46,18 @@
               @click="onShowDialog(item.id)"
               :disabled="disabled"
               color="green"
-              >Sửa</v-btn
             >
+              <v-icon icon="mdi-pencil" />
+            </v-btn>
             <v-btn
               class="ml-3"
               color="red"
               variant="outlined"
               @click="deleteCustomer(item.id)"
               :disabled="disabled"
-              >Xoá</v-btn
             >
+              <v-icon icon="mdi-delete" />
+            </v-btn>
           </div>
         </td>
       </tr>

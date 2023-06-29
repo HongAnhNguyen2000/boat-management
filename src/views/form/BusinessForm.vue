@@ -1,5 +1,5 @@
 <template>
-  <div class="data-container">
+  <div class="data-container form-add">
     <v-alert
       v-model="alert"
       close-text="Close Alert"
@@ -12,14 +12,33 @@
         <span>
           {{ messageAlert }}
         </span>
-        >
       </div>
     </v-alert>
-    <div class="grey lighten-4 nft-page create-form-page contentsWrapStyle">
-      <h2>Danh sách hành khách vận tải đường thủy nội địa</h2>
+    <div
+      class="grey lighten-4 nft-page create-form-page contentsWrapStyle"
+      style="position: relative"
+    >
+      <v-btn
+        color="black"
+        variant="elevated"
+        @click="closePopup"
+        style="
+          height: 40px;
+          width: 38px;
+          position: absolute;
+          right: 0;
+          min-width: unset;
+          top: 0;
+        "
+      >
+        <v-icon icon="mdi mdi-close" />
+      </v-btn>
+      <h2 class="header-detail">
+        Danh sách hành khách vận tải đường thủy nội địa
+      </h2>
       <div v-if="isNotReset">
         <v-row>
-          <v-col cols="6" class="pt-3">
+          <v-col md="6" cols="12" class="pt-3">
             <h3>Chọn phương tiện <span style="color: red">*</span></h3>
             <v-select
               :disabled="isDisable"
@@ -34,7 +53,7 @@
           </v-col>
         </v-row>
         <v-row class="mt-5">
-          <v-col cols="8" class="pt-3">
+          <v-col md="8" cols="12" class="pt-3">
             <h3>Tên phương tiện</h3>
             <v-text-field
               class="mt-2"
@@ -44,7 +63,7 @@
               disabled
             ></v-text-field>
           </v-col>
-          <v-col cols="4" class="pt-3">
+          <v-col md="4" cols="12" class="pt-3">
             <h3>Số đăng kí</h3>
             <v-text-field
               class="mt-2"
@@ -57,7 +76,7 @@
         </v-row>
 
         <v-row class="mt-3">
-          <v-col cols="6" class="pt-3">
+          <v-col md="6" cols="12" class="pt-3">
             <h3>Tên thuyền trưởng <span style="color: red">*</span></h3>
             <v-text-field
               class="mt-2"
@@ -66,7 +85,7 @@
               :disabled="isDisable"
             ></v-text-field>
           </v-col>
-          <v-col cols="6" class="pt-3">
+          <v-col md="6" cols="12" class="pt-3">
             <h3>Tên chủ tàu</h3>
 
             <v-text-field
@@ -79,10 +98,10 @@
         </v-row>
 
         <v-row>
-          <v-col cols="6" class="pt-0">
+          <v-col cols="12" md="6" class="pt-0">
             <h3>Trọng tải đăng ký</h3>
             <v-row mt="2">
-              <v-col cols="6" class="mt-3">
+              <v-col cols="12" md="6" class="mt-3">
                 <h4>Đơn vị (tấn)</h4>
                 <v-text-field
                   class="mt-2"
@@ -91,7 +110,7 @@
                   disabled
                 ></v-text-field>
               </v-col>
-              <v-col cols="6" class="mt-3">
+              <v-col cols="12" md="6" class="mt-3">
                 <h4>Công suất (ghế)</h4>
                 <v-text-field
                   class="mt-2"
@@ -104,7 +123,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <h4>Hướng dẫn viên</h4>
             <v-table class="table-customer mt-2">
               <thead>
@@ -153,7 +172,7 @@
               </tbody>
             </v-table>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <h4>Nhân viên</h4>
             <v-table class="table-customer mt-2">
               <thead>
@@ -207,7 +226,7 @@
           <v-col cols="12" class="pt-0">
             <h3>Bến tàu</h3>
             <v-row mt="2">
-              <v-col cols="4" class="mt-3">
+              <v-col cols="12" md="4" class="mt-3">
                 <h4>Bến rời <span style="color: red">*</span></h4>
                 <v-select
                   class="mt-2"
@@ -218,7 +237,7 @@
                   :disabled="isDisable"
                 />
               </v-col>
-              <v-col cols="4" class="mt-3">
+              <v-col cols="12" md="4" class="mt-3">
                 <h4>Bến đến <span style="color: red">*</span></h4>
                 <v-select
                   class="mt-2"
@@ -236,7 +255,7 @@
                   :disabled="isDisable"
                 />
               </v-col>
-              <v-col cols="4">
+              <v-col cols="12" md="4">
                 <h4 class="mt-3">
                   Thời gian rời bến <span style="color: red">*</span>
                 </h4>
@@ -262,34 +281,47 @@
           </v-col>
         </v-row>
         <div class="d-flex flex-row mt-15 button-regis">
-          <v-btn
-            class="mb-8 mt-5"
-            color="green"
-            variant="tonal"
-            @click="regisNewBusinessForm"
-            v-if="isEnterprise"
-            :disabled="isDisable || checkDisabledButton"
-          >
-            Đăng kí
-          </v-btn>
-          <div v-if="isDisable && !isEnterprise">
+          <div>
             <v-btn
-              class="mb-8 mt-5 ml-5"
-              color="primary"
-              variant="tonal"
-              :disabled="isDisableProcess"
-              @click="accepted"
+              class="mb-8 mt-5"
+              color="black"
+              variant="elevated"
+              @click="closePopup"
+              style="width: 80px; height: 60px"
             >
-              {{ process }}
+              Đóng
             </v-btn>
+          </div>
+          <div>
             <v-btn
-              class="mb-8 mt-5 ml-5"
-              color="error"
-              variant="tonal"
-              @click="denie"
+              class="mb-8 mt-5 button-cta"
+              color="green"
+              variant="elevated"
+              @click="regisNewBusinessForm"
+              v-if="isEnterprise"
+              :disabled="isDisable || checkDisabledButton"
             >
-              Từ chối
+              Đăng kí
             </v-btn>
+            <div v-if="isDisable && !isEnterprise">
+              <v-btn
+                class="mb-8 mt-5 ml-5 button-cta"
+                color="primary"
+                variant="elevated"
+                :disabled="isDisableProcess"
+                @click="accepted"
+              >
+                {{ process }}
+              </v-btn>
+              <v-btn
+                class="mb-8 mt-5 ml-5 button-cta"
+                color="error"
+                variant="elevated"
+                @click="denie"
+              >
+                Từ chối
+              </v-btn>
+            </div>
           </div>
         </div>
       </div>
@@ -353,6 +385,7 @@ export default {
         "16:30",
         "17:00",
         "17:30",
+        "23:00",
       ],
     };
   },
@@ -421,13 +454,17 @@ export default {
       ).slice(
         -2
       )}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-      const shipEmployees = [...this.businessData["shipEmployees"]];
+      const shipEmployees = this.businessData["shipEmployees"]
+        ? [...this.businessData["shipEmployees"]]
+        : [];
       if (!_.isEmpty(shipEmployees)) {
         this.businessData["shipEmployees"] = shipEmployees.filter(
           (employee) => employee.name !== ""
         );
       }
-      const guides = [...this.businessData["guides"]];
+      const guides = this.businessData["guides"]
+        ? [...this.businessData["guides"]]
+        : [];
       if (!_.isEmpty(guides)) {
         this.businessData["guides"] = guides.filter(
           (guide) => guide.name !== ""
@@ -471,7 +508,7 @@ export default {
         this.alert = true;
         this.messageAlert = "Bạn tạo bản đăng ký thành công";
         setTimeout(() => {
-          this.$router.push("/list");
+          this.resetPopup();
         }, 2000);
       } else {
         this.colorAlert = "red";
@@ -564,14 +601,14 @@ export default {
       const setAPIData = this.handleData();
       const data = { ...setAPIData, type: type };
       await updateFormData(this.formID, data);
-      this.$router.push("/list");
+      this.closePopup();
     },
     async denie(): Promise<void> {
       const type = "reject";
       const setAPIData = this.handleData();
       const data = { ...setAPIData, type: type };
       await updateFormData(this.formID, data);
-      this.$router.push("/list");
+      this.closePopup();
     },
     checkDisabled() {
       if (this.businessData["shipEmployees"]) {
@@ -618,6 +655,12 @@ export default {
     closeAlert() {
       this.alert = false;
     },
+    resetPopup() {
+      this.$emit("updatePopup");
+    },
+    closePopup() {
+      this.$emit("closePopup");
+    },
   },
   watch: {
     typeofVehicle(newVal): void {
@@ -658,18 +701,30 @@ export default {
   margin: "2rem";
   padding: "40px 56px";
 }
+.data-container.form-add {
+  padding-top: 20px;
+  overflow-y: scroll;
+}
+@media screen and (max-width: 830px) {
+  .data-container.form-add {
+    padding: 10px 20px;
+    margin: 0;
+  }
+}
+.button-cta {
+  width: 180px;
+  height: 60px !important;
+}
+.header-detail {
+  padding-right: 40px;
+}
 </style>
 
 <style>
 .data-container {
   margin: 2rem;
-  padding: 0px 30px 56px 30px;
-}
-@media screen and (max-width: 830px) {
-  .data-container {
-    padding: 0;
-    margin: 2rem;
-  }
+  padding: 56px 30px;
+  background: white;
 }
 
 .create-form-page .v-input__slot {
@@ -685,8 +740,7 @@ export default {
   margin-top: 20px;
 }
 .button-regis {
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 .table-customer {
   border: 1px solid #e3e1e1;

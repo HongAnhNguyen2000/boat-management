@@ -41,6 +41,17 @@ export const checkUser = async (email: any, password: any) => {
   return {};
 };
 
+export const checkUserExist = async (email: any) => {
+  const querySnapshot = await getDocs(usersCollection);
+  const docSnapshots = querySnapshot.docs;
+  for (const doc of docSnapshots) {
+    if (doc.get("email") === email) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const forgotPassword = async (
   email: any,
   phonenumber: any,

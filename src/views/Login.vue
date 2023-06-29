@@ -1,70 +1,71 @@
 <template>
-  <v-app-bar flat>
-    <v-app-bar-title>
-      <v-icon icon="mdi-circle-slice-4" />
-      Quản lý bến tàu
-    </v-app-bar-title>
-  </v-app-bar>
-  <v-alert
-    v-model="alertOut"
-    close-text="Close Alert"
-    :color="alertColor"
-    class="alert-forgot"
-    dark
-    dismissible
-  >
-    <div class="d-flex align-center">
-      <span>
-        {{ messageOut }}
-      </span>
-    </div>
-  </v-alert>
-  <div class="container">
-    <v-card
-      class="mx-auto pa-12 pb-8"
-      elevation="8"
-      max-width="448"
-      rounded="lg"
+  <div class="login-page" style="background: url(../../../public/sea-dock.jpg)">
+    <v-app-bar flat>
+      <v-app-bar-title>
+        <v-icon icon="mdi-circle-slice-4" />
+        Quản lý bến tàu
+      </v-app-bar-title>
+    </v-app-bar>
+    <v-alert
+      v-model="alertOut"
+      close-text="Close Alert"
+      :color="alertColor"
+      class="alert-forgot"
+      dark
+      dismissible
     >
-      <v-alert
-        v-model="alertError"
-        close-text="Close Alert"
-        :color="alertColor"
-        dark
-        dismissible
+      <div class="d-flex align-center">
+        <span>
+          {{ messageOut }}
+        </span>
+      </div>
+    </v-alert>
+    <v-container class="pa-0">
+      <v-card
+        class="mx-auto pa-12 pb-8"
+        elevation="8"
+        max-width="448"
+        rounded="lg"
       >
-        <div class="d-flex align-center">
-          <span>
-            {{ message }}
-          </span>
-        </div>
-      </v-alert>
-      <div class="text-subtitle-1 text-medium-emphasis">Email đăng nhập</div>
-      <v-text-field variant="outlined" placeholder="Email" v-model="email" />
-      <div class="text-subtitle-1 text-medium-emphasis">Mật khẩu</div>
-      <v-text-field
-        variant="outlined"
-        placeholder="Mật khẩu"
-        v-model="password"
-        type="password"
-      />
-      <v-link class="mb-3 text-underline" @click="openPopup()"
-        >Quên mật khẩu</v-link
-      >
-      <v-btn
-        block
-        class="mb-8 mt-3"
-        color="green"
-        size="large"
-        variant="tonal"
-        @click="login()"
-        :disabled="disable"
-      >
-        Đăng nhập
-      </v-btn>
-    </v-card>
+        <v-alert
+          v-model="alertError"
+          close-text="Close Alert"
+          :color="alertColor"
+          dark
+          dismissible
+        >
+          <div class="d-flex align-center">
+            <span>
+              {{ message }}
+            </span>
+          </div>
+        </v-alert>
+        <div class="text-subtitle-1 text-medium-emphasis">Email đăng nhập</div>
+        <v-text-field variant="outlined" placeholder="Email" v-model="email" />
+        <div class="text-subtitle-1 text-medium-emphasis">Mật khẩu</div>
+        <v-text-field
+          variant="outlined"
+          placeholder="Mật khẩu"
+          v-model="password"
+          type="password"
+        />
+        <v-link class="mb-3 text-underline" @click="openPopup()"
+          >Quên mật khẩu</v-link
+        >
+        <v-btn
+          block
+          class="mb-8 mt-3"
+          color="green"
+          size="large"
+          variant="elevated"
+          @click="login()"
+          :disabled="disable"
+        >
+          Đăng nhập
+        </v-btn>
+      </v-card>
+    </v-container>
   </div>
-
   <v-dialog v-model="open" width="auto">
     <v-card>
       <v-card-text
@@ -83,7 +84,7 @@
         <v-btn
           class="mb-8 mt-3"
           color="green"
-          variant="tonal"
+          variant="elevated"
           @click="open = false"
         >
           Đóng
@@ -177,9 +178,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  margin-top: 150px;
-}
 .text-underline {
   text-decoration: underline;
   cursor: pointer;
@@ -195,6 +193,14 @@ export default {
   position: fixed;
   top: 0;
   z-index: 99999;
+  width: auto;
+  right: 0;
+}
+.login-page {
   width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

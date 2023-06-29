@@ -11,11 +11,10 @@
       <span>
         {{ messageAlert }}
       </span>
-      >
     </div>
   </v-alert>
   <div class="data-container" style="max-width: 768px; margin: auto">
-    <h2 class="mb-5">Tạo người dùng mới</h2>
+    <h2 class="mb-5 mt-5">Thêm mới người dùng</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-row>
         <v-col cols="6">
@@ -104,20 +103,20 @@
     <div class="d-flex justify-center align-center">
       <v-btn
         class="mb-8 mt-5"
-        width="150px"
+        width="230px"
         color="green"
-        variant="tonal"
+        variant="elevated"
         :disabled="disabled"
         @click="regis"
       >
-        Tạo Người dùng
+        Thêm mới người dùng
       </v-btn>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { addUser, getInfos } from "@/firebase";
+import { addUser, checkUser, checkUserExist, getInfos } from "@/firebase";
 import _ from "lodash";
 export default {
   data() {
@@ -227,23 +226,34 @@ export default {
         if (this.role === "enterprise") {
           params["infos_id"] = this.company;
         }
-        const actionAddUser = await addUser(params);
-        if (actionAddUser) {
-          this.colorAlert = "green";
-          this.alert = true;
-          this.messageAlert = "Bạn tạo người dùng thành công";
-          setTimeout(() => {
-            this.$router.push("/users");
-          }, 2000);
-        } else {
+        const checkExists: any = await checkUserExist(this.email);
+        console.log(checkExists);
+        if (checkExists) {
           this.colorAlert = "red";
-
           this.alert = true;
           this.messageAlert =
-            "Bạn tạo người dùng không thành công. Xin thử lại";
+            "Bạn thêm mới người dùng không thành công. Xin thử lại";
           setTimeout(() => {
             this.alert = false;
           }, 3000);
+        } else {
+          const actionAddUser = await addUser(params);
+          if (actionAddUser) {
+            this.colorAlert = "green";
+            this.alert = true;
+            this.messageAlert = "Bạn thêm mới người dùng thành công";
+            setTimeout(() => {
+              this.$router.push("/users");
+            }, 2000);
+          } else {
+            this.colorAlert = "red";
+            this.alert = true;
+            this.messageAlert =
+              "Bạn thêm mới người dùng không thành công. Xin thử lại";
+            setTimeout(() => {
+              this.alert = false;
+            }, 3000);
+          }
         }
       }
     },

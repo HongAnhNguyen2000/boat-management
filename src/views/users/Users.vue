@@ -11,7 +11,7 @@
       @click="createUser"
     >
       <v-icon class="white--text mr-2">mdi-plus</v-icon>
-      Tạo người dùng
+      Thêm mới người dùng
     </v-btn>
     <h2 class="mb-5">Danh sách người dùng</h2>
     <v-table class="min-width-table">

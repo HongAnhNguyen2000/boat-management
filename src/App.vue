@@ -85,15 +85,7 @@ export default {
           active: true,
         },
       ];
-      if (role === "enterprise") {
-        this.nav.push({
-          icon: "Đăng kí",
-          text: "Đăng kí",
-          title: "Quay lại trang Form",
-          url: "/form",
-          active: false,
-        });
-      } else if (role === "manager") {
+      if (role === "manager") {
         this.nav.push(
           {
             icon: "Quản lý người dùng",
@@ -113,8 +105,8 @@ export default {
       }
       this.nav.push({
         icon: "Người dùng",
-        text: "Cập nhật Thông tin",
-        title: "Cập nhật Thông tin",
+        text: "Thông tin người dùng",
+        title: "Thông tin người dùng",
         url: "/update-user",
         active: false,
       });

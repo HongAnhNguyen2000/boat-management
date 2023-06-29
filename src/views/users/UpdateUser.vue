@@ -11,11 +11,10 @@
       <span>
         {{ messageAlert }}
       </span>
-      >
     </div>
   </v-alert>
   <div class="data-container" style="max-width: 768px; margin: auto">
-    <h2 class="mb-5">Cập nhật người dùng</h2>
+    <h2 class="mb-5 mt-5">Cập nhật người dùng</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-row>
         <v-col cols="6">
@@ -109,7 +108,7 @@
       class="mb-8"
       color="green"
       size="large"
-      variant="tonal"
+      variant="elevated"
       :disabled="disabled"
       @click="regis"
     >
