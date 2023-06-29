@@ -176,7 +176,6 @@ export default {
   },
   watch: {
     role(newVal) {
-      console.log("new", newVal);
       this.isEnterprise = newVal === "enterprise";
       if (newVal && this.labelType?.length > 0) {
         this.role = this.labelType.find((item) => item.en === newVal)?.en;

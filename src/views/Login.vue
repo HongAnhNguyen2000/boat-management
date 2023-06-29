@@ -17,7 +17,6 @@
       <span>
         {{ messageOut }}
       </span>
-      >
     </div>
   </v-alert>
   <div class="container">
@@ -38,7 +37,6 @@
           <span>
             {{ message }}
           </span>
-          >
         </div>
       </v-alert>
       <div class="text-subtitle-1 text-medium-emphasis">Email đăng nhập</div>

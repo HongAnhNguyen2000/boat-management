@@ -10,7 +10,8 @@
       label="Tìm kiếm"
       variant="outlined"
       hide-details
-    ></v-text-field>
+      class="search-box"
+    />
 
     <v-table class="min-width-table mt-3">
       <thead>
@@ -647,5 +648,12 @@ export default {
     padding: 0;
     margin: 2rem;
   }
+}
+</style>
+
+<style>
+.search-box input[type="text"] {
+  min-height: auto;
+  padding: 10px;
 }
 </style>
