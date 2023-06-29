@@ -24,83 +24,88 @@
   <div class="data-container" style="max-width: 768px; margin: auto">
     <h2 class="mb-5">Tạo người dùng mới</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
-      <v-text-field
-        variant="outlined"
-        placeholder="Email*"
-        label="Email*"
-        v-model="email"
-        :rules="[rules.required, rules.email]"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Tên*"
-        label="Tên*"
-        v-model="name"
-        :rules="[rules.required]"
-        class="mt-3"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Số điện thoại*"
-        label="Số điện thoại*"
-        v-model="phonenumber"
-        :rules="[rules.required, rules.phonenumber]"
-        class="mt-3"
-      />
-      <div>
-        <h3>Chọn vai trò</h3>
-        <v-select
-          class="mt-2"
-          label="Vai trò người dùng"
-          :items="labelType"
-          v-model="role"
-          item-value="en"
-          item-text="vi"
-          item-title="vi"
-          variant="solo"
-        />
-      </div>
-      <div v-if="isEnterprise">
-        <h3>Chọn công ty</h3>
-        <v-select
-          class="mt-2"
-          label="Công ty"
-          :items="companies"
-          item-value="id"
-          item-text="company"
-          item-title="company"
-          v-model="company"
-          variant="solo"
-        />
-      </div>
-      <v-text-field
-        variant="outlined"
-        placeholder="Mật khẩu mới"
-        type="password"
-        v-model="newPassword"
-        :rules="passwordRules"
-        class="mt-3"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Nhập lại mật khẩu"
-        type="password"
-        :rules="confirmPasswordRules"
-        v-model="newPasswordRepeat"
-        class="mt-3"
-      />
+      <v-row>
+        <v-col cols="6">
+          <h4>Email <span style="color: red">*</span></h4>
+          <v-text-field
+            variant="outlined"
+            v-model="email"
+            :rules="[rules.required, rules.email]"
+          />
+        </v-col>
+        <v-col cols="6">
+          <h4>Số điện thoại <span style="color: red">*</span></h4>
+          <v-text-field
+            variant="outlined"
+            v-model="phonenumber"
+            :rules="[rules.required, rules.phonenumber]"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="6">
+          <h4>Chọn vai trò</h4>
+          <v-select
+            label="Vai trò người dùng"
+            :items="labelType"
+            v-model="role"
+            item-value="en"
+            item-text="vi"
+            item-title="vi"
+            variant="solo"
+          />
+        </v-col>
+        <v-col cols="6">
+          <h4>Chọn công ty</h4>
+          <v-select
+            label="Công ty"
+            :items="companies"
+            item-value="id"
+            item-text="company"
+            item-title="company"
+            v-model="company"
+            variant="solo"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="6">
+          <h4>Mật khẩu mới</h4>
+
+          <v-text-field
+            variant="outlined"
+            placeholder="Mật khẩu mới"
+            type="password"
+            v-model="newPassword"
+            :rules="passwordRules"
+          />
+        </v-col>
+        <v-col cols="6">
+          <h4>Nhập lại mật khẩu</h4>
+          <v-text-field
+            variant="outlined"
+            placeholder="Nhập lại mật khẩu"
+            type="password"
+            :rules="confirmPasswordRules"
+            v-model="newPasswordRepeat"
+          />
+        </v-col>
+      </v-row>
     </div>
-    <v-btn
-      block
-      class="mb-8"
-      color="green"
-      size="large"
-      variant="tonal"
-      :disabled="disabled"
-      @click="regis"
-    >
-      Tạo Người dùng
-    </v-btn>
+    <div class="d-flex justify-center align-center">
+      <v-btn
+        class="mb-8 mt-5"
+        width="150px"
+        color="green"
+        variant="tonal"
+        :disabled="disabled"
+        @click="regis"
+      >
+        Tạo Người dùng
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -244,5 +249,10 @@ export default {
 .data-container {
   margin: 2rem;
   padding: 40px 56px;
+}
+@media screen and (max-width: 830px) {
+  .data-container {
+    padding: 0;
+  }
 }
 </style>

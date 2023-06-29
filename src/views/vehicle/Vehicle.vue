@@ -22,9 +22,7 @@
       </p>
       <p class="mt-3">
         <span> Trọng tải: </span>
-        <span>
-          {{ tonnage }} tấn
-        </span>
+        <span> {{ tonnage }} tấn </span>
       </p>
       <p class="mt-3">
         <span> Công suất: </span>
@@ -101,20 +99,20 @@ export default {
         this.$router.push("/vehicles");
       } else {
         const vehicleDetail = await getVehicle(this.vehicle_id);
-        this.registrationNumber = vehicleDetail['registration-number']
-        this.name = vehicleDetail['name']
-        this.vehicleOwner = vehicleDetail['vehicle-owner']
-        this.tonnage = vehicleDetail['tonnage']
-        this.wattage = vehicleDetail['wattage']
-        this.yearManufacture = vehicleDetail['year-manufacture']
-        this.type = vehicleDetail['type']
-        this.insuranceDeadline = vehicleDetail['insurance-deadline']
-        this.company = await this.getCompany(vehicleDetail['infos_id'])
+        this.registrationNumber = vehicleDetail["registration-number"];
+        this.name = vehicleDetail["name"];
+        this.vehicleOwner = vehicleDetail["vehicle-owner"];
+        this.tonnage = vehicleDetail["tonnage"];
+        this.wattage = vehicleDetail["wattage"];
+        this.yearManufacture = vehicleDetail["year-manufacture"];
+        this.type = vehicleDetail["type"];
+        this.insuranceDeadline = vehicleDetail["insurance-deadline"];
+        this.company = await this.getCompany(vehicleDetail["infos_id"]);
       }
     },
-    async getCompany(infos_id){
-      const company = await getInfo(infos_id)
-      return company ? company.company : ''
+    async getCompany(infos_id) {
+      const company = await getInfo(infos_id);
+      return company ? company.company : "";
     },
   },
 };
@@ -134,6 +132,12 @@ p {
   display: flex;
   flex-direction: column;
 }
+@media screen and (max-width: 830px) {
+  .data-container {
+    padding: 0;
+  }
+}
+
 .button-action {
 }
 </style>

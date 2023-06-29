@@ -428,6 +428,12 @@ export default {
   margin: 2rem;
   padding: 40px 56px;
 }
+@media screen and (max-width: 830px) {
+  .data-container {
+    padding: 0;
+  }
+}
+
 .create-form-page .v-input__slot {
   min-height: 45px !important;
 }

@@ -70,7 +70,8 @@ export default {
     };
   },
   created() {
-    this.user_id = this.$route.params.userID ?? this.$store.state?.user?.data.id;
+    this.user_id =
+      this.$route.params.userID ?? this.$store.state?.user?.data.id;
     this.getUser();
     this.getInfo();
   },
@@ -92,7 +93,7 @@ export default {
       const company = companies.find(
         (company: any) => company.id === this.infos_id
       );
-      this.company = company ? company.company : ''
+      this.company = company ? company.company : "";
     },
   },
 };
@@ -102,6 +103,12 @@ export default {
   margin: 2rem;
   padding: 40px 56px;
 }
+@media screen and (max-width: 830px) {
+  .data-container {
+    padding: 0;
+  }
+}
+
 p span:first-child {
   width: 140px;
 }

@@ -8,14 +8,14 @@
   <v-alert
     v-model="alertOut"
     close-text="Close Alert"
-    color="deep-purple accent-4 mb-5"
+    :color="alertColor"
     class="alert-forgot"
     dark
     dismissible
   >
     <div class="d-flex align-center">
       <span>
-        {{messageOut}}
+        {{ messageOut }}
       </span>
       <v-btn
         color="white"
@@ -37,8 +37,7 @@
       <v-alert
         v-model="alertError"
         close-text="Close Alert"
-        color="red accent-4 mb-5"
-        class="alert-forgot"
+        :color="alertColor"
         dark
         dismissible
       >
@@ -121,7 +120,7 @@ export default {
     disable: true,
     message: "",
     messageOut: "Bạn vừa mới đăng xuất thành công.",
-
+    alertColor: "",
     alertError: false,
     alertOut: false,
     open: false,
@@ -137,7 +136,9 @@ export default {
   },
   created(): void {
     this.getUsers();
-    if(this.$store.state.user.justLogOut){
+    if (this.$store.state.user.justLogOut) {
+      this.alertColor = "green";
+
       this.alertOut = true;
       setTimeout(() => {
         this.alertOut = false;
@@ -150,8 +151,10 @@ export default {
       const loginVal = { email: this.email, password: this.password };
       const loggedIn = await this.$store.dispatch("logIn", loginVal);
       if (loggedIn) {
+        this.alertColor = "green";
         this.alertOut = true;
-        this.messageOut = "Bạn đăng nhập thành công xin đợi giây lát để chuyển trang";
+        this.messageOut =
+          "Bạn đăng nhập thành công xin đợi giây lát để chuyển trang";
         setTimeout(() => {
           if (this.$store.state.user.loggedIn) {
             this.$router.push("list");
@@ -160,6 +163,7 @@ export default {
         }, 1000);
       } else {
         this.alertError = true;
+        this.alertColor = "red";
         this.message = "Bạn đăng nhập sai xin mời thử lại";
         setTimeout(() => {
           this.alertError = false;
@@ -205,5 +209,12 @@ export default {
   color: green;
   text-decoration: none;
   margin-top: 15px;
+}
+
+.alert-forgot {
+  position: fixed;
+  top: 0;
+  z-index: 99999;
+  width: 100%;
 }
 </style>
