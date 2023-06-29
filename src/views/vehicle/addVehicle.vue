@@ -44,7 +44,55 @@
         </v-col>
       </v-row>
 
-      <v-row class="mt-3 mb-8">
+      <v-row>
+        <v-col cols="6">
+          <v-row>
+            <v-col cols="4">
+              <h4>Trọng tải <span style="color: red">*</span></h4>
+
+              <v-text-field
+                variant="outlined"
+                v-model="vehicle.tonnage"
+                :rules="[rules.required, rules.isNumber]"
+              />
+            </v-col>
+            <v-col cols="4">
+              <h4>Công suất <span style="color: red">*</span></h4>
+
+              <v-text-field
+                variant="outlined"
+                v-model="vehicle.wattage"
+                :rules="[rules.required, rules.isNumber]"
+              />
+            </v-col>
+            <v-col cols="4">
+              <h4>
+                Năm sản xuất
+                <span style="color: red">*</span>
+              </h4>
+              <vue-date-picker
+                v-model="vehicle.yearManufacture"
+                locale="vi"
+                format="yyyy"
+                year-picker
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="6">
+          <h4>Chọn công ty <span style="color: red">*</span></h4>
+          <v-select
+            :items="companies"
+            item-value="id"
+            item-text="company"
+            item-title="company"
+            v-model="vehicle.infosId"
+            variant="solo"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row>
         <v-col cols="6">
           <h4>Hạn bảo hiểm <span style="color: red">*</span></h4>
 
@@ -63,34 +111,11 @@
           />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="6">
-          <h4>Trọng tải <span style="color: red">*</span></h4>
-
-          <v-text-field
-            variant="outlined"
-            v-model="vehicle.tonnage"
-            :rules="[rules.required, rules.isNumber]"
-          />
-        </v-col>
-        <v-col cols="6">
-          <h4>
-            Công suất
-            <span style="color: red">*</span>
-          </h4>
-          <v-text-field
-            variant="outlined"
-            v-model="vehicle.wattage"
-            :rules="[rules.required, rules.isNumber]"
-          />
-        </v-col>
-      </v-row>
 
       <v-row>
         <v-col cols="6">
           <h4>
             Loại phương tiện
-
             <span style="color: red">*</span>
           </h4>
 
@@ -109,32 +134,6 @@
             variant="outlined"
             v-model="vehicle.vehicleOwner"
             :rules="[rules.required]"
-          />
-        </v-col>
-      </v-row>
-
-      <v-row>
-        <v-col cols="6">
-          <h4>
-            Năm sản xuất
-            <span style="color: red">*</span>
-          </h4>
-          <vue-date-picker
-            v-model="vehicle.yearManufacture"
-            locale="vi"
-            format="yyyy"
-            year-picker
-          />
-        </v-col>
-        <v-col cols="6">
-          <h4>Chọn công ty <span style="color: red">*</span></h4>
-          <v-select
-            :items="companies"
-            item-value="id"
-            item-text="company"
-            item-title="company"
-            v-model="vehicle.infosId"
-            variant="solo"
           />
         </v-col>
       </v-row>
