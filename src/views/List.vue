@@ -176,11 +176,9 @@ export default {
     searchBy(value: string) {
       const returnSearched = [...this.listBussinessData].filter((obj) =>
         Object.values(obj).some((val) => {
-          if (typeof val === "string") {
-            return val.includes(value);
-          } else {
-            return String(val).includes(value);
-          }
+          return JSON.stringify(val)
+            .toLowerCase()
+            .includes(value.toString().toLowerCase());
         })
       );
       this.showListBussinessData = returnSearched;
