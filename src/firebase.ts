@@ -84,7 +84,6 @@ export const getUsers = async () => {
   for (const doc of querySnapshot.docs) {
     list.push({ ...doc.data(), id: doc.id });
   }
-  console.log(list);
   return list ?? [];
 };
 
@@ -137,12 +136,13 @@ export const getVehicle = async (id: string) => {
 export const updateVehicle = async (id: string, data: any) => {
   let result = false;
   const docRef = doc(db, "vehicle", id);
-  await setDoc(docRef, data).then(() => {
-    result = true;
-  })
-  .catch((error) => {
-    result = false;
-  });
+  await setDoc(docRef, data)
+    .then(() => {
+      result = true;
+    })
+    .catch((error) => {
+      result = false;
+    });
   return result;
 };
 
@@ -176,7 +176,8 @@ export const getInfo = async (id: string) => {
 export const addVehicle = async (params: any) => {
   let result = false;
 
-  await addDoc(vehicleCollection, params).then(() => {
+  await addDoc(vehicleCollection, params)
+    .then(() => {
       result = true;
     })
     .catch((error) => {

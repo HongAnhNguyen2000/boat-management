@@ -13,20 +13,19 @@
         <v-container>
           <v-row>
             <v-col cols="6" sm="6" md="6" class="name-field">
+              <h4>Họ tên khách hàng <span style="color: red">*</span></h4>
               <v-text-field
                 variant="outlined"
-                label="Họ tên khách hàng*"
-                placeholder="Họ tên khách hàng*"
                 v-model="customerData['name']"
                 required
                 :rules="[rules.required, rules.counter]"
               />
             </v-col>
             <v-col cols="6" sm="6" md="6" class="birth-field">
+              <h4>Năm sinh <span style="color: red">*</span></h4>
+
               <v-text-field
                 variant="outlined"
-                label="Năm sinh*"
-                placeholder="Năm sinh*"
                 v-model="customerData['birthYear']"
                 required
                 :rules="[rules.required, rules.counterBirth, rules.isNumber]"
@@ -35,34 +34,40 @@
           </v-row>
 
           <v-row>
-            <v-text-field
-              label="CCCD"
-              variant="outlined"
-              v-model="customerData['cardId']"
-              required
-            />
+            <v-col cols="6" sm="6" md="6" class="name-field">
+              <h4>Căn cước công dân</h4>
+              <v-text-field
+                label="CCCD"
+                variant="outlined"
+                v-model="customerData['cardId']"
+                required
+              />
+            </v-col>
+            <v-col cols="6" sm="6" md="6" class="birth-field">
+              <h4>Nơi tạm trú</h4>
+              <v-text-field
+                variant="outlined"
+                v-model="customerData['place']"
+                required
+              />
+            </v-col>
           </v-row>
           <v-row>
-            <v-text-field
-              label="Nơi tạm trú"
-              variant="outlined"
-              v-model="customerData['place']"
-              required
-            />
-          </v-row>
-          <v-row>
-            <v-text-field
-              label="Ghi chú"
-              variant="outlined"
-              v-model="customerData['note']"
-              required
-            />
+            <v-col cols="12" class="note-field">
+              <h4>Ghi chú</h4>
+              <v-text-field
+                label="Ghi chú"
+                variant="outlined"
+                v-model="customerData['note']"
+                required
+              />
+            </v-col>
           </v-row>
           <v-row>
             <v-col cols="6" class="name-field">
               <v-select
                 :items="['Nam', 'Nữ']"
-                label="Giới tính*"
+                label="Giới tính *"
                 v-model="customerData['gender']"
                 required
                 :rules="[rules.required]"
@@ -71,7 +76,7 @@
             <v-col cols="6" class="birth-field">
               <v-select
                 :items="['Việt Nam', 'Nước ngoài']"
-                label="Quốc tịch*"
+                label="Quốc tịch *"
                 required
                 v-model="customerData['nation']"
                 :rules="[rules.required]"
@@ -82,9 +87,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red" variant="text" @click="onClosePopUp">
-          đóng
-        </v-btn>
+        <v-btn color="red" variant="text" @click="onClosePopUp"> đóng </v-btn>
         <v-btn
           color="green"
           variant="text"
@@ -196,5 +199,8 @@ export default {
 }
 .birth-field {
   padding-right: 0 !important;
+}
+.note-field {
+  padding: 0;
 }
 </style>

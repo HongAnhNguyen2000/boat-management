@@ -3,6 +3,7 @@
     v-model="alert"
     close-text="Close Alert"
     class="alert-forgot"
+    :color="alertColor"
     dark
     dismissible
   >
@@ -149,6 +150,7 @@ export default {
       message: "",
       newPassword: "",
       newPasswordRepeat: "",
+      colorAlert: "",
       messageAlert: "",
       alert: false,
       alertColor: "",

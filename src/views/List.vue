@@ -167,11 +167,6 @@ export default {
     async onGenPDF(formId: string): Promise<void> {
       const businessData = await getFormData(formId);
       const dateCreatedAt = moment(businessData["created_at"]);
-      console.log(
-        "date created at",
-        isNaN(dateCreatedAt.date()),
-        dateCreatedAt.date()
-      );
       const employees = businessData["clients"].filter(
         (item) => item.type === "employee"
       );

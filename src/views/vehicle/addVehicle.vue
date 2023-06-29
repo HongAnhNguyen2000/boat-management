@@ -2,7 +2,7 @@
   <v-alert
     v-model="alert"
     close-text="Close Alert"
-    color="deep-purple accent-4"
+    :color="colorAlert"
     class="alert-forgot"
     dark
     dismissible
@@ -171,6 +171,7 @@ export default {
   data() {
     return {
       dialog: false,
+      colorAlert: "",
       nav: [
         {
           icon: "Regis Form",
@@ -262,12 +263,15 @@ export default {
       }
       const actionAddVehicle = await addVehicle(params);
       if (actionAddVehicle) {
+        this.colorAlert = "green";
         this.alert = true;
         this.messageAlert = "Bạn tạo phương tiện thành công";
         setTimeout(() => {
           this.$router.push("/vehicles");
         }, 2000);
       } else {
+        this.colorAlert = "red";
+
         this.alert = true;
         this.messageAlert = "Bạn tạo phương tiện không thành công. Xin thử lại";
         setTimeout(() => {

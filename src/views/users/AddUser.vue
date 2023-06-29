@@ -2,7 +2,7 @@
   <v-alert
     v-model="alert"
     close-text="Close Alert"
-    color="deep-purple accent-4"
+    :color="colorAlert"
     class="alert-forgot"
     dark
     dismissible
@@ -135,6 +135,7 @@ export default {
       message: "",
       newPassword: "",
       newPasswordRepeat: "",
+      colorAlert: "",
       isEnterprise: true,
       messageAlert: "",
       alert: false,
@@ -217,12 +218,15 @@ export default {
         }
         const actionAddUser = await addUser(params);
         if (actionAddUser) {
+          this.colorAlert = "green";
           this.alert = true;
           this.messageAlert = "Bạn tạo người dùng thành công";
           setTimeout(() => {
             this.$router.push("/users");
           }, 2000);
         } else {
+          this.colorAlert = "red";
+
           this.alert = true;
           this.messageAlert =
             "Bạn tạo người dùng không thành công. Xin thử lại";

@@ -3,8 +3,8 @@
     <v-alert
       v-model="alert"
       close-text="Close Alert"
-      color="deep-purple accent-4"
       class="alert-forgot"
+      :color="colorAlert"
       dark
       dismissible
     >
@@ -27,7 +27,7 @@
       <div v-if="isNotReset">
         <v-row>
           <v-col cols="6" class="pt-3">
-            <h3>Chọn phương tiện*</h3>
+            <h3>Chọn phương tiện <span style="color: red">*</span></h3>
             <v-select
               :disabled="isDisable"
               class="mt-2"
@@ -65,11 +65,10 @@
 
         <v-row class="mt-3">
           <v-col cols="6" class="pt-3">
-            <h3>Tên thuyền trưởng*</h3>
+            <h3>Tên thuyền trưởng <span style="color: red">*</span></h3>
             <v-text-field
               class="mt-2"
               variant="outlined"
-              placeholder="Tên thuyền trưởng*"
               v-model="businessData['captain']"
               :disabled="isDisable"
             ></v-text-field>
@@ -217,7 +216,7 @@
             <h3>Bến tàu</h3>
             <v-row mt="2">
               <v-col cols="4" class="mt-3">
-                <h4>Bến rời*</h4>
+                <h4>Bến rời <span style="color: red">*</span></h4>
                 <v-select
                   class="mt-2"
                   label="Bến rời*"
@@ -228,7 +227,7 @@
                 />
               </v-col>
               <v-col cols="4" class="mt-3">
-                <h4>Bến đến*</h4>
+                <h4>Bến đến <span style="color: red">*</span></h4>
                 <v-select
                   class="mt-2"
                   label="Bến đến*"
@@ -246,7 +245,9 @@
                 />
               </v-col>
               <v-col cols="4">
-                <h4 class="mt-3">Thời gian rời bến*</h4>
+                <h4 class="mt-3">
+                  Thời gian rời bến <span style="color: red">*</span>
+                </h4>
                 <v-select
                   class="mt-2"
                   label="Thời gian rời bến*"
@@ -335,6 +336,7 @@ export default {
       isDisableAddNewGuide: false,
       process: "Chấp nhận",
       messageAlert: "",
+      colorAlert: "",
       alert: false,
       userRole: this.$store.state?.user?.data?.role,
       roleSameChange: [
@@ -474,12 +476,14 @@ export default {
       const data = { ...setAPIData, type: "requesting" };
       const createForm = await addBussinessData(data);
       if (createForm) {
+        this.colorAlert = "green";
         this.alert = true;
         this.messageAlert = "Bạn tạo bản đăng ký thành công";
         setTimeout(() => {
           this.$router.push("/list");
         }, 2000);
       } else {
+        this.colorAlert = "red";
         this.alert = true;
         this.messageAlert = "Bạn tạo bản đăng ký không thành công. Xin thử lại";
         setTimeout(() => {
@@ -507,6 +511,7 @@ export default {
       this.businessData["shipEmployees"] = this.businessData[
         "shipEmployees"
       ].filter((item) => item.id !== id);
+      this.checkDisabled();
     },
     onAddNewGuide(): void {
       const newGuide = {
@@ -523,6 +528,7 @@ export default {
       this.businessData["guides"] = this.businessData["guides"].filter(
         (item) => item.id !== id
       );
+      this.checkDisabled();
     },
     async getformDetail(): Promise<void> {
       if (this.formID && this.formID !== "") {
@@ -585,14 +591,24 @@ export default {
         const shipEmployees = JSON.parse(
           JSON.stringify(this.businessData["shipEmployees"])
         );
-        this.isDisableAddNewEmployee =
-          shipEmployees[shipEmployees.length - 1].name === "";
+        this.isDisableAddNewEmployee = false;
+        if (this.businessData["shipEmployees"]?.length > 0) {
+          this.isDisableAddNewEmployee =
+            shipEmployees[shipEmployees.length - 1].name === "";
+        }
       }
       if (this.businessData["guides"]) {
         const guides = JSON.parse(JSON.stringify(this.businessData["guides"]));
-        this.isDisableAddNewGuide = guides[guides.length - 1].name === "";
+
+        this.isDisableAddNewGuide = false;
+        if (this.businessData["guides"]?.length > 0) {
+          this.isDisableAddNewGuide = guides[guides.length - 1].name === "";
+        }
       }
-      if (this.businessData["customers"]) {
+      if (
+        this.businessData["customers"] &&
+        this.businessData["customers"]?.length > 0
+      ) {
         const customer = JSON.parse(
           JSON.stringify(this.businessData["customers"])
         );

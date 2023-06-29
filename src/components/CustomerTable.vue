@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-row add-new-customer">
-    <h3>Danh sách hành khách*</h3>
+    <h3>Danh sách hành khách <span style="color: red">*</span></h3>
     <v-btn
       variant="outlined"
       color="green"
@@ -40,21 +40,21 @@
         <td>{{ item.note }}</td>
         <td>
           <div class="d-flex">
-          <v-btn
-            variant="outlined"
-            @click="onShowDialog(item.id)"
-            :disabled="disabled"
-            color="green"
-            >Sửa</v-btn
-          >
-          <v-btn
-            class="ml-3"
-            color="red"
-            variant="outlined"
-            @click="deleteCustomer(item.id)"
-            :disabled="disabled"
-            >Xoá</v-btn
-          >
+            <v-btn
+              variant="outlined"
+              @click="onShowDialog(item.id)"
+              :disabled="disabled"
+              color="green"
+              >Sửa</v-btn
+            >
+            <v-btn
+              class="ml-3"
+              color="red"
+              variant="outlined"
+              @click="deleteCustomer(item.id)"
+              :disabled="disabled"
+              >Xoá</v-btn
+            >
           </div>
         </td>
       </tr>

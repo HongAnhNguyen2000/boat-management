@@ -1,8 +1,8 @@
 <template>
-    <v-alert
+  <v-alert
     v-model="alert"
     close-text="Close Alert"
-    color="deep-purple accent-4"
+    :color="colorAlert"
     class="alert-forgot"
     dark
     dismissible
@@ -40,27 +40,30 @@
         class="mt-3"
       />
       <div class="mt-3 mb-8">
-        <date-picker 
-          v-model="vehicle.insuranceDeadline" 
+        <date-picker
+          v-model="vehicle.insuranceDeadline"
           locale="vi"
           format="dd/MM/yyyy"
-          placeholder="Hạn bảo hiểm*" 
-          label="Hạn bảo hiểm*" 
-          
-          auto-apply partial-flow :flow="['calendar']"
+          placeholder="Hạn bảo hiểm*"
+          label="Hạn bảo hiểm*"
+          auto-apply
+          partial-flow
+          :flow="['calendar']"
         />
-      </div> 
+      </div>
       <div class="mt-3 mb-8">
-        <date-picker 
-          v-model="vehicle.registrationDeadline" 
+        <date-picker
+          v-model="vehicle.registrationDeadline"
           locale="vi"
           format="dd/MM/yyyy"
-          placeholder="Hạn đăng kiểm*" 
-          label="Hạn đăng kiểm*" 
+          placeholder="Hạn đăng kiểm*"
+          label="Hạn đăng kiểm*"
           class="mt-3"
-          auto-apply partial-flow :flow="['calendar']"
+          auto-apply
+          partial-flow
+          :flow="['calendar']"
         />
-      </div> 
+      </div>
       <v-text-field
         variant="outlined"
         placeholder="Hạn bảo hiểm*"
@@ -151,6 +154,7 @@ export default {
   data() {
     return {
       dialog: false,
+      colorAlert: "",
       nav: [
         {
           icon: "Regis Form",
@@ -233,39 +237,38 @@ export default {
         "year-manufacture": this.vehicle["yearManufacture"],
         infos_id: this.vehicle["infosId"],
       };
-      if(this.vehicle["registrationDeadline"]){
+      if (this.vehicle["registrationDeadline"]) {
         const now = new Date(this.vehicle["registrationDeadline"]);
-        params["registration-deadline"] = `${("0" + now.getDate()).slice(-2)}/${(
-          "0" +
-          (now.getMonth() + 1)
-        ).slice(
+        params["registration-deadline"] = `${("0" + now.getDate()).slice(
           -2
-        )}/${now.getFullYear()}`;
+        )}/${("0" + (now.getMonth() + 1)).slice(-2)}/${now.getFullYear()}`;
       }
-      if(this.vehicle["insuranceDeadline"]){
+      if (this.vehicle["insuranceDeadline"]) {
         const now = new Date(this.vehicle["insuranceDeadline"]);
-         params["insurance-deadline"] = `${("0" + now.getDate()).slice(-2)}/${(
+        params["insurance-deadline"] = `${("0" + now.getDate()).slice(-2)}/${(
           "0" +
           (now.getMonth() + 1)
-        ).slice(
-          -2
-        )}/${now.getFullYear()}`;
+        ).slice(-2)}/${now.getFullYear()}`;
       }
       const actionUpdateVehicle = await updateVehicle(this.vehicle_id, params);
       if (actionUpdateVehicle) {
-          this.alert = true;
-          this.messageAlert = "Bạn cập nhật phương tiện thành công";
-          setTimeout(() => {
-            this.$router.push("/vehicles");
-          }, 2000);
-        } else {
-          this.alert = true;
-          this.messageAlert =
-            "Bạn cập nhật phương tiện không thành công. Xin thử lại";
-          setTimeout(() => {
-            this.alert = false;
-          }, 3000);
-        }
+        this.colorAlert = "green";
+
+        this.alert = true;
+        this.messageAlert = "Bạn cập nhật phương tiện thành công";
+        setTimeout(() => {
+          this.$router.push("/vehicles");
+        }, 2000);
+      } else {
+        this.colorAlert = "red";
+
+        this.alert = true;
+        this.messageAlert =
+          "Bạn cập nhật phương tiện không thành công. Xin thử lại";
+        setTimeout(() => {
+          this.alert = false;
+        }, 3000);
+      }
     },
     async getVehicle(): Promise<void> {
       if (_.isEmpty(this.vehicle_id)) {
@@ -306,6 +309,9 @@ export default {
   margin: 2rem;
   padding: 40px 56px;
 }
-@media screen and (max-width: 830px) { .data-container { padding: 0; } }
-
+@media screen and (max-width: 830px) {
+  .data-container {
+    padding: 0;
+  }
+}
 </style>
