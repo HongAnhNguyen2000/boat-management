@@ -98,7 +98,7 @@
       <div class="d-flex justify-center align-center">
         <v-btn
           class="mb-8 mt-3"
-          color="black"
+          color="green"
           variant="tonal"
           @click="open = false"
         >
@@ -165,9 +165,6 @@ export default {
         this.alertError = true;
         this.alertColor = "red";
         this.message = "Bạn đăng nhập sai xin mời thử lại";
-        setTimeout(() => {
-          this.alertError = false;
-        }, 3000);
       }
     },
     async getUsers() {
@@ -210,7 +207,6 @@ export default {
   text-decoration: none;
   margin-top: 15px;
 }
-
 .alert-forgot {
   position: fixed;
   top: 0;
