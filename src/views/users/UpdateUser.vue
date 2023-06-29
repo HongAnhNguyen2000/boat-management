@@ -65,7 +65,7 @@
           />
         </v-col>
       </v-row>
-      <v-row v-if="currentRole !== 'enterprise' && role.en === 'enterprise'">
+      <v-row v-if="currentRole !== 'enterprise' && role === 'enterprise'">
         <v-col cols="6">
           <h4>Chọn công ty</h4>
           <v-select
@@ -143,7 +143,7 @@ export default {
       phonenumber: "",
       infos_id: "",
       company: "",
-      role: {} as any,
+      role: "" as any,
       currentRole: "",
       companies: [] as any,
       user_id: "" as any,
@@ -236,7 +236,7 @@ export default {
         password: this.password,
         phonenumber: this.phonenumber,
         infos_id: this.infos_id,
-        role: this.role.en,
+        role: this.role,
       };
       const actionUpdateUser = await updateUser(this.user_id, params);
       if (actionUpdateUser) {
@@ -264,7 +264,9 @@ export default {
       this.password = userDetail.password;
       this.phonenumber = userDetail.phonenumber;
       this.infos_id = userDetail.infos_id;
-      this.role = this.labelType.find((label) => label.en === userDetail.role);
+      this.role = this.labelType.find(
+        (label) => label.en === userDetail.role
+      )?.en;
       this.getInfo();
     },
     async getInfo(): Promise<void> {
@@ -283,7 +285,7 @@ export default {
 <style scoped>
 .data-container {
   margin: 2rem;
-  padding: 40px 56px;
+  padding: 0px 30px 56px 30px;
 }
 @media screen and (max-width: 830px) {
   .data-container {

@@ -24,113 +24,123 @@
   <div class="data-container">
     <h2 class="mb-5">Cập nhật phương tiện</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
-      <v-text-field
-        variant="outlined"
-        placeholder="Tên phương tiện*"
-        label="Tên phương tiện*"
-        v-model="vehicle.name"
-        :rules="[rules.required]"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Số đăng ký*"
-        label="Số đăng ký*"
-        v-model="vehicle.registrationNumber"
-        :rules="[rules.required]"
-        class="mt-3"
-      />
-      <div class="mt-3 mb-8">
-        <date-picker
-          v-model="vehicle.insuranceDeadline"
-          locale="vi"
-          format="dd/MM/yyyy"
-          placeholder="Hạn bảo hiểm*"
-          label="Hạn bảo hiểm*"
-          auto-apply
-          partial-flow
-          :flow="['calendar']"
-        />
-      </div>
-      <div class="mt-3 mb-8">
-        <date-picker
-          v-model="vehicle.registrationDeadline"
-          locale="vi"
-          format="dd/MM/yyyy"
-          placeholder="Hạn đăng kiểm*"
-          label="Hạn đăng kiểm*"
-          class="mt-3"
-          auto-apply
-          partial-flow
-          :flow="['calendar']"
-        />
-      </div>
-      <v-text-field
-        variant="outlined"
-        placeholder="Hạn bảo hiểm*"
-        label="Hạn bảo hiểm*"
-        v-model="vehicle.insuranceDeadline"
-        :rules="[rules.required]"
-        class="mt-3"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Hạn đăng kiểm*"
-        label="Hạn đăng kiểm*"
-        v-model="vehicle.registrationDeadline"
-        :rules="[rules.required]"
-        class="mt-3"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Trọng tải*"
-        label="Trọng tải*"
-        v-model="vehicle.tonnage"
-        :rules="[rules.required, rules.isNumber]"
-        class="mt-3"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Loại phương tiện*"
-        label="Loại phương tiện*"
-        v-model="vehicle.type"
-        :rules="[rules.required]"
-        class="mt-3"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Chủ phương tiện*"
-        label="Chủ phương tiện*"
-        v-model="vehicle.vehicleOwner"
-        :rules="[rules.required]"
-        class="mt-3"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Công suất*"
-        label="Công suất*"
-        v-model="vehicle.wattage"
-        :rules="[rules.required, rules.isNumber]"
-        class="mt-3"
-      />
-      <v-text-field
-        variant="outlined"
-        placeholder="Năm sản xuất*"
-        label="Năm sản xuất*"
-        v-model="vehicle.yearManufacture"
-      />
-      <div>
-        <h3>Chọn công ty</h3>
-        <v-select
-          class="mt-2"
-          :items="companies"
-          item-value="id"
-          item-text="company"
-          item-title="company"
-          :value="vehicle['company']"
-          v-model="vehicle.infosId"
-          variant="solo"
-        />
-      </div>
+      <v-row>
+        <v-col cols="6">
+          <h4>Tên phương tiện <span style="color: red">*</span></h4>
+          <v-text-field
+            variant="outlined"
+            v-model="vehicle.name"
+            :rules="[rules.required]"
+          />
+        </v-col>
+        <v-col cols="6">
+          <h4>Số đăng ký <span style="color: red">*</span></h4>
+          <v-text-field
+            variant="outlined"
+            v-model="vehicle.registrationNumber"
+            :rules="[rules.required]"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6">
+          <h4>Hạn bảo hiểm <span style="color: red">*</span></h4>
+          <date-picker
+            v-model="vehicle.insuranceDeadline"
+            locale="vi"
+            format="dd/MM/yyyy"
+            auto-apply
+            partial-flow
+            :flow="['calendar']"
+          />
+        </v-col>
+        <v-col cols="6">
+          <h4>Hạn đăng kiểm <span style="color: red">*</span></h4>
+          <date-picker
+            v-model="vehicle.registrationDeadline"
+            locale="vi"
+            format="dd/MM/yyyy"
+            auto-apply
+            partial-flow
+            :flow="['calendar']"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="6">
+          <v-row>
+            <v-col cols="4">
+              <h4>Trọng tải <span style="color: red">*</span></h4>
+
+              <v-text-field
+                variant="outlined"
+                v-model="vehicle.tonnage"
+                :rules="[rules.required, rules.isNumber]"
+              />
+            </v-col>
+            <v-col cols="4">
+              <h4>Công suất <span style="color: red">*</span></h4>
+
+              <v-text-field
+                variant="outlined"
+                v-model="vehicle.wattage"
+                :rules="[rules.required, rules.isNumber]"
+              />
+            </v-col>
+            <v-col cols="4">
+              <h4>
+                Năm sản xuất
+                <span style="color: red">*</span>
+              </h4>
+              <vue-date-picker
+                v-model="vehicle.yearManufacture"
+                locale="vi"
+                format="yyyy"
+                year-picker
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="6">
+          <h4>Chọn công ty</h4>
+          <v-select
+            :items="companies"
+            item-value="id"
+            item-text="company"
+            item-title="company"
+            :value="vehicle['company']"
+            v-model="vehicle.infosId"
+            variant="solo"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6">
+          <h4>Loại phương tiện <span style="color: red">*</span></h4>
+
+          <v-text-field
+            variant="outlined"
+            v-model="vehicle.type"
+            :rules="[rules.required]"
+          />
+        </v-col>
+        <v-col cols="6">
+          <h4>
+            Chủ phương tiện
+            <span style="color: red">*</span>
+          </h4>
+
+          <v-text-field
+            variant="outlined"
+            v-model="vehicle.vehicleOwner"
+            :rules="[rules.required]"
+          />
+        </v-col>
+      </v-row>
+
+      <div class="mt-3 mb-8"></div>
+      <div class="mt-3 mb-8"></div>
     </div>
     <v-btn
       block
@@ -149,8 +159,12 @@
 <script lang="ts">
 import { getInfo, getInfos, getVehicle, updateVehicle } from "@/firebase";
 import _ from "lodash";
-
+import Datepicker from "@vuepic/vue-datepicker";
 export default {
+  components: {
+    "date-picker": Datepicker,
+  },
+
   data() {
     return {
       dialog: false,
@@ -307,11 +321,17 @@ export default {
 <style scoped>
 .data-container {
   margin: 2rem;
-  padding: 40px 56px;
+  padding: 0px 30px 56px 30px;
 }
 @media screen and (max-width: 830px) {
   .data-container {
     padding: 0;
   }
+}
+</style>
+
+<style>
+input.dp__pointer {
+  height: 60px;
 }
 </style>

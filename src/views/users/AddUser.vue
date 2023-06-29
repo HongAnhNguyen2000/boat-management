@@ -45,6 +45,17 @@
 
       <v-row>
         <v-col cols="6">
+          <h4>Tên <span style="color: red">*</span></h4>
+          <v-text-field
+            variant="outlined"
+            v-model="name"
+            :rules="[rules.required]"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="6">
           <h4>Chọn vai trò</h4>
           <v-select
             label="Vai trò người dùng"
@@ -56,7 +67,10 @@
             variant="solo"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col
+          cols="6"
+          v-if="currentRole !== 'enterprise' && role === 'enterprise'"
+        >
           <h4>Chọn công ty</h4>
           <v-select
             label="Công ty"
@@ -128,7 +142,7 @@ export default {
       phonenumber: "",
       infos_id: "",
       company: "",
-      role: { en: "enterprise", vi: "Doanh nghiệp" } as any,
+      role: "enterprise" as any,
       currentRole: "",
       companies: [] as any,
       user_id: "" as any,
@@ -169,8 +183,13 @@ export default {
   },
   watch: {
     role(newVal) {
+      console.log("new", newVal);
       this.isEnterprise = newVal === "enterprise";
+      if (newVal && this.labelType?.length > 0) {
+        this.role = this.labelType.find((item) => item.en === newVal)?.en;
+      }
       this.company = "";
+      this.disabled = this.checkValidate();
     },
     email() {
       this.disabled = this.checkValidate();
@@ -211,9 +230,9 @@ export default {
           name: this.name,
           password: this.newPassword,
           phonenumber: this.phonenumber,
-          role: this.role.en,
+          role: this.role,
         };
-        if (this.role.en === "enterprise") {
+        if (this.role === "enterprise") {
           params["infos_id"] = this.company;
         }
         const actionAddUser = await addUser(params);
@@ -252,7 +271,7 @@ export default {
 <style scoped>
 .data-container {
   margin: 2rem;
-  padding: 40px 56px;
+  padding: 0px 30px 56px 30px;
 }
 @media screen and (max-width: 830px) {
   .data-container {

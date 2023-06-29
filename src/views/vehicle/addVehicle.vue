@@ -133,7 +133,7 @@
           />
         </v-col>
         <v-col cols="6">
-          <h4>Chọn công ty</h4>
+          <h4>Chọn công ty <span style="color: red">*</span></h4>
           <v-select
             :items="companies"
             item-value="id"
@@ -292,7 +292,7 @@ export default {
 <style scoped>
 .data-container {
   margin: 2rem;
-  padding: 40px 56px;
+  padding: 0px 30px 56px 30px;
 }
 @media screen and (max-width: 830px) {
   .data-container {
