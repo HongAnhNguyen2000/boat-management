@@ -48,10 +48,7 @@
           <date-picker
             v-model="vehicle.insuranceDeadline"
             locale="vi"
-            format="dd/MM/yyyy"
-            auto-apply
-            partial-flow
-            :flow="['calendar']"
+            format="dd-MM-yyyy"
           />
         </v-col>
         <v-col cols="6">
@@ -59,10 +56,7 @@
           <date-picker
             v-model="vehicle.registrationDeadline"
             locale="vi"
-            format="dd/MM/yyyy"
-            auto-apply
-            partial-flow
-            :flow="['calendar']"
+            format="dd-MM-yyyy"
           />
         </v-col>
       </v-row>
@@ -225,11 +219,12 @@ export default {
   },
   methods: {
     validate() {
+      console.log(this.vehicle["insuranceDeadline"]);
       return (
         _.isEmpty(this.vehicle["registrationNumber"]) ||
-        _.isEmpty(this.vehicle["insuranceDeadline"].toString()) ||
+        _.isEmpty(this.vehicle["insuranceDeadline"]) ||
         _.isEmpty(this.vehicle["name"]) ||
-        _.isEmpty(this.vehicle["registrationDeadline"].toString()) ||
+        _.isEmpty(this.vehicle["registrationDeadline"]) ||
         _.isEmpty(this.vehicle["tonnage"]) ||
         _.isEmpty(this.vehicle["type"]) ||
         _.isEmpty(this.vehicle["vehicleOwner"]) ||
@@ -247,23 +242,12 @@ export default {
         tonnage: this.vehicle["tonnage"],
         type: this.vehicle["type"],
         "vehicle-owner": this.vehicle["vehicleOwner"],
+        "registration-deadline": this.vehicle["registrationDeadline"],
+        "insurance-deadline": this.vehicle["insuranceDeadline"],
         wattage: this.vehicle["wattage"],
         "year-manufacture": this.vehicle["yearManufacture"],
         infos_id: this.vehicle["infosId"],
       };
-      if (this.vehicle["registrationDeadline"]) {
-        const now = new Date(this.vehicle["registrationDeadline"]);
-        params["registration-deadline"] = `${("0" + now.getDate()).slice(
-          -2
-        )}/${("0" + (now.getMonth() + 1)).slice(-2)}/${now.getFullYear()}`;
-      }
-      if (this.vehicle["insuranceDeadline"]) {
-        const now = new Date(this.vehicle["insuranceDeadline"]);
-        params["insurance-deadline"] = `${("0" + now.getDate()).slice(-2)}/${(
-          "0" +
-          (now.getMonth() + 1)
-        ).slice(-2)}/${now.getFullYear()}`;
-      }
       const actionUpdateVehicle = await updateVehicle(this.vehicle_id, params);
       if (actionUpdateVehicle) {
         this.colorAlert = "green";
@@ -333,5 +317,12 @@ export default {
 <style>
 input.dp__pointer {
   height: 60px;
+}
+button.dp__action_select {
+  color: white;
+  height: 30px;
+}
+.dp__action_cancel {
+  height: 30px;
 }
 </style>

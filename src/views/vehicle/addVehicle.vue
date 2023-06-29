@@ -51,7 +51,7 @@
           <vue-date-picker
             v-model="vehicle.insuranceDeadline"
             locale="vi"
-            format="dd/MM/yyyy"
+            format="dd-MM-yyyy"
           />
         </v-col>
         <v-col cols="6">
@@ -59,7 +59,7 @@
           <date-picker
             v-model="vehicle.registrationDeadline"
             locale="vi"
-            format="dd/MM/yyyy"
+            format="dd-MM-yyyy"
           />
         </v-col>
       </v-row>
