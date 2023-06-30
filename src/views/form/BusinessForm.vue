@@ -432,7 +432,7 @@ export default {
       const created_at = `${("0" + now.getDate()).slice(-2)}/${(
         "0" +
         (now.getMonth() + 1)
-      ).slice(-2)}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}}`;
+      ).slice(-2)}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
       const shipEmployees = this.businessData["shipEmployees"]
         ? [...this.businessData["shipEmployees"]]
         : [];

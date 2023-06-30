@@ -8,7 +8,7 @@
         class="hidden-xs-and-down"
         v-if="roleUser"
       >
-        <v-toolbar-title><img src="../logo.svg" /></v-toolbar-title>
+        <v-toolbar-title><img :src="`../logo.svg`" /></v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-btn
@@ -22,7 +22,7 @@
             {{ item.text }}</v-btn
           >
           <v-btn flat @click="logOutUser">
-            <img src="../logout.svg" />
+            <img :src="`../logout.svg`" />
             Đăng xuất
           </v-btn>
         </v-toolbar-items>

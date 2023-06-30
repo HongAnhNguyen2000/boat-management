@@ -75,7 +75,7 @@
               {{ item.typeConvert ?? "" }}
             </v-btn>
           </td>
-          <td>{{ item.created_at }}</td>
+          <td>{{ item.time_created }}</td>
           <td>{{ item.captain }}</td>
           <td><div v-html="item.vehicle['registration-number'] ?? ''" /></td>
           <td><div v-html="item.vehicle['type'] ?? ''" /></td>
@@ -683,6 +683,10 @@ export default {
         form["sorting"] = this.labelType.find(
           (label) => label.en === form.type
         )?.sorting;
+        form["time_created"] = moment(
+          form.created_at,
+          "DD/MM/YYYY HH:mm"
+        ).format("DD/MM/YYYY HH:mm");
         form["sortTime"] = moment(form.created_at, "DD/MM/YYYY");
         forms.push({ ...(form as any), vehicle });
       }
