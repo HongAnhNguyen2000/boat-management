@@ -26,45 +26,47 @@
           class="text-none text-subtitle-1 color-black ml-4"
           variant="tonal"
           width="130px"
+          style="cursor: auto"
         >
           {{ businessData.typeConvert ?? "" }}
         </v-btn>
       </div>
       <div>
         <v-row class="mt-5">
-          <v-col cols="12" md="6" class="pt-3">
-            <v-row class="mt-0">
-              <v-col cols="12" md="6" class="pt-3 d-flex align-center">
+          <v-col cols="12" md="3" class="pt-3">
+            <v-row class="mt-0 name-area">
+              <v-col cols="12" class="pt-0 pb-1 d-flex align-center">
                 <h3>Tên phương tiện:</h3>
                 <p class="ml-3">{{ businessData["meanName"] }}</p>
               </v-col>
-              <v-col cols="12" md="6" class="pt-3 d-flex align-center">
+              <v-col cols="12" class="pt-0 pb-1 d-flex align-center">
                 <h3>Số đăng kí:</h3>
                 <p class="ml-3">{{ businessData["meanNumber"] }}</p>
               </v-col>
-              <v-col cols="12" md="6" class="pt-3 d-flex align-center">
+              <v-col cols="12" class="pt-0 pb-1 d-flex align-center">
                 <h3>Tên thuyền trưởng:</h3>
                 <p class="ml-3">{{ businessData["captain"] }}</p>
               </v-col>
-              <v-col cols="12" md="6" class="pt-3 d-flex align-center">
+              <v-col cols="12" class="pt-0 pb-1 d-flex align-center">
                 <h3>Tên chủ tàu:</h3>
                 <p class="ml-3">{{ businessData["ownerName"] }}</p>
               </v-col>
             </v-row>
+            <hr class="mt-5 mb-3" />
             <v-row>
               <v-col cols="12" class="mt-1"> <h3>Trọng tải đăng ký</h3></v-col>
-              <v-col cols="12" md="6" class="mt-2 d-flex align-center">
+              <v-col cols="12" class="mt-2 d-flex align-center pt-0 pb-1">
                 <h4>Đơn vị (tấn):</h4>
                 <p class="ml-3">{{ businessData["tonnage"] }}</p>
               </v-col>
-              <v-col cols="12" md="6" class="mt-2 d-flex align-center">
+              <v-col cols="12" class="mt-2 d-flex align-center pt-0 pb-1">
                 <h4>Công suất (ghế):</h4>
                 <p class="ml-3">{{ businessData["seats"] }}</p>
               </v-col>
             </v-row>
-
+            <hr class="mt-5 mb-3" />
             <v-row>
-              <v-col cols="12" md="6">
+              <v-col cols="12">
                 <h4>Hướng dẫn viên</h4>
                 <v-table class="table-customer mt-2">
                   <thead>
@@ -86,7 +88,7 @@
                   </tbody>
                 </v-table>
               </v-col>
-              <v-col cols="12" md="6">
+              <v-col cols="12">
                 <h4>Nhân viên</h4>
                 <v-table class="table-customer mt-2">
                   <thead>
@@ -109,19 +111,20 @@
                 </v-table>
               </v-col>
             </v-row>
-            <v-row class="mt-5">
+            <hr class="mt-5" />
+            <v-row class="mt-3">
               <v-col cols="12" class="pt-0">
-                <h3>Bến tàu</h3>
+                <h3 class="mb-5">Bến tàu</h3>
                 <v-row mt="2">
-                  <v-col cols="12" md="4" class="mt-3 d-flex align-center">
+                  <v-col cols="12" class="pt-0 pb-1 d-flex align-center">
                     <h4>Bến rời:</h4>
                     <span class="ml-3">{{ businessData["fromStation"] }}</span>
                   </v-col>
-                  <v-col cols="12" md="4" class="mt-3 d-flex align-center">
+                  <v-col cols="12" class="pt-0 pb-1 d-flex align-center">
                     <h4>Bến đến:</h4>
                     <span class="ml-3">{{ businessData["toStation"] }}</span>
                   </v-col>
-                  <v-col cols="12" md="4" class="mt-3 d-flex align-center">
+                  <v-col cols="12" class="pt-0 pb-1 d-flex align-center">
                     <h4>Thời gian rời bến:</h4>
                     <span class="ml-3">{{ businessData["time"] }}</span>
                   </v-col>
@@ -129,8 +132,8 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="12" md="6" class="pt-3">
-            <v-table>
+          <v-col cols="12" md="9" class="pt-3">
+            <v-table class="min-width-table">
               <thead>
                 <tr>
                   <th class="text-left">STT</th>
@@ -168,7 +171,7 @@
         <div class="d-flex flex-row mt-15 button-regis">
           <div>
             <v-btn
-              class="mb-8 mt-5"
+              class="mb-8 mt-5 close-button-bottom"
               color="black"
               variant="elevated"
               @click="closePopup"
@@ -177,7 +180,7 @@
               Đóng
             </v-btn>
           </div>
-          <div v-if="disabledAction && !isEnterprise">
+          <div v-if="disabledAction && !isEnterprise" class="buttons-cta">
             <v-btn
               class="mb-8 mt-5 ml-5 button-cta"
               color="error"
@@ -498,6 +501,10 @@ export default {
 .data-container.form-detail {
   padding-top: 20px;
 }
+h4,
+h3 {
+  min-width: 160px;
+}
 </style>
 
 <style>
@@ -544,6 +551,26 @@ export default {
     padding-right: 40px;
   }
   .header-detail .v-btn {
+    margin-left: 0 !important;
+  }
+}
+@media screen and (max-width: 768px) {
+  .close-button-bottom {
+    display: none;
+  }
+  .buttons-cta {
+    width: 100%;
+  }
+  .buttons-cta .button-cta {
+    width: 100%;
+    margin: 0 0 10px 0 !important;
+  }
+  .name-area .v-col {
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: flex-start;
+  }
+  .name-area .v-col p {
     margin-left: 0 !important;
   }
 }

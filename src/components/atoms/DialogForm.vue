@@ -7,13 +7,13 @@
   >
     <v-card>
       <v-card-title>
-        <span class="text-h5">Thông tin khách hàng</span>
+        <span class="text-h5">Thông tin hành khách</span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="6" sm="6" md="6" class="name-field">
-              <h4>Họ tên khách hàng <span style="color: red">*</span></h4>
+              <h4>Họ tên hành khách <span style="color: red">*</span></h4>
               <v-text-field
                 variant="outlined"
                 v-model="customerData['name']"

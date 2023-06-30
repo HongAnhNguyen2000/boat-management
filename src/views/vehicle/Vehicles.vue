@@ -3,17 +3,20 @@
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </v-overlay>
   <div class="data-container">
-    <v-btn
-      class="mb-8"
-      color="green"
-      size="large"
-      variant="tonal"
-      @click="createUser"
-    >
-      <v-icon class="white--text mr-2">mdi-plus</v-icon>
-      Thêm Phương tiện giao thông
-    </v-btn>
-    <h2 class="mb-5">Danh sách phương tiện</h2>
+    <div class="mb-5 d-flex align-center title-area">
+      <h2>Danh sách phương tiện</h2>
+
+      <v-btn
+        color="green ml-auto"
+        size="large"
+        variant="tonal"
+        @click="createUser"
+      >
+        <v-icon class="white--text mr-2">mdi-plus</v-icon>
+        Thêm Phương tiện giao thông
+      </v-btn>
+    </div>
+
     <v-table class="min-width-table">
       <thead>
         <tr>
@@ -251,6 +254,16 @@ export default {
   .data-container {
     padding: 0;
     margin: 2rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .title-area {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  .title-area button {
+    margin-left: 0 !important;
+    margin-top: 5px;
   }
 }
 </style>

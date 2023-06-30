@@ -3,17 +3,20 @@
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </v-overlay>
   <div class="data-container">
-    <v-btn
-      class="mb-8"
-      color="green"
-      size="large"
-      variant="tonal"
-      @click="createUser"
-    >
-      <v-icon class="white--text mr-2">mdi-plus</v-icon>
-      Thêm mới người dùng
-    </v-btn>
-    <h2 class="mb-5">Danh sách người dùng</h2>
+    <div class="mb-5 d-flex align-center title-area">
+      <h2>Danh sách người dùng</h2>
+      <v-btn
+        class="ml-auto"
+        color="green"
+        size="large"
+        variant="tonal"
+        @click="createUser"
+      >
+        <v-icon class="white--text mr-2">mdi-plus</v-icon>
+        Thêm mới người dùng
+      </v-btn>
+    </div>
+
     <v-table class="min-width-table">
       <thead>
         <tr>
@@ -50,9 +53,23 @@
           @click="gotoDetail(item.id)"
           style="cursor: pointer"
         >
-          <td>{{ item.email }}</td>
+          <td>
+            <a
+              :href="`mailto:${item.email}`"
+              rel="noopener noreferrer"
+              @click="(e) => e.stopPropagation()"
+              >{{ item.email }}</a
+            >
+          </td>
           <td>{{ item.name }}</td>
-          <td>{{ item.phonenumber }}</td>
+          <td>
+            <a
+              :href="`tel:${item.phonenumber}`"
+              rel="noopener noreferrer"
+              @click="(e) => e.stopPropagation()"
+              >{{ item.phonenumber }}</a
+            >
+          </td>
           <td>{{ item.company ? item.company : "" }}</td>
           <td>{{ labelType.find((label) => label.en === item.role)?.vi }}</td>
         </tr>
@@ -167,6 +184,16 @@ export default {
   .data-container {
     padding: 0;
     margin: 2rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .title-area {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  .title-area button {
+    margin-left: 0 !important;
+    margin-top: 5px;
   }
 }
 </style>

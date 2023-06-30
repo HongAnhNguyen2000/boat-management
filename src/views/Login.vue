@@ -1,11 +1,11 @@
 <template>
-  <div class="login-page" style="background: url(../sea-dock.jpg)">
-    <v-app-bar flat>
+  <div class="login-page" style="background-image: url(../sea-dock.jpg)">
+    <!-- <v-app-bar flat>
       <v-app-bar-title>
         <v-icon icon="mdi-circle-slice-4" />
         Quản lý bến tàu
       </v-app-bar-title>
-    </v-app-bar>
+    </v-app-bar> -->
     <v-alert
       v-model="alertOut"
       close-text="Close Alert"
@@ -202,5 +202,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-size: cover;
+  background-position: bottom center;
+  background-repeat: no-repeat;
 }
 </style>

@@ -1,8 +1,14 @@
 <template>
   <div>
-    <v-layout row justify-center v-if="roleUser">
-      <v-toolbar app dark color="blue-grey darken-1" class="hidden-xs-and-down">
-        <v-toolbar-title>Quản lý tàu</v-toolbar-title>
+    <v-layout row justify-center v-if="!isLogginUrl">
+      <v-toolbar
+        app
+        dark
+        color="blue-grey darken-1"
+        class="hidden-xs-and-down"
+        v-if="roleUser"
+      >
+        <v-toolbar-title><img src="../logo.svg" /></v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-btn
@@ -11,9 +17,14 @@
             :to="item.url"
             :title="item.title"
             flat
-            >{{ item.text }}</v-btn
           >
-          <v-btn flat @click="logOutUser"> Đăng xuất </v-btn>
+            <img :src="item.icon" />
+            {{ item.text }}</v-btn
+          >
+          <v-btn flat @click="logOutUser">
+            <img src="../logout.svg" />
+            Đăng xuất
+          </v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-layout>
@@ -45,6 +56,8 @@ export default {
   },
   watch: {
     $route(to, from) {
+      console.log(this.$route.path);
+      this.isLogginUrl = this.$route.path === "/";
       if (!(to.path === "/" || to.path === "/forgot")) {
         if (!this.$store.state.user.loggedIn) {
           this.$router.push("/");
@@ -78,7 +91,7 @@ export default {
     checkRoleUser(role: string) {
       this.nav = [
         {
-          icon: "Danh sách",
+          icon: "../lists.svg",
           text: "Danh sách",
           title: "Danh sách",
           url: "/list",
@@ -88,14 +101,14 @@ export default {
       if (role === "manager") {
         this.nav.push(
           {
-            icon: "Quản lý người dùng",
+            icon: "../all_users.svg",
             text: "Quản lý người dùng",
             title: "Quản lý người dùng",
             url: "/users",
             active: false,
           },
           {
-            icon: "Quản lý phương tiện",
+            icon: "../ship.svg",
             text: "Quản lý phương tiện",
             title: "Quản lý phương tiện",
             url: "/vehicles",
@@ -104,7 +117,7 @@ export default {
         );
       }
       this.nav.push({
-        icon: "Người dùng",
+        icon: "../update_profile.svg",
         text: "Thông tin người dùng",
         title: "Thông tin người dùng",
         url: "/update-user",
@@ -115,6 +128,9 @@ export default {
 };
 </script>
 <style>
+table tbody tr:hover {
+  background: #d0d0d0;
+}
 table tr:nth-child(even) {
   background: #f4f4f4;
 }
@@ -123,5 +139,10 @@ table tr:nth-child(even) {
 }
 table thead {
   background-color: #c7c7c794;
+}
+.v-toolbar-items img {
+  max-width: 30px;
+  max-height: 30px;
+  margin-right: 4px;
 }
 </style>

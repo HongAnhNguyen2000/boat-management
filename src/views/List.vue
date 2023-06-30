@@ -3,20 +3,22 @@
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </v-overlay>
   <div class="data-container">
-    <v-btn
-      class="mb-8"
-      color="green"
-      size="large"
-      variant="tonal"
-      @click="createForm"
-      v-if="isShowAddForm"
-    >
-      <v-icon class="white--text mr-2">mdi-plus</v-icon>
-      Tạo mới danh sách
-    </v-btn>
-    <h2 class="mb-5">
-      Danh sách đã đăng ký hành khách vận tải đường thuỷ nội địa
-    </h2>
+    <div class="mb-5 d-flex align-center title-area">
+      <h2>Danh sách đã đăng ký hành khách vận tải đường thuỷ nội địa</h2>
+
+      <v-btn
+        class="ml-auto"
+        color="green"
+        size="large"
+        variant="tonal"
+        @click="createForm"
+        v-if="isShowAddForm"
+      >
+        <v-icon class="white--text mr-2">mdi-plus</v-icon>
+        Tạo mới danh sách
+      </v-btn>
+    </div>
+
     <div class="d-flex action-form" style="justify-content: space-between">
       <v-combobox
         v-model="filterType"
@@ -32,7 +34,7 @@
       <v-text-field
         v-model="search"
         prepend-inner-icon="mdi-magnify"
-        label="Tìm kiếm"
+        placeholder="Tìm kiếm thuyền trưởng, số đăng ký, phương tiện,…"
         variant="outlined"
         hide-details
         class="search-box"
@@ -112,7 +114,7 @@
       <v-pagination v-model="page" :length="pages"></v-pagination>
     </div>
   </div>
-  <v-dialog v-model="open" width="auto">
+  <v-dialog v-model="open" width="auto" persistent>
     <div v-if="isShowAddForm" style="overflow-y: scroll; background: white">
       <form-add
         @closePopup="closePopup"
@@ -215,6 +217,7 @@ export default {
       this.sortBy("sorting", ["asc", "asc"]);
     },
     search(newVal) {
+      this.page = 1;
       this.searchBy(newVal);
     },
   },
@@ -243,14 +246,15 @@ export default {
       this.paginationHandle();
     },
     searchBy(value: string) {
-      const returnSearched = [...this.listBussinessData].filter((obj) =>
+      const returnSearched = [...this.listBussinessDataClone].filter((obj) =>
         Object.values(obj).some((val) => {
           return JSON.stringify(val)
             .toLowerCase()
             .includes(value.toString().toLowerCase());
         })
       );
-      this.showListBussinessData = returnSearched;
+      this.listBussinessData = returnSearched;
+      this.paginationHandle();
     },
     onChangeContentPDF(newVal) {
       this.contentPDF = newVal;
@@ -722,6 +726,16 @@ export default {
 }
 .color-black {
   color: black;
+}
+@media screen and (max-width: 768px) {
+  .title-area {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  .title-area button {
+    margin-left: 0 !important;
+    margin-top: 5px;
+  }
 }
 </style>
 
