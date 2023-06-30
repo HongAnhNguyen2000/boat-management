@@ -96,7 +96,7 @@ export default {
       if (this.users.length > 0) {
         this.isReload = false;
         this.isLoading = true;
-        this.showUsers = [...this.users].slice((newVal - 1) * 10, newVal * 10);
+        this.showUsers = [...this.users].slice((newVal - 1) * 15, newVal * 15);
         setTimeout(() => {
           this.isReload = true;
           this.isLoading = false;
@@ -120,8 +120,8 @@ export default {
       );
       if (this.users.length > 0) {
         this.showUsers = [...this.users].slice(
-          (this.page - 1) * 10,
-          this.page * 10
+          (this.page - 1) * 15,
+          this.page * 15
         );
       }
     },
@@ -137,14 +137,14 @@ export default {
         }
       }
       this.sortBy("role");
-      this.pages = this.users.length / 10;
-      if (this.users.length % 10 > 0) {
+      this.pages = this.users.length / 15;
+      if (this.users.length % 15 > 0) {
         this.pages += 1;
       }
       if (this.users.length > 0) {
         this.showUsers = [...this.users].slice(
-          (this.page - 1) * 10,
-          this.page * 10
+          (this.page - 1) * 15,
+          this.page * 15
         );
       }
       this.isLoading = false;

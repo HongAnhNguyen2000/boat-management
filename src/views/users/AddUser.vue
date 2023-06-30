@@ -227,7 +227,6 @@ export default {
           params["infos_id"] = this.company;
         }
         const checkExists: any = await checkUserExist(this.email);
-        console.log(checkExists);
         if (checkExists) {
           this.colorAlert = "red";
           this.alert = true;

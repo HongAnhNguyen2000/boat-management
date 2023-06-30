@@ -109,6 +109,7 @@
                 :max-date="new Date()"
                 select-text="Chọn"
                 cancel-text="Đóng"
+                :year-range="[1900, new Date().getFullYear()]"
               />
             </v-col>
           </v-row>

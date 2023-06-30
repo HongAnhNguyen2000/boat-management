@@ -1,5 +1,5 @@
 <template>
-  <div class="data-container form-detail">
+  <div class="data-container form-detail" v-if="isLoadedData">
     <div
       class="grey lighten-4 nft-page create-form-page contentsWrapStyle"
       style="position: relative"
@@ -30,7 +30,7 @@
           {{ businessData.typeConvert ?? "" }}
         </v-btn>
       </div>
-      <div v-if="isNotReset">
+      <div>
         <v-row class="mt-5">
           <v-col cols="12" md="6" class="pt-3">
             <v-row class="mt-0">
@@ -54,11 +54,11 @@
             <v-row>
               <v-col cols="12" class="mt-1"> <h3>Trọng tải đăng ký</h3></v-col>
               <v-col cols="12" md="6" class="mt-2 d-flex align-center">
-                <h4>Đơn vị (tấn)</h4>
+                <h4>Đơn vị (tấn):</h4>
                 <p class="ml-3">{{ businessData["tonnage"] }}</p>
               </v-col>
               <v-col cols="12" md="6" class="mt-2 d-flex align-center">
-                <h4>Công suất (ghế)</h4>
+                <h4>Công suất (ghế):</h4>
                 <p class="ml-3">{{ businessData["seats"] }}</p>
               </v-col>
             </v-row>
@@ -114,15 +114,15 @@
                 <h3>Bến tàu</h3>
                 <v-row mt="2">
                   <v-col cols="12" md="4" class="mt-3 d-flex align-center">
-                    <h4>Bến rời</h4>
+                    <h4>Bến rời:</h4>
                     <span class="ml-3">{{ businessData["fromStation"] }}</span>
                   </v-col>
                   <v-col cols="12" md="4" class="mt-3 d-flex align-center">
-                    <h4>Bến đến</h4>
+                    <h4>Bến đến:</h4>
                     <span class="ml-3">{{ businessData["toStation"] }}</span>
                   </v-col>
                   <v-col cols="12" md="4" class="mt-3 d-flex align-center">
-                    <h4>Thời gian rời bến</h4>
+                    <h4>Thời gian rời bến:</h4>
                     <span class="ml-3">{{ businessData["time"] }}</span>
                   </v-col>
                 </v-row>
@@ -205,9 +205,17 @@
       </div>
     </div>
   </div>
+  <v-overlay
+    v-model="isLoading"
+    contained
+    class="align-center justify-center"
+    v-else
+  >
+    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+  </v-overlay>
 </template>
 <script lang="ts">
-import { CustomerData } from "../../CommonFile";
+import { CustomerData, LABELTYPE } from "../../CommonFile";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import {
@@ -235,8 +243,9 @@ export default {
       deniedFlag: false,
       isDisableProcess: true,
       disabledAction: false,
-      isNotReset: true,
       isEnterprise: false,
+      isLoadedData: false,
+      isLoading: true,
       process: "Chấp nhận",
       created_at: "",
       userRole: this.$store.state?.user?.data?.role,
@@ -245,38 +254,7 @@ export default {
         { role: "authority", permission: "purchased" },
         { role: "accountant", permission: "processing" },
       ],
-      labelType: [
-        {
-          en: "processing",
-          vi: "Đang xử lý",
-          sorting: 1,
-          backgroundColor: "#ebd742",
-        },
-        {
-          en: "requesting",
-          vi: "Đang yêu cầu",
-          sorting: 2,
-          backgroundColor: "#1E90FF",
-        },
-        {
-          en: "accept",
-          vi: "Chấp thuận",
-          sorting: 4,
-          backgroundColor: "#32CD32",
-        },
-        {
-          en: "reject",
-          vi: "Từ chối",
-          sorting: 5,
-          backgroundColor: "#FF0000",
-        },
-        {
-          en: "purchased",
-          vi: "Đã thanh toán",
-          sorting: 3,
-          backgroundColor: "#1E90FF",
-        },
-      ],
+      labelType: LABELTYPE,
     };
   },
   created(): void {
@@ -405,7 +383,6 @@ export default {
     },
     async getformDetail(): Promise<void> {
       if (this.formID && this.formID !== "") {
-        this.isNotReset = false;
         this.businessData = await getFormData(this.formID);
         this.created_at = this.businessData["created_at"];
         this.businessData["customers"] = this.businessData["clients"].filter(
@@ -436,8 +413,11 @@ export default {
           (label) => label.en === this.businessData.type
         )?.backgroundColor;
         setTimeout(() => {
-          this.isNotReset = true;
+          this.isLoadedData = true;
+          this.isLoading = false;
         }, 500);
+      } else {
+        this.closePopup();
       }
     },
     async accepted(): Promise<void> {
@@ -494,7 +474,6 @@ export default {
       this.businessData["seats"] = newVal["wattage"];
     },
     $route(to, from) {
-      this.isNotReset = false;
       if (to.path === "/form") {
         this.businessData = {};
         this.vehicle = [];
@@ -502,11 +481,10 @@ export default {
         this.idVehicle = "";
         this.formID = "";
         this.isDisable = false;
+        this.isLoadedData = false;
+        this.isLoading = true;
       }
       this.init();
-      setTimeout(() => {
-        this.isNotReset = true;
-      }, 500);
     },
   },
 };

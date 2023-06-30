@@ -303,25 +303,6 @@
             >
               Đăng kí
             </v-btn>
-            <div v-if="isDisable && !isEnterprise">
-              <v-btn
-                class="mb-8 mt-5 ml-5 button-cta"
-                color="primary"
-                variant="elevated"
-                :disabled="isDisableProcess"
-                @click="accepted"
-              >
-                {{ process }}
-              </v-btn>
-              <v-btn
-                class="mb-8 mt-5 ml-5 button-cta"
-                color="error"
-                variant="elevated"
-                @click="denie"
-              >
-                Từ chối
-              </v-btn>
-            </div>
           </div>
         </div>
       </div>
@@ -451,9 +432,7 @@ export default {
       const created_at = `${("0" + now.getDate()).slice(-2)}/${(
         "0" +
         (now.getMonth() + 1)
-      ).slice(
-        -2
-      )}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+      ).slice(-2)}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}}`;
       const shipEmployees = this.businessData["shipEmployees"]
         ? [...this.businessData["shipEmployees"]]
         : [];
@@ -581,37 +560,6 @@ export default {
           theRole?.permission !== this.businessData["type"];
       }
     },
-    async accepted(): Promise<void> {
-      let type = "requesting";
-      switch (this.$store.state?.user?.data?.role) {
-        case "manager":
-          type = "processing";
-          break;
-
-        case "accountant":
-          type = "purchased";
-          break;
-
-        case "authority":
-          type = "accept";
-          break;
-
-        default:
-          type = "requesting";
-          break;
-      }
-      const setAPIData = this.handleData();
-      const data = { ...setAPIData, type: type };
-      await updateFormData(this.formID, data);
-      this.closePopup();
-    },
-    async denie(): Promise<void> {
-      const type = "reject";
-      const setAPIData = this.handleData();
-      const data = { ...setAPIData, type: type };
-      await updateFormData(this.formID, data);
-      this.closePopup();
-    },
     checkDisabled() {
       if (this.businessData["shipEmployees"]) {
         const shipEmployees = JSON.parse(
@@ -658,7 +606,7 @@ export default {
       this.alert = false;
     },
     resetPopup() {
-      this.$emit("updatePopup");
+      this.$emit("resetPopup");
     },
     closePopup() {
       this.$emit("closePopup");

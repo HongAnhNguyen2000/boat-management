@@ -162,8 +162,8 @@ export default {
         this.isReload = false;
         this.isLoading = true;
         this.showVehicles = [...this.vehicles].slice(
-          (newVal - 1) * 10,
-          newVal * 10
+          (newVal - 1) * 15,
+          newVal * 15
         );
         setTimeout(() => {
           this.isReload = true;
@@ -190,8 +190,8 @@ export default {
       );
       if (this.vehicles.length > 0) {
         this.showVehicles = [...this.vehicles].slice(
-          (this.page - 1) * 10,
-          this.page * 10
+          (this.page - 1) * 15,
+          this.page * 15
         );
       }
       setTimeout(() => {
@@ -213,14 +213,14 @@ export default {
       this.vehicles = [...getDatas];
 
       this.sortBy("name");
-      this.pages = this.vehicles.length / 10;
-      if (this.vehicles.length % 10 > 0) {
+      this.pages = this.vehicles.length / 15;
+      if (this.vehicles.length % 15 > 0) {
         this.pages += 1;
       }
       if (this.vehicles.length > 0) {
         this.showVehicles = [...this.vehicles].slice(
-          (this.page - 1) * 10,
-          this.page * 10
+          (this.page - 1) * 15,
+          this.page * 15
         );
       }
       this.isLoading = false;
