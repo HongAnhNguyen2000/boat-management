@@ -17,7 +17,7 @@
     <h2 class="mb-5">Thêm Phương tiện giao thông</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-row>
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <h4>Tên phương tiện <span style="color: red">*</span></h4>
           <v-text-field
             variant="outlined"
@@ -26,7 +26,7 @@
             required
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <h4>Số đăng ký <span style="color: red">*</span></h4>
           <v-text-field
             variant="outlined"
@@ -39,7 +39,7 @@
       <v-row>
         <v-col cols="12" sm="6">
           <v-row>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <h4>Trọng tải (tấn) <span style="color: red">*</span></h4>
 
               <v-text-field
@@ -48,7 +48,7 @@
                 :rules="[rules.required, rules.isNumber]"
               />
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <h4>Công suất <span style="color: red">*</span></h4>
 
               <v-text-field
@@ -57,7 +57,7 @@
                 :rules="[rules.required, rules.isNumber]"
               />
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <h4>
                 Năm sản xuất
                 <span style="color: red">*</span>
@@ -88,7 +88,7 @@
       </v-row>
 
       <v-row>
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <h4>Hạn bảo hiểm <span style="color: red">*</span></h4>
 
           <vue-date-picker
@@ -108,7 +108,7 @@
             ]"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <h4>Hạn đăng kiểm <span style="color: red">*</span></h4>
           <date-picker
             v-model="vehicle.registrationDeadline"
@@ -130,7 +130,7 @@
       </v-row>
 
       <v-row>
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <h4>
             Loại phương tiện
             <span style="color: red">*</span>
@@ -142,7 +142,7 @@
             :rules="[rules.required]"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <h4>
             Tên chủ tàu
             <span style="color: red">*</span>

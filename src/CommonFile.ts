@@ -25,6 +25,7 @@ export interface CustomerData {
 }
 
 export const CONTRIES = [
+  "Việt Nam",
   "Afghanistan",
   "Åland Islands",
   "Albania",
@@ -265,7 +266,6 @@ export const CONTRIES = [
   "Uzbekistan",
   "Vanuatu",
   "Venezuela, Bolivarian Republic of",
-  "Việt Nam",
   "Virgin Islands, British",
   "Virgin Islands, U.S.",
   "Wallis and Futuna",

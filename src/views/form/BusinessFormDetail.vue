@@ -165,19 +165,19 @@
         <v-row>
           <v-col cols="12" class="pt-0"> </v-col>
         </v-row>
-        <div class="d-flex flex-row mt-15 button-regis" v-if="disabledAction">
+        <div class="d-flex flex-row mt-15 button-regis">
           <div>
             <v-btn
               class="mb-8 mt-5"
               color="black"
               variant="elevated"
               @click="closePopup"
-              style="width: 80px; height: 60px"
+              style="height: 40px; width: 60px"
             >
               Đóng
             </v-btn>
           </div>
-          <div v-if="isDisable && !isEnterprise">
+          <div v-if="disabledAction && !isEnterprise">
             <v-btn
               class="mb-8 mt-5 ml-5 button-cta"
               color="error"
@@ -519,7 +519,6 @@ export default {
 }
 .data-container.form-detail {
   padding-top: 20px;
-  overflow-y: scroll;
 }
 </style>
 

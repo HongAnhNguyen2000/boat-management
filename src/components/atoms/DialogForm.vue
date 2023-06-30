@@ -23,12 +23,15 @@
             </v-col>
             <v-col cols="6" sm="6" md="6" class="birth-field">
               <h4>Năm sinh <span style="color: red">*</span></h4>
-
-              <v-text-field
-                variant="outlined"
+              <vue-date-picker
                 v-model="customerData['birthYear']"
-                required
-                :rules="[rules.required, rules.counterBirth, rules.isNumber]"
+                locale="vi"
+                format="yyyy"
+                year-picker
+                min-date="01/01/1990"
+                :max-date="new Date()"
+                select-text="Chọn"
+                cancel-text="Đóng"
               />
             </v-col>
           </v-row>
@@ -159,11 +162,9 @@ export default {
     checkDisabled() {
       const falseTrue =
         _.isEmpty(this.customerData["name"]) ||
-        _.isEmpty(this.customerData["birthYear"]) ||
+        this.customerData["birthYear"] === null ||
         _.isEmpty(this.customerData["gender"]) ||
-        !/^\d+$/.test(this.customerData["birthYear"]) ||
         this.customerData["name"]?.length < 2 ||
-        this.customerData["birthYear"]?.length !== 4 ||
         _.isEmpty(this.customerData["nation"]);
 
       this.checkDisabledButton = falseTrue;
@@ -202,5 +203,20 @@ export default {
 }
 .note-field {
   padding: 0;
+}
+</style>
+<style>
+input.dp__pointer {
+  height: 60px;
+}
+button.dp__action_select {
+  color: white;
+  height: 30px;
+}
+.dp__action_cancel {
+  height: 30px;
+}
+.dp__calendar_header_item {
+  width: auto;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page" style="background: url(../../../public/sea-dock.jpg)">
+  <div class="login-page" style="background: url(../sea-dock.jpg)">
     <v-app-bar flat>
       <v-app-bar-title>
         <v-icon icon="mdi-circle-slice-4" />
@@ -149,7 +149,7 @@ export default {
       } else {
         this.alertError = true;
         this.alertColor = "red";
-        this.message = "Bạn đăng nhập sai xin mời thử lại";
+        this.message = "Email/password chưa đúng xin mời thử lại";
       }
     },
     async getUsers() {

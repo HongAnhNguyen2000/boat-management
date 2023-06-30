@@ -52,7 +52,7 @@
           <th class="text-left">Phương tiện</th>
           <th class="text-left">Bến rời</th>
           <th class="text-left">Bến đến</th>
-          <th class="text-left" colspan="2">Giờ xuất bến</th>
+          <th class="text-left" colspan="2">Thời gian rời bến</th>
         </tr>
       </thead>
       <tbody v-if="showListBussinessData.length > 0 && isReload">
@@ -92,7 +92,11 @@
               ></v-btn
             >
             <v-btn
-              v-if="item.type !== 'accept' && item.type !== 'reject'"
+              v-if="
+                item.type !== 'accept' &&
+                item.type !== 'reject' &&
+                !isShowAddForm
+              "
               @click.stop="gotoDetail(item.id)"
               class="ml-3"
               style="min-width: 36px; background-color: #11ba06; color: white"
@@ -228,6 +232,8 @@ export default {
       } else {
         this.listBussinessData = [...this.listBussinessDataClone];
       }
+      this.page = 1;
+      this.paginationHandle();
       this.sortBy("sorting", ["asc", "asc"]);
     },
     search(newVal) {
@@ -236,14 +242,7 @@ export default {
   },
 
   methods: {
-    sortBy(field: string, sorted: string[]) {
-      this.fieldsSort = this.fieldsSort.filter((item) => item !== field);
-      this.fieldsSort.unshift(field);
-      this.listBussinessData = _.orderBy(
-        [...this.listBussinessData],
-        this.fieldsSort,
-        sorted
-      );
+    paginationHandle() {
       this.pages = this.listBussinessData.length / 10;
       if (this.listBussinessData.length % 10 > 0) {
         this.pages += 1;
@@ -254,6 +253,16 @@ export default {
           this.page * 10
         );
       }
+    },
+    sortBy(field: string, sorted: string[]) {
+      this.fieldsSort = this.fieldsSort.filter((item) => item !== field);
+      this.fieldsSort.unshift(field);
+      this.listBussinessData = _.orderBy(
+        [...this.listBussinessData],
+        this.fieldsSort,
+        sorted
+      );
+      this.paginationHandle();
     },
     searchBy(value: string) {
       const returnSearched = [...this.listBussinessData].filter((obj) =>
@@ -697,23 +706,13 @@ export default {
           (label) => label.en === form.type
         )?.sorting;
         form["sortTime"] = moment(form.created_at, "DD/MM/YYYY");
-        console.log(form.created_at, form["sortTime"]);
         forms.push({ ...(form as any), vehicle });
       }
       this.listBussinessData = [...forms];
       this.listBussinessDataClone = [...forms];
       this.sortBy("sorting", ["asc", "asc"]);
+      this.paginationHandle();
 
-      this.pages = this.listBussinessData.length / 10;
-      if (this.listBussinessData.length % 10 > 0) {
-        this.pages += 1;
-      }
-      if (this.listBussinessData.length > 0) {
-        this.showListBussinessData = [...this.listBussinessData].slice(
-          (this.page - 1) * 10,
-          this.page * 10
-        );
-      }
       this.isLoading = false;
     },
     gotoDetail(id) {

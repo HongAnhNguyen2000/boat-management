@@ -228,7 +228,7 @@ export default {
         name: this.name,
         password: this.password,
         phonenumber: this.phonenumber,
-        infos_id: this.infos_id,
+        infos_id: this.infos_id ?? "",
         role: this.role,
       };
       const actionUpdateUser = await updateUser(this.user_id, params);

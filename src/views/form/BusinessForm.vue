@@ -287,7 +287,7 @@
               color="black"
               variant="elevated"
               @click="closePopup"
-              style="width: 80px; height: 60px"
+              style="height: 40px; width: 60px"
             >
               Đóng
             </v-btn>
@@ -500,6 +500,7 @@ export default {
       return setAPIData;
     },
     async regisNewBusinessForm() {
+      this.checkDisabledButton = true;
       const setAPIData = this.handleData();
       const data = { ...setAPIData, type: "requesting" };
       const createForm = await addBussinessData(data);
@@ -516,6 +517,7 @@ export default {
         this.messageAlert = "Bạn tạo bản đăng ký không thành công. Xin thử lại";
         setTimeout(() => {
           this.alert = false;
+          this.checkDisabledButton = false;
         }, 3000);
       }
     },
@@ -703,7 +705,6 @@ export default {
 }
 .data-container.form-add {
   padding-top: 20px;
-  overflow-y: scroll;
 }
 @media screen and (max-width: 830px) {
   .data-container.form-add {
