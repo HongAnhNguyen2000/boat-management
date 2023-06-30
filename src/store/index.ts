@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import _ from "lodash";
-import { checkUser } from "@/firebase";
+import { checkUser, getInfo } from "@/firebase";
 import BusinessModule from "./modules/BusinessModule";
 import VuexPersist from "vuex-persist";
 import router from "@/router/index";
@@ -18,7 +18,7 @@ const store = createStore({
     user: {
       loggedIn: false,
       data: null,
-      justLogOut: null as any
+      justLogOut: null as any,
     },
   },
   getters: {
@@ -40,7 +40,7 @@ const store = createStore({
       state.user = {
         loggedIn: false,
         data: null,
-        justLogOut: null
+        justLogOut: null,
       };
     },
   },
@@ -48,6 +48,13 @@ const store = createStore({
     async logIn(context, { email, password }) {
       const user: any = await checkUser(email, password);
       if (!_.isEmpty(user)) {
+        user.company = "";
+
+        if (user.infos_id) {
+          const getCompany = await getInfo(user.infos_id);
+          user.company = getCompany.company;
+        }
+
         context.commit("SET_USER", user);
         context.commit("SET_LOGGED_IN", true);
         return true;

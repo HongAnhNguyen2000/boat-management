@@ -55,7 +55,8 @@
           <th class="text-left">Phương tiện</th>
           <th class="text-left">Bến rời</th>
           <th class="text-left">Bến đến</th>
-          <th class="text-left" colspan="2">Thời gian rời bến</th>
+          <th class="text-left">Thời gian rời bến</th>
+          <th class="text-left" colspan="2">Công ty</th>
         </tr>
       </thead>
       <tbody v-if="showListBussinessData.length > 0 && isReload">
@@ -82,6 +83,7 @@
           <td>{{ item.toStation }}</td>
           <td>{{ item.fromStation }}</td>
           <td>{{ item.time }}</td>
+          <td>{{ item.company ?? "" }}</td>
           <td>
             <v-btn
               @click.stop="onGenPDF(item.id)"

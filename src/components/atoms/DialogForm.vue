@@ -59,7 +59,7 @@
 
           <v-row>
             <v-col cols="6" sm="6" md="6" class="name-field">
-              <h4>Căn cước công dân</h4>
+              <h4>CCCD / hộ chiếu</h4>
               <v-text-field
                 variant="outlined"
                 v-model="customerData['cardId']"
@@ -89,10 +89,12 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red" variant="text" @click="onClosePopUp"> Đóng </v-btn>
+        <v-btn color="red" @click="onClosePopUp" variant="elevated">
+          Đóng
+        </v-btn>
         <v-btn
           color="green"
-          variant="text"
+          variant="elevated"
           @click="onActionButton"
           :disabled="checkDisabledButton"
         >

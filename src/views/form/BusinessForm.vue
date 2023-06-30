@@ -373,6 +373,7 @@ export default {
   created(): void {
     this.init();
     this.getTimeToday();
+    console.log("data", this.$store.state?.user?.data);
   },
   methods: {
     getTimeToday() {
@@ -383,10 +384,15 @@ export default {
         h = 24;
       }
 
-      const currentTime = h + "" + m;
-      this.times = this.times.filter((time) => {
-        return parseInt(time.replace(":", "")) > parseInt(currentTime);
-      });
+      const currentTime = `${h < 10 ? "0" + h : h}${m < 10 ? "0" + m : m}`;
+      this.times = [...JSON.parse(JSON.stringify(this.times))].filter(
+        (time) => {
+          console.log(time.replace(":", ""));
+          console.log(currentTime);
+          return parseInt(time.replace(":", "")) > parseInt(currentTime);
+        }
+      );
+      console.log(this.times);
     },
     init() {
       this.getVehicle();
@@ -471,6 +477,7 @@ export default {
         internationalCustomerNumber: internationalCustomers?.length ?? 0,
         created_at,
         idVehicle: this.idVehicle,
+        company: this.$store.state?.user?.data?.company,
       };
 
       delete setAPIData["shipEmployees"];
