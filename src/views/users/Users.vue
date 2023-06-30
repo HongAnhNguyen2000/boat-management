@@ -79,13 +79,22 @@
       <v-pagination v-model="page" :length="pages"></v-pagination>
     </div>
   </div>
+  <v-dialog v-model="open" width="auto" persistent>
+    <div style="overflow-y: scroll; background: white">
+      <user-detail @closePopup="closePopup" :currentId="currentId" />
+    </div>
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import { getInfo, getUsers } from "@/firebase";
 import _ from "lodash";
+import User from "./User.vue";
 
 export default {
+  components: {
+    "user-detail": User,
+  },
   data() {
     return {
       users: [] as any,
@@ -94,6 +103,8 @@ export default {
       isLoading: true,
       isSortASC: true,
       currentSort: "",
+      open: false,
+      currentId: "",
       page: 1,
       pages: 1,
       labelType: [
@@ -167,10 +178,17 @@ export default {
       this.isLoading = false;
     },
     gotoDetail(id) {
-      this.$router.push("/user/" + id);
+      this.open = true;
+      this.currentId = id;
+      // this.$router.push("/user/" + id);
     },
     createUser() {
       this.$router.push("/user/register");
+    },
+
+    closePopup(currentId = "") {
+      this.open = false;
+      this.currentId = currentId;
     },
   },
 };

@@ -136,13 +136,23 @@
       <v-pagination v-model="page" :length="pages"></v-pagination>
     </div>
   </div>
+
+  <v-dialog v-model="open" width="auto" persistent>
+    <div style="overflow-y: scroll; background: white">
+      <vehicle-detail @closePopup="closePopup" :currentId="currentId" />
+    </div>
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import { getInfo, getInfos, getListVehicle, getUser } from "@/firebase";
 import _ from "lodash";
+import Vehicle from "./Vehicle.vue";
 
 export default {
+  components: {
+    "vehicle-detail": Vehicle,
+  },
   data() {
     return {
       vehicles: [] as any,
@@ -150,6 +160,8 @@ export default {
       isReload: true,
       isLoading: true,
       isSortASC: true,
+      open: false,
+      currentId: "",
       currentSort: "",
       companies: [] as any,
       page: 1,
@@ -237,10 +249,16 @@ export default {
       return "";
     },
     gotoDetail(id) {
-      this.$router.push("/vehicle/" + id);
+      this.open = true;
+      this.currentId = id;
+      // this.$router.push("/vehicle/" + id);
     },
     createUser() {
       this.$router.push("/vehicle/register");
+    },
+    closePopup(currentId = "") {
+      this.open = false;
+      this.currentId = currentId;
     },
   },
 };

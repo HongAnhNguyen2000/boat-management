@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page" style="background-image: url(../sea-dock.jpg)">
+  <div class="login-page" style="background-image: url(../sea-dock.jpeg)">
     <!-- <v-app-bar flat>
       <v-app-bar-title>
         <v-icon icon="mdi-circle-slice-4" />

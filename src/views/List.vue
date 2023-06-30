@@ -711,6 +711,10 @@ export default {
       this.currentId = currentId;
     },
     resetPopup() {
+      this.search = "";
+      this.filterType = [];
+      this.fieldsSort = ["typeConvert", "sortTime"];
+      this.page = 1;
       this.getBussinessData();
       this.open = false;
     },

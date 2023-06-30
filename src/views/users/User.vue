@@ -1,5 +1,20 @@
 <template>
-  <div class="data-container">
+  <div class="data-container" v-if="isLoadedData" style="position: relative">
+    <p
+      @click="closePopup"
+      style="
+        position: absolute;
+        right: 0;
+        min-width: unset;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        cursor: pointer;
+      "
+    >
+      <v-icon icon="mdi mdi-close" />
+    </p>
     <div class="grey user-info">
       <h2>Thông tin người dùng</h2>
       <p class="mt-3">
@@ -44,12 +59,26 @@
       </v-btn>
     </div>
   </div>
+  <v-overlay
+    v-model="isLoading"
+    contained
+    class="align-center justify-center"
+    v-else
+  >
+    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+  </v-overlay>
 </template>
 
 <script lang="ts">
 import { getInfos, getUser } from "@/firebase";
 import _ from "lodash";
 export default {
+  props: {
+    currentId: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       labelType: [
@@ -67,11 +96,14 @@ export default {
       company: "",
       role: "",
       user_id: "" as any,
+      isLoadedData: false,
+      isLoading: true,
     };
   },
   created() {
-    this.user_id =
-      this.$route.params.userID ?? this.$store.state?.user?.data.id;
+    // this.user_id =
+    // this.$route.params.userID ?? this.$store.state?.user?.data.id;
+    this.user_id = this.currentId;
     this.getUser();
     this.getInfo();
   },
@@ -87,6 +119,10 @@ export default {
       this.phonenumber = userDetail.phonenumber;
       this.infos_id = userDetail.infos_id;
       this.role = userDetail.role;
+      setTimeout(() => {
+        this.isLoadedData = true;
+        this.isLoading = false;
+      }, 500);
     },
     async getInfo(): Promise<void> {
       const companies = await getInfos();
@@ -94,6 +130,10 @@ export default {
         (company: any) => company.id === this.infos_id
       );
       this.company = company ? company.company : "";
+    },
+
+    closePopup() {
+      this.$emit("closePopup", this.currentId);
     },
   },
 };
