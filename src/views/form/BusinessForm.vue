@@ -373,7 +373,6 @@ export default {
   created(): void {
     this.init();
     this.getTimeToday();
-    console.log("data", this.$store.state?.user?.data);
   },
   methods: {
     getTimeToday() {

@@ -333,7 +333,7 @@ export default {
               },
               {
                 text: [
-                  "Số đăng ký :",
+                  "Số đăng ký: ",
                   { text: `${businessData["meanNumber"]} `, bold: true },
                 ],
               },
