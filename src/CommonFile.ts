@@ -45,13 +45,13 @@ export const LABELTYPE = [
   },
   {
     en: "accept",
-    vi: "Đã Chấp thuận",
+    vi: "Đã chấp thuận",
     sorting: 4,
     backgroundColor: "green",
   },
   {
     en: "reject",
-    vi: "Đã Từ chối",
+    vi: "Đã từ chối",
     sorting: 5,
     backgroundColor: "red",
   },

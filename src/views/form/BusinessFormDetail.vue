@@ -48,7 +48,7 @@
                 <p class="ml-3">{{ businessData["captain"] }}</p>
               </v-col>
               <v-col cols="12" class="pt-0 pb-1 d-flex align-center">
-                <h3>Tên chủ tàu:</h3>
+                <h3>Tên chủ phương tiện:</h3>
                 <p class="ml-3">{{ businessData["ownerName"] }}</p>
               </v-col>
             </v-row>

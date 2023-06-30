@@ -86,7 +86,7 @@
             ></v-text-field>
           </v-col>
           <v-col md="6" cols="12" class="pt-3">
-            <h3>Tên chủ tàu</h3>
+            <h3>Tên chủ phương tiện</h3>
 
             <v-text-field
               class="mt-2"
