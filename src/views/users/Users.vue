@@ -17,7 +17,7 @@
       </v-btn>
     </div>
 
-    <v-table class="min-width-table">
+    <v-table>
       <thead>
         <tr>
           <th

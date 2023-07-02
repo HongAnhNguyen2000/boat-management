@@ -2,6 +2,20 @@
   <v-overlay v-model="isLoading" contained class="align-center justify-center">
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </v-overlay>
+  <v-alert
+    v-model="alert"
+    close-text="Close Alert"
+    class="alert-forgot"
+    :color="alertColor"
+    dark
+    dismissible
+  >
+    <div class="d-flex align-center">
+      <span>
+        {{ messageAlert }}
+      </span>
+    </div>
+  </v-alert>
   <div class="data-container">
     <div class="mb-5 d-flex align-center title-area">
       <h2>Danh sách đã đăng ký hành khách vận tải đường thuỷ nội địa</h2>
@@ -85,29 +99,45 @@
           <td>{{ item.time }}</td>
           <td>{{ item.company ?? "" }}</td>
           <td>
-            <v-btn
-              @click.stop="onGenPDF(item.id)"
-              class="pa-0"
-              style="min-width: 36px; background-color: #11ba06; color: white"
-            >
-              <v-icon icon="mdi-eye-outline" /><v-tooltip
-                activator="parent"
-                location="end"
-                >Xem trước</v-tooltip
-              ></v-btn
-            >
-            <v-btn
-              v-if="
-                item.type !== 'accept' &&
-                item.type !== 'reject' &&
-                !isShowAddForm
-              "
-              @click.stop="gotoDetail(item.id)"
-              class="ml-3"
-              style="min-width: 36px; background-color: #11ba06; color: white"
-            >
-              Xử lý
-            </v-btn>
+            <div class="d-flex">
+              <v-btn
+                @click.stop="onGenPDF(item.id)"
+                class="pa-0"
+                style="min-width: 36px; background-color: #11ba06; color: white"
+              >
+                <v-icon icon="mdi-eye-outline" /><v-tooltip
+                  activator="parent"
+                  location="end"
+                  >Xem trước</v-tooltip
+                ></v-btn
+              >
+              <v-btn
+                v-if="
+                  item.type !== 'accept' &&
+                  item.type !== 'reject' &&
+                  !isShowAddForm
+                "
+                @click.stop="gotoDetail(item.id)"
+                class="ml-3"
+                style="min-width: 36px; background-color: #11ba06; color: white"
+              >
+                Xử lý
+              </v-btn>
+              <v-btn
+                v-if="
+                  item.type !== 'accept' &&
+                  item.type !== 'reject' &&
+                  !isShowAddForm
+                "
+                @click.stop="rejectForm(item.id)"
+                class="ml-3"
+                color="error"
+                variant="elevated"
+                style="min-width: 36px;"
+              >
+                Từ chối
+              </v-btn>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -136,7 +166,7 @@
 </template>
 
 <script lang="ts">
-import { getBussinessData, getFormData, getVehicle } from "@/firebase";
+import { getBussinessData, getFormData, getVehicle, updateFormData } from "@/firebase";
 import BusinessForm from "@/views/form/BusinessForm.vue";
 import BusinessFormDetail from "@/views/form/BusinessFormDetail.vue";
 import * as pdfMake from "pdfmake/build/pdfmake";
@@ -171,6 +201,9 @@ export default {
       currentSort: "",
       currentId: "",
       search: "",
+      messageAlert: "",
+      alert: false,
+      alertColor: "",
       filterType: [],
       fieldsSort: ["typeConvert", "sortTime"],
       page: 1,
@@ -444,7 +477,7 @@ export default {
                   "Bến đến: ",
                   { text: `${businessData["toStation"] ?? ""}`, bold: true },
                   " ; ",
-                  ` Thời gian rời bến ${businessData["time"] ?? ""}`,
+                  ` Thời gian rời bến: ${businessData["time"] ?? ""}`,
                 ],
               },
             ],
@@ -720,6 +753,35 @@ export default {
       this.getBussinessData();
       this.open = false;
     },
+    async rejectForm(id) {
+      const type = "reject";
+      const setAPIData = this.listBussinessDataClone.find(e => e.id === id);
+      const data = { ...setAPIData, type: type };
+      delete data["typeConvert"]
+      delete data["backgroundColor"]
+      delete data["sorting"]
+      delete data["time_created"]
+      delete data["sortTime"]
+      const actionFormData = await updateFormData(id, data);
+      if (actionFormData) {
+        this.alertColor = "green";
+        this.alert = true;
+        this.messageAlert = `Bạn cập nhật Trạng thái của tàu có số đăng ký ${setAPIData.meanNumber} sang từ chối thành công`;
+        this.getBussinessData();
+        setTimeout(() => {
+          this.alert = false;
+        }, 3000);
+      } else {
+        this.alertColor = "red";
+
+        this.alert = true;
+        this.messageAlert =
+          `Bạn cập nhật Trạng thái của tàu có số đăng ký ${setAPIData.meanNumber} sang từ chối không thành công`;
+        setTimeout(() => {
+          this.alert = false;
+        }, 3000);
+      }
+    }
   },
 };
 </script>

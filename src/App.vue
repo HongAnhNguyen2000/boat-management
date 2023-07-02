@@ -8,7 +8,21 @@
         class="hidden-xs-and-down"
         v-if="roleUser"
       >
-        <v-toolbar-title><img :src="`../logo.svg`" /></v-toolbar-title>
+        <v-toolbar-title>
+          <v-btn
+            to="/list"
+            style="
+              display: flex;
+              width: auto;
+              height: auto;
+            "
+            variant="text"
+            class="bta-logo"
+          >
+            <img :src="`../logo.svg`" />
+          </v-btn
+          >
+        </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-btn
@@ -135,7 +149,7 @@ table tr:nth-child(even) {
   background: #f4f4f4;
 }
 .min-width-table table {
-  min-width: 1300px;
+  min-width: 1600px;
 }
 table thead {
   background-color: #c7c7c794;
@@ -144,5 +158,8 @@ table thead {
   max-width: 30px;
   max-height: 30px;
   margin-right: 4px;
+}
+.bta-logo span {
+  background: none!important;
 }
 </style>

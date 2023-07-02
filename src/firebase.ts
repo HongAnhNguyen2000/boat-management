@@ -228,6 +228,14 @@ export const getFormData = async (id: string) => {
 };
 
 export const updateFormData = async (id: string, data: any) => {
+  let result = false;
   const docRef = doc(db, "register-leave-wharf", id);
-  await setDoc(docRef, data);
+  await setDoc(docRef, data)
+    .then(() => {
+      result = true;
+    })
+    .catch((error) => {
+      result = false;
+    });
+  return result;
 };

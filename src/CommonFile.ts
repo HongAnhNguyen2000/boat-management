@@ -57,7 +57,8 @@ export const LABELTYPE = [
   },
 ];
 
-export const CONTRIES = [
+export const CONTRIES = ["Việt Nam", "Nước Ngoài"]
+export const CONTRIES_CLONE = [
   "Việt Nam",
   "Afghanistan",
   "Åland Islands",
