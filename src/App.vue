@@ -15,13 +15,14 @@
               display: flex;
               width: auto;
               height: auto;
+              display: flex;
+              justify-content: flex-start;
             "
             variant="text"
             class="bta-logo"
           >
             <img :src="`../logo.svg`" />
-          </v-btn
-          >
+          </v-btn>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
@@ -160,6 +161,6 @@ table thead {
   margin-right: 4px;
 }
 .bta-logo span {
-  background: none!important;
+  background: none !important;
 }
 </style>
