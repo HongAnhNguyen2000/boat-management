@@ -41,13 +41,14 @@
           </div>
         </v-alert>
         <div class="text-subtitle-1 text-medium-emphasis">Email đăng nhập</div>
-        <v-text-field variant="outlined" placeholder="Email" v-model="email" />
+        <v-text-field variant="outlined" placeholder="Email" v-model="email" @keyup.enter="login()"/>
         <div class="text-subtitle-1 text-medium-emphasis">Mật khẩu</div>
         <v-text-field
           variant="outlined"
           placeholder="Mật khẩu"
           v-model="password"
           type="password"
+          @keyup.enter="login()"
         />
         <v-link class="mb-3 text-underline" @click="openPopup()"
           >Quên mật khẩu</v-link

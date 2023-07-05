@@ -21,7 +21,7 @@
             variant="text"
             class="bta-logo"
           >
-            <img :src="`../logo.svg`" />
+            <img :src="`../logo.png`" />
           </v-btn>
         </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -83,8 +83,15 @@ export default {
         this.checkRoleUser(this.$store.state.user.data?.role);
       }
       if (
+        this.roleUser !== "admin" &&
+        (["/users"].includes(to.path) ||
+          to.path.includes("/user"))
+      ) {
+        this.$router.push("/list");
+      }
+      if (
         this.roleUser !== "manager" &&
-        (["/users", "/vehicles"].includes(to.path) ||
+        (["/vehicles"].includes(to.path) ||
           to.path.includes("/vehicle"))
       ) {
         this.$router.push("/list");
@@ -104,6 +111,7 @@ export default {
       this.$store.dispatch("logOut");
     },
     checkRoleUser(role: string) {
+      console.log(role)
       this.nav = [
         {
           icon: "../lists.svg",
@@ -116,13 +124,6 @@ export default {
       if (role === "manager") {
         this.nav.push(
           {
-            icon: "../all_users.svg",
-            text: "Quản lý người dùng",
-            title: "Quản lý người dùng",
-            url: "/users",
-            active: false,
-          },
-          {
             icon: "../ship.svg",
             text: "Quản lý phương tiện",
             title: "Quản lý phương tiện",
@@ -131,11 +132,22 @@ export default {
           }
         );
       }
+      if (role === "admin") {
+        this.nav.push(
+          {
+            icon: "../all_users.svg",
+            text: "Quản lý người dùng",
+            title: "Quản lý người dùng",
+            url: "/users",
+            active: false,
+          }
+        );
+      }
       this.nav.push({
         icon: "../update_profile.svg",
         text: "Thông tin người dùng",
         title: "Thông tin người dùng",
-        url: "/update-user",
+        url: "/info-user",
         active: false,
       });
     },
@@ -162,5 +174,19 @@ table thead {
 }
 .bta-logo span {
   background: none !important;
+}
+.bta-logo img {
+  max-width: 150px;
+}
+.v-field.v-field--prepended {
+  height: 40px
+}
+div input.dp__input,
+div.v-field__input,
+input.v-field__input {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  min-height: 40px;
+  height: 40px
 }
 </style>

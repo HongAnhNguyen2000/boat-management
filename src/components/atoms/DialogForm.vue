@@ -9,7 +9,7 @@
       <v-card-title>
         <span class="text-h5">Thông tin hành khách</span>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="pt-0">
         <v-container>
           <v-row>
             <v-col cols="6" sm="6" md="6" class="name-field">
@@ -37,7 +37,7 @@
             </v-col>
           </v-row>
 
-          <v-row>
+          <v-row class="mt-0">
             <v-col cols="6" class="name-field">
               <v-select
                 :items="['Nam', 'Nữ']"
@@ -57,8 +57,8 @@
             </v-col>
           </v-row>
 
-          <v-row>
-            <v-col cols="6" sm="6" md="6" class="name-field">
+          <v-row class="mt-0">
+            <v-col cols="6" sm="6" md="6" class="name-field pt-0">
               <h4>CCCD / hộ chiếu</h4>
               <v-text-field
                 variant="outlined"
@@ -66,7 +66,7 @@
                 required
               />
             </v-col>
-            <v-col cols="6" sm="6" md="6" class="birth-field">
+            <v-col cols="6" sm="6" md="6" class="birth-field pt-0">
               <h4>Nơi tạm trú</h4>
               <v-text-field
                 variant="outlined"
@@ -75,8 +75,8 @@
               />
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12" class="note-field">
+          <v-row  class="mt-0">
+            <v-col cols="12" class="note-field pt-0">
               <h4>Ghi chú</h4>
               <v-text-field
                 variant="outlined"

@@ -30,30 +30,35 @@ export const LABELTYPE = [
     vi: "Đang xử lý",
     sorting: 1,
     backgroundColor: "amber",
+    roleAcess: ['enterprise', 'admin', 'manager', 'accountant']
   },
   {
     en: "requesting",
     vi: "Đang yêu cầu",
     sorting: 2,
     backgroundColor: "blue",
+    roleAcess: ['enterprise', 'admin', 'manager', 'accountant']
   },
   {
     en: "purchased",
     vi: "Đã thanh toán",
     sorting: 3,
     backgroundColor: "blue",
+    roleAcess: ['enterprise', 'admin', 'manager', 'accountant', 'authority']
   },
   {
     en: "accept",
     vi: "Đã chấp thuận",
     sorting: 4,
     backgroundColor: "green",
+    roleAcess: ['enterprise', 'admin', 'manager', 'accountant', 'authority', 'border']
   },
   {
     en: "reject",
     vi: "Đã từ chối",
     sorting: 5,
     backgroundColor: "red",
+    roleAcess: ['enterprise', 'admin', 'manager', 'accountant', 'authority', 'border']
   },
 ];
 

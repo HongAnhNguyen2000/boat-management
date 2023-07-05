@@ -37,7 +37,7 @@
         Danh sách hành khách vận tải đường thủy nội địa
       </h2>
       <div v-if="isNotReset">
-        <v-row>
+        <v-row class="mt-5">
           <v-col md="6" cols="12" class="pt-3">
             <h3>Chọn phương tiện <span style="color: red">*</span></h3>
             <v-select
@@ -46,14 +46,23 @@
               placeholder="Phương tiện"
               :items="vehicle"
               :item-title="'name'"
+              item-disabled="disable"
               v-model="typeofVehicle"
               variant="solo"
               return-object
-            />
+            >
+              <template v-slot:item="{ item, props }">
+                <v-list-item v-bind="props" :disabled="item.raw.disable" />
+              </template>
+            </v-select>
+            <div class="mt-3 d-flex flex-column" v-if="warning && warning !== ''" style="padding: 5px;background: yellow;">
+              Cảnh báo: <div v-html="warning"/>
+            </div>
+
           </v-col>
         </v-row>
-        <v-row class="mt-5">
-          <v-col md="8" cols="12" class="pt-3">
+        <v-row class="mt-0">
+          <v-col md="8" cols="12" class="pt-0">
             <h3>Tên phương tiện</h3>
             <v-text-field
               class="mt-2"
@@ -63,7 +72,7 @@
               disabled
             ></v-text-field>
           </v-col>
-          <v-col md="4" cols="12" class="pt-3">
+          <v-col md="4" cols="12" class="pt-0">
             <h3>Số đăng kí</h3>
             <v-text-field
               class="mt-2"
@@ -75,8 +84,8 @@
           </v-col>
         </v-row>
 
-        <v-row class="mt-3">
-          <v-col md="6" cols="12" class="pt-3">
+        <v-row class="mt-0">
+          <v-col md="6" cols="12" class="pt-0">
             <h3>Tên thuyền trưởng <span style="color: red">*</span></h3>
             <v-text-field
               class="mt-2"
@@ -85,7 +94,7 @@
               :disabled="isDisable"
             ></v-text-field>
           </v-col>
-          <v-col md="6" cols="12" class="pt-3">
+          <v-col md="6" cols="12" class="pt-0">
             <h3>Tên chủ phương tiện</h3>
 
             <v-text-field
@@ -97,7 +106,7 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row class="mt-0">
           <v-col cols="12" md="6" class="pt-0">
             <h3>Trọng tải đăng ký</h3>
             <v-row mt="2">
@@ -122,7 +131,8 @@
             </v-row>
           </v-col>
         </v-row>
-        <v-row>
+
+        <v-row class="mt-0">
           <v-col cols="12" md="6">
             <h4>Hướng dẫn viên</h4>
             <v-table class="table-customer mt-2">
@@ -222,7 +232,7 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row class="mt-3">
           <v-col cols="12" class="pt-0">
             <h3>Bến tàu</h3>
             <v-row mt="2">
@@ -314,6 +324,7 @@ import CustomerTableVue from "../../components/CustomerTable.vue";
 import { CustomerData } from "../../CommonFile";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
+import moment from "moment";
 import {
   getListVehicle,
   addBussinessData,
@@ -340,6 +351,7 @@ export default {
       isDisableAddNewEmployee: false,
       isDisableAddNewGuide: false,
       process: "Chấp nhận",
+      warning: "",
       messageAlert: "",
       colorAlert: "",
       alert: false,
@@ -416,10 +428,14 @@ export default {
     },
     async getVehicle() {
       const list = await getListVehicle();
-      this.vehicle = list.filter(
+      const newList = list.map((e: any)=> e = {...e, 'disable': (moment(e['insurance-deadline']) <= moment() || moment(e['registration-deadline']) <= moment())})
+      console.log('newList', newList)
+      this.vehicle = newList.filter(
         (detailVehicle) =>
           detailVehicle.infos_id === this.$store.state?.user?.data.infos_id
       );
+      console.log('this.vehicle', this.vehicle)
+
     },
     handleData() {
       const clientData = [
@@ -626,6 +642,13 @@ export default {
       this.businessData["ownerName"] = newVal["vehicle-owner"];
       this.businessData["tonnage"] = newVal["tonnage"];
       this.businessData["seats"] = newVal["wattage"];
+      // if(moment(newVal['insurance-deadline']) > moment().subtract(30, 'days')) {        
+      //   this.warning += `- Còn ${moment(newVal['insurance-deadline']).diff(moment(), 'days')} ngày nữa sẽ hết hạn bảo hiểm </br>`
+      // }
+      // if(moment(newVal['registration-deadline']) > moment().subtract(30, 'days')) {        
+      //   this.warning += `- Còn ${moment(newVal['registration-deadline']).diff(moment(), 'days')} ngày nữa sẽ hết hạn đăng hiểm </br>`
+      // }
+      
     },
     businessData: {
       handler(newVal) {

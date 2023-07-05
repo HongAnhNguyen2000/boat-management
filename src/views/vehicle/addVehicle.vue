@@ -17,7 +17,7 @@
     <h2 class="mb-5">Thêm Phương tiện giao thông</h2>
     <div class="grey lighten-4 nft-page create-qr-page contentsWrapStyle">
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="6" class="pt-0 pb-0">
           <h4>Tên phương tiện <span style="color: red">*</span></h4>
           <v-text-field
             variant="outlined"
@@ -26,7 +26,7 @@
             required
           />
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="6" class="pt-0 pb-0">
           <h4>Số đăng ký <span style="color: red">*</span></h4>
           <v-text-field
             variant="outlined"
@@ -36,8 +36,8 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col cols="12" sm="6">
+      <v-row class="mt-0">
+        <v-col cols="12" sm="6" class="pt-0 pb-0">
           <v-row>
             <v-col cols="12" md="4">
               <h4>Trọng tải (tấn) <span style="color: red">*</span></h4>
@@ -75,7 +75,7 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" sm="6">
+        <v-col cols="12" sm="6" class="pt-0 pb-0">
           <h4>Chọn công ty <span style="color: red">*</span></h4>
           <v-select
             :items="companies"
@@ -88,8 +88,8 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col cols="12" md="6">
+      <v-row class="mt-0">
+        <v-col cols="12" md="6" class="pt-0 pb-0">
           <h4>Hạn bảo hiểm <span style="color: red">*</span></h4>
 
           <vue-date-picker
@@ -109,7 +109,7 @@
             ]"
           />
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="6"  class="pt-0 pb-0">
           <h4>Hạn đăng kiểm <span style="color: red">*</span></h4>
           <date-picker
             v-model="vehicle.registrationDeadline"

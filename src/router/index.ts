@@ -32,9 +32,9 @@ const routes = [
         component: () => import("@/views/form/BusinessFormDetail.vue"),
       },
       {
-        path: "/update-user",
+        path: "/info-user",
         name: "UpdateUser",
-        component: () => import("@/views/users/UpdateUser.vue"),
+        component: () => import("@/views/users/UserDetail.vue"),
       },
       {
         path: "/users",

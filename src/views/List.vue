@@ -693,9 +693,15 @@ export default {
         .open();
     },
     async getBussinessData() {
-      const getDatas: any = await getBussinessData();
+      let getDatas: any = await getBussinessData();
       const forms: any = [];
       const idVehicles: any = [];
+      const role = this.$store.state.user.data?.role
+      getDatas = getDatas.filter(data => {
+        return this.labelType.find(
+          (label) => label.en === data.type
+        )?.roleAcess.includes(role);
+      })
       for (const form of getDatas) {
         let vehicle: any = {};
         if (!idVehicles.includes(form["idVehicle"])) {
