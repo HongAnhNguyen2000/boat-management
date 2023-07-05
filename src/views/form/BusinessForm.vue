@@ -398,12 +398,9 @@ export default {
       const currentTime = `${h < 10 ? "0" + h : h}${m < 10 ? "0" + m : m}`;
       this.times = [...JSON.parse(JSON.stringify(this.times))].filter(
         (time) => {
-          console.log(time.replace(":", ""));
-          console.log(currentTime);
           return parseInt(time.replace(":", "")) > parseInt(currentTime);
         }
       );
-      console.log(this.times);
     },
     init() {
       this.getVehicle();
@@ -429,12 +426,10 @@ export default {
     async getVehicle() {
       const list = await getListVehicle();
       const newList = list.map((e: any)=> e = {...e, 'disable': (moment(e['insurance-deadline']) <= moment() || moment(e['registration-deadline']) <= moment())})
-      console.log('newList', newList)
       this.vehicle = newList.filter(
         (detailVehicle) =>
           detailVehicle.infos_id === this.$store.state?.user?.data.infos_id
       );
-      console.log('this.vehicle', this.vehicle)
 
     },
     handleData() {

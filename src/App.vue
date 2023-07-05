@@ -111,7 +111,6 @@ export default {
       this.$store.dispatch("logOut");
     },
     checkRoleUser(role: string) {
-      console.log(role)
       this.nav = [
         {
           icon: "../lists.svg",
