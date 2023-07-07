@@ -5,7 +5,7 @@
         app
         dark
         color="blue-grey darken-1"
-        class="hidden-xs-and-down"
+        class="hidden-xs-and-down header-area"
         v-if="roleUser"
       >
         <v-toolbar-title>
@@ -34,12 +34,29 @@
             flat
           >
             <img :src="item.icon" />
-            {{ item.text }}</v-btn
-          >
-          <v-btn flat @click="logOutUser">
-            <img :src="`../logout.svg`" />
-            Đăng xuất
+            {{ item.text }}
           </v-btn>
+
+          <div class="d-flex align-center pr-4 pl-4 info-area">
+            <img :src="`../update_profile.svg`" />
+            <div>
+              <p>{{ name }}</p>
+              <p>{{ email }}</p>
+              <div class="sub-item">
+                <v-btn
+                  :to="`/info-user`"
+                  title="Thông tin người dùng"
+                  flat
+                  class="pt-3 pb-3"
+                >
+                  Cập nhật thông tin</v-btn
+                >
+                <v-btn flat @click="logOutUser" class="mb-3 mt-3">
+                  Đăng xuất
+                </v-btn>
+              </div>
+            </div>
+          </div>
         </v-toolbar-items>
       </v-toolbar>
     </v-layout>
@@ -62,12 +79,16 @@ export default {
       dialog: false,
       vehicle: [] as any,
       isLogginUrl: this.$route.path === "/",
+      email: "",
+      name: "",
       nav: [] as NavType[],
       roleUser: "",
     };
   },
   created(): void {
     this.getVehicle();
+    this.name = this.$store.state.user.data.name;
+    this.email = this.$store.state.user.data.email;
   },
   watch: {
     $route(to, from) {
@@ -136,13 +157,6 @@ export default {
           active: false,
         });
       }
-      this.nav.push({
-        icon: "../update_profile.svg",
-        text: "Thông tin người dùng",
-        title: "Thông tin người dùng",
-        url: "/info-user",
-        active: false,
-      });
     },
   },
 };
@@ -181,5 +195,39 @@ input.v-field__input {
   padding-bottom: 8px;
   min-height: 40px;
   height: 40px;
+}
+.sub-item {
+  display: none;
+}
+.info-area {
+  cursor: pointer;
+  position: relative;
+  z-index: 99999;
+  background: #04b4ff;
+}
+.info-area:hover .sub-item > * {
+  width: 100%;
+  text-align: left;
+  justify-content: flex-start;
+}
+.info-area:hover .sub-item > a.v-btn {
+  border-bottom: 1px solid #686868;
+  border-radius: 0;
+}
+.info-area:hover .sub-item {
+  display: flex;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  flex-direction: column;
+  align-items: flex-start;
+  color: black;
+  border: 1px solid #686868;
+  border-width: 0 0 1px 1px;
+  width: 226px;
+}
+.header-area.v-toolbar {
+  overflow: unset;
 }
 </style>
