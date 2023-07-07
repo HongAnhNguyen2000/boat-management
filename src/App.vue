@@ -37,11 +37,14 @@
             {{ item.text }}
           </v-btn>
 
-          <div class="d-flex align-center pr-4 pl-4 info-area">
+          <div class="d-flex align-center pl-4 info-area">
             <img :src="`../update_profile.svg`" />
             <div>
               <p>{{ name }}</p>
               <p>{{ email }}</p>
+              <p class="icon-area">
+                <v-icon>mdi-chevron-down</v-icon>
+              </p>
               <div class="sub-item">
                 <v-btn
                   :to="`/info-user`"
@@ -87,8 +90,8 @@ export default {
   },
   created(): void {
     this.getVehicle();
-    this.name = this.$store.state.user.data.name;
-    this.email = this.$store.state.user.data.email;
+    this.name = this.$store.state.user.data?.name;
+    this.email = this.$store.state.user.data?.email;
   },
   watch: {
     $route(to, from) {
@@ -102,6 +105,8 @@ export default {
       if (this.$store.state.user.data?.role) {
         this.roleUser = this.$store.state.user.data?.role;
         this.checkRoleUser(this.$store.state.user.data?.role);
+        this.name = this.$store.state.user.data?.name;
+        this.email = this.$store.state.user.data?.email;
       }
       if (
         this.roleUser !== "admin" &&
@@ -203,10 +208,21 @@ input.v-field__input {
   cursor: pointer;
   position: relative;
   z-index: 99999;
+  min-width: 200px;
+  padding-right: 40px;
 }
-
+.info-area .icon-area {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
 .info-area:hover {
   background: #04b4ff;
+}
+.info-area:hover .icon-area {
+  transform: rotate(180deg) translateY(50%);
 }
 .info-area:hover .sub-item > * {
   width: 100%;
