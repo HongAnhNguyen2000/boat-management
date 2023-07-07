@@ -1,7 +1,4 @@
 <template>
-  <v-overlay v-model="isLoading" contained class="align-center justify-center">
-    <v-progress-circular indeterminate color="primary"></v-progress-circular>
-  </v-overlay>
   <div class="data-container">
     <div class="mb-5 d-flex align-center title-area">
       <h2>Danh sách phương tiện</h2>
@@ -128,7 +125,7 @@
           <td>{{ item["year-manufacture"] }}</td>
           <td>{{ item.type }}</td>
           <td>{{ item.company }}</td>
-          <td>{{ item["insurance-deadline"] }}</td>
+          <td>{{ insurence(item["insurance-deadline"]) }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -148,6 +145,7 @@
 import { getInfo, getInfos, getListVehicle, getUser } from "@/firebase";
 import _ from "lodash";
 import Vehicle from "./Vehicle.vue";
+import moment from "moment";
 
 export default {
   components: {
@@ -158,7 +156,6 @@ export default {
       vehicles: [] as any,
       showVehicles: [] as any,
       isReload: true,
-      isLoading: true,
       isSortASC: true,
       open: false,
       currentId: "",
@@ -175,23 +172,26 @@ export default {
     page(newVal) {
       if (this.vehicles.length > 0) {
         this.isReload = false;
-        this.isLoading = true;
+        this.$emit("handleLoading", true);
         this.showVehicles = [...this.vehicles].slice(
           (newVal - 1) * 15,
           newVal * 15
         );
         setTimeout(() => {
           this.isReload = true;
-          this.isLoading = false;
+          this.$emit("handleLoading", false);
         }, 500);
       }
     },
   },
 
   methods: {
+    insurence(date): string {
+      return moment(date, "MM/DD/YYYY").format("DD/MM/YYYY");
+    },
     sortBy(field: string) {
       this.isReload = false;
-      this.isLoading = true;
+      this.$emit("handleLoading", true);
       if (this.currentSort === field) {
         this.isSortASC = !this.isSortASC;
       } else {
@@ -211,13 +211,14 @@ export default {
       }
       setTimeout(() => {
         this.isReload = true;
-        this.isLoading = false;
+        this.$emit("handleLoading", false);
       }, 500);
     },
     async getCompanies() {
       this.companies = await getInfos();
     },
     async getVehicles() {
+      this.$emit("handleLoading", true);
       const getDatas: any = await getListVehicle();
       await this.getCompanies();
       for (const vehicle of getDatas) {
@@ -238,7 +239,8 @@ export default {
           this.page * 15
         );
       }
-      this.isLoading = false;
+
+      this.$emit("handleLoading", false);
     },
     async getCompany(userId) {
       const user: any = await getUser(userId);

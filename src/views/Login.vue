@@ -41,7 +41,12 @@
           </div>
         </v-alert>
         <div class="text-subtitle-1 text-medium-emphasis">Email đăng nhập</div>
-        <v-text-field variant="outlined" placeholder="Email" v-model="email" @keyup.enter="login()"/>
+        <v-text-field
+          variant="outlined"
+          placeholder="Email"
+          v-model="email"
+          @keyup.enter="login()"
+        />
         <div class="text-subtitle-1 text-medium-emphasis">Mật khẩu</div>
         <v-text-field
           variant="outlined"
@@ -134,6 +139,7 @@ export default {
 
   methods: {
     async login() {
+      this.$emit("handleLoading", true);
       const loginVal = { email: this.email, password: this.password };
       const loggedIn = await this.$store.dispatch("logIn", loginVal);
       if (loggedIn) {
@@ -144,6 +150,7 @@ export default {
         setTimeout(() => {
           if (this.$store.state.user.loggedIn) {
             this.$router.push("list");
+            this.$emit("handleLoading", false);
           }
           this.alertOut = false;
         }, 1000);
@@ -151,9 +158,11 @@ export default {
         this.alertError = true;
         this.alertColor = "red";
         this.message = "Email/password chưa đúng xin mời thử lại";
+        this.$emit("handleLoading", false);
       }
     },
     async getUsers() {
+      this.$emit("handleLoading", true);
       const dataUser = await getUsers();
       const pattern = /([\\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
       const manageUser = dataUser.filter(
@@ -161,6 +170,7 @@ export default {
       );
       this.contactNumber =
         manageUser?.length > 0 ? manageUser[0].phonenumber : "09013599921";
+      this.$emit("handleLoading", false);
     },
     validateLogin() {
       this.disable = this.email === "" || this.password === "";

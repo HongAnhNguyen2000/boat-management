@@ -21,7 +21,7 @@
             variant="text"
             class="bta-logo"
           >
-            <img :src="`../logo.png`" />
+            <img :src="`../logo_benthuynoidia.svg`" />
           </v-btn>
         </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -84,15 +84,13 @@ export default {
       }
       if (
         this.roleUser !== "admin" &&
-        (["/users"].includes(to.path) ||
-          to.path.includes("/user"))
+        (["/users"].includes(to.path) || to.path.includes("/user"))
       ) {
         this.$router.push("/list");
       }
       if (
         this.roleUser !== "manager" &&
-        (["/vehicles"].includes(to.path) ||
-          to.path.includes("/vehicle"))
+        (["/vehicles"].includes(to.path) || to.path.includes("/vehicle"))
       ) {
         this.$router.push("/list");
       }
@@ -121,26 +119,22 @@ export default {
         },
       ];
       if (role === "manager") {
-        this.nav.push(
-          {
-            icon: "../ship.svg",
-            text: "Quản lý phương tiện",
-            title: "Quản lý phương tiện",
-            url: "/vehicles",
-            active: false,
-          }
-        );
+        this.nav.push({
+          icon: "../ship.svg",
+          text: "Quản lý phương tiện",
+          title: "Quản lý phương tiện",
+          url: "/vehicles",
+          active: false,
+        });
       }
       if (role === "admin") {
-        this.nav.push(
-          {
-            icon: "../all_users.svg",
-            text: "Quản lý người dùng",
-            title: "Quản lý người dùng",
-            url: "/users",
-            active: false,
-          }
-        );
+        this.nav.push({
+          icon: "../all_users.svg",
+          text: "Quản lý người dùng",
+          title: "Quản lý người dùng",
+          url: "/users",
+          active: false,
+        });
       }
       this.nav.push({
         icon: "../update_profile.svg",
@@ -178,7 +172,7 @@ table thead {
   max-width: 150px;
 }
 .v-field.v-field--prepended {
-  height: 40px
+  height: 40px;
 }
 div input.dp__input,
 div.v-field__input,
@@ -186,6 +180,6 @@ input.v-field__input {
   padding-top: 8px;
   padding-bottom: 8px;
   min-height: 40px;
-  height: 40px
+  height: 40px;
 }
 </style>

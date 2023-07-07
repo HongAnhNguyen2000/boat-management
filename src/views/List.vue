@@ -1,7 +1,4 @@
 <template>
-  <v-overlay v-model="isLoading" contained class="align-center justify-center">
-    <v-progress-circular indeterminate color="primary"></v-progress-circular>
-  </v-overlay>
   <v-alert
     v-model="alert"
     close-text="Close Alert"
@@ -133,7 +130,7 @@
                 class="ml-3"
                 color="error"
                 variant="elevated"
-                style="min-width: 36px;"
+                style="min-width: 36px"
               >
                 Từ chối
               </v-btn>
@@ -166,7 +163,12 @@
 </template>
 
 <script lang="ts">
-import { getBussinessData, getFormData, getVehicle, updateFormData } from "@/firebase";
+import {
+  getBussinessData,
+  getFormData,
+  getVehicle,
+  updateFormData,
+} from "@/firebase";
 import BusinessForm from "@/views/form/BusinessForm.vue";
 import BusinessFormDetail from "@/views/form/BusinessFormDetail.vue";
 import * as pdfMake from "pdfmake/build/pdfmake";
@@ -193,7 +195,6 @@ export default {
       showListBussinessData: [] as any,
       vehicles: [] as any,
       contentPDF: {} as any,
-      isLoading: true,
       isReload: true,
       isSortASC: true,
       isShowAddForm: false,
@@ -222,14 +223,14 @@ export default {
     page(newVal) {
       if (this.listBussinessData.length > 0) {
         this.isReload = false;
-        this.isLoading = true;
+        this.$emit("handleLoading", true);
         this.showListBussinessData = [...this.listBussinessData].slice(
           (newVal - 1) * 15,
           newVal * 15
         );
         setTimeout(() => {
           this.isReload = true;
-          this.isLoading = false;
+          this.$emit("handleLoading", false);
         }, 500);
       }
     },
@@ -693,15 +694,16 @@ export default {
         .open();
     },
     async getBussinessData() {
+      this.$emit("handleLoading", true);
       let getDatas: any = await getBussinessData();
       const forms: any = [];
       const idVehicles: any = [];
-      const role = this.$store.state.user.data?.role
-      getDatas = getDatas.filter(data => {
-        return this.labelType.find(
-          (label) => label.en === data.type
-        )?.roleAcess.includes(role);
-      })
+      const role = this.$store.state.user.data?.role;
+      getDatas = getDatas.filter((data) => {
+        return this.labelType
+          .find((label) => label.en === data.type)
+          ?.roleAcess.includes(role);
+      });
       for (const form of getDatas) {
         let vehicle: any = {};
         if (!idVehicles.includes(form["idVehicle"])) {
@@ -736,7 +738,7 @@ export default {
       this.sortBy("sorting", ["asc", "asc"]);
       this.paginationHandle();
 
-      this.isLoading = false;
+      this.$emit("handleLoading", false);
     },
     gotoDetail(id) {
       this.open = true;
@@ -761,13 +763,13 @@ export default {
     },
     async rejectForm(id) {
       const type = "reject";
-      const setAPIData = this.listBussinessDataClone.find(e => e.id === id);
+      const setAPIData = this.listBussinessDataClone.find((e) => e.id === id);
       const data = { ...setAPIData, type: type };
-      delete data["typeConvert"]
-      delete data["backgroundColor"]
-      delete data["sorting"]
-      delete data["time_created"]
-      delete data["sortTime"]
+      delete data["typeConvert"];
+      delete data["backgroundColor"];
+      delete data["sorting"];
+      delete data["time_created"];
+      delete data["sortTime"];
       const actionFormData = await updateFormData(id, data);
       if (actionFormData) {
         this.alertColor = "green";
@@ -781,13 +783,12 @@ export default {
         this.alertColor = "red";
 
         this.alert = true;
-        this.messageAlert =
-          `Bạn cập nhật Trạng thái của tàu có số đăng ký ${setAPIData.meanNumber} sang từ chối không thành công`;
+        this.messageAlert = `Bạn cập nhật Trạng thái của tàu có số đăng ký ${setAPIData.meanNumber} sang từ chối không thành công`;
         setTimeout(() => {
           this.alert = false;
         }, 3000);
       }
-    }
+    },
   },
 };
 </script>
