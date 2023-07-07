@@ -52,11 +52,14 @@
               return-object
             >
               <template v-slot:item="{ item, props }">
-                <v-list-item v-bind="props" :disabled="item.raw.disable" />
+                <v-list-item
+                  v-bind="props"
+                  :disabled="item['raw'] ? item['raw']['disable'] : false"
+                />
               </template>
             </v-select>
             <div
-              class="mt-3 mb-3 d-flex flex-column"
+              class="mt-1 mb-3 d-flex flex-column"
               v-if="warning && warning !== ''"
               style="padding: 5px; background: yellow"
             >
