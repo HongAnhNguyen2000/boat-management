@@ -240,6 +240,7 @@ input.v-field__input {
 }
 .info-area:hover .sub-item > *:hover {
   background-color: #686868;
+  color: white;
 }
 .header-area.v-toolbar {
   overflow: unset;
