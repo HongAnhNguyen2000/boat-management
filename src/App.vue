@@ -51,7 +51,7 @@
                 >
                   Cập nhật thông tin</v-btn
                 >
-                <v-btn flat @click="logOutUser" class="mb-3 mt-3">
+                <v-btn flat @click="logOutUser" :to="`/`" class="pt-3 pb-3">
                   Đăng xuất
                 </v-btn>
               </div>
@@ -203,16 +203,27 @@ input.v-field__input {
   cursor: pointer;
   position: relative;
   z-index: 99999;
+}
+
+.info-area:hover {
   background: #04b4ff;
 }
 .info-area:hover .sub-item > * {
   width: 100%;
   text-align: left;
   justify-content: flex-start;
+  text-transform: unset;
+  font-weight: 400;
 }
 .info-area:hover .sub-item > a.v-btn {
   border-bottom: 1px solid #686868;
   border-radius: 0;
+}
+.info-area:hover .sub-item > a.v-btn:last-child {
+  border-bottom: 0;
+}
+.info-area:hover .sub-item .v-btn__overlay {
+  background: white;
 }
 .info-area:hover .sub-item {
   display: flex;
@@ -225,7 +236,10 @@ input.v-field__input {
   color: black;
   border: 1px solid #686868;
   border-width: 0 0 1px 1px;
-  width: 226px;
+  width: 100%;
+}
+.info-area:hover .sub-item > *:hover {
+  background-color: #686868;
 }
 .header-area.v-toolbar {
   overflow: unset;
