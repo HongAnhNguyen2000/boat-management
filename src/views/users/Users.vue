@@ -1,7 +1,4 @@
 <template>
-  <v-overlay v-model="isLoading" contained class="align-center justify-center">
-    <v-progress-circular indeterminate color="primary"></v-progress-circular>
-  </v-overlay>
   <div class="data-container">
     <div class="mb-5 d-flex align-center title-area">
       <h2>Danh sách người dùng</h2>
@@ -100,7 +97,6 @@ export default {
       users: [] as any,
       showUsers: [] as any,
       isReload: true,
-      isLoading: true,
       isSortASC: true,
       currentSort: "",
       open: false,
@@ -123,11 +119,12 @@ export default {
     page(newVal) {
       if (this.users.length > 0) {
         this.isReload = false;
-        this.isLoading = true;
+        this.$emit("handleLoading", true);
+
         this.showUsers = [...this.users].slice((newVal - 1) * 15, newVal * 15);
         setTimeout(() => {
           this.isReload = true;
-          this.isLoading = false;
+          this.$emit("handleLoading", false);
         }, 500);
       }
     },
@@ -154,6 +151,7 @@ export default {
       }
     },
     async getUsers() {
+      this.$emit("handleLoading", true);
       const getDatas: any = await getUsers();
       this.users = [...getDatas];
       for (const user of getDatas) {
@@ -175,7 +173,7 @@ export default {
           this.page * 15
         );
       }
-      this.isLoading = false;
+      this.$emit("handleLoading", false);
     },
     gotoDetail(id) {
       this.open = true;

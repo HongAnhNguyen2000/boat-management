@@ -5,7 +5,7 @@
         app
         dark
         color="blue-grey darken-1"
-        class="hidden-xs-and-down"
+        class="hidden-xs-and-down header-area"
         v-if="roleUser"
       >
         <v-toolbar-title>
@@ -21,7 +21,7 @@
             variant="text"
             class="bta-logo"
           >
-            <img :src="`../logo.png`" />
+            <img :src="`../logo_benthuynoidia.svg`" />
           </v-btn>
         </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -34,12 +34,32 @@
             flat
           >
             <img :src="item.icon" />
-            {{ item.text }}</v-btn
-          >
-          <v-btn flat @click="logOutUser">
-            <img :src="`../logout.svg`" />
-            Đăng xuất
+            {{ item.text }}
           </v-btn>
+
+          <div class="d-flex align-center pl-4 info-area">
+            <img :src="`../update_profile.svg`" />
+            <div>
+              <p>{{ name }}</p>
+              <p>{{ email }}</p>
+              <p class="icon-area">
+                <v-icon>mdi-chevron-down</v-icon>
+              </p>
+              <div class="sub-item">
+                <v-btn
+                  :to="`/info-user`"
+                  title="Thông tin người dùng"
+                  flat
+                  class="pt-3 pb-3"
+                >
+                  Cập nhật thông tin</v-btn
+                >
+                <v-btn flat @click="logOutUser" :to="`/`" class="pt-3 pb-3">
+                  Đăng xuất
+                </v-btn>
+              </div>
+            </div>
+          </div>
         </v-toolbar-items>
       </v-toolbar>
     </v-layout>
@@ -62,12 +82,16 @@ export default {
       dialog: false,
       vehicle: [] as any,
       isLogginUrl: this.$route.path === "/",
+      email: "",
+      name: "",
       nav: [] as NavType[],
       roleUser: "",
     };
   },
   created(): void {
     this.getVehicle();
+    this.name = this.$store.state.user.data?.name;
+    this.email = this.$store.state.user.data?.email;
   },
   watch: {
     $route(to, from) {
@@ -81,18 +105,18 @@ export default {
       if (this.$store.state.user.data?.role) {
         this.roleUser = this.$store.state.user.data?.role;
         this.checkRoleUser(this.$store.state.user.data?.role);
+        this.name = this.$store.state.user.data?.name;
+        this.email = this.$store.state.user.data?.email;
       }
       if (
         this.roleUser !== "admin" &&
-        (["/users"].includes(to.path) ||
-          to.path.includes("/user"))
+        (["/users"].includes(to.path) || to.path.includes("/user"))
       ) {
         this.$router.push("/list");
       }
       if (
         this.roleUser !== "manager" &&
-        (["/vehicles"].includes(to.path) ||
-          to.path.includes("/vehicle"))
+        (["/vehicles"].includes(to.path) || to.path.includes("/vehicle"))
       ) {
         this.$router.push("/list");
       }
@@ -121,34 +145,23 @@ export default {
         },
       ];
       if (role === "manager") {
-        this.nav.push(
-          {
-            icon: "../ship.svg",
-            text: "Quản lý phương tiện",
-            title: "Quản lý phương tiện",
-            url: "/vehicles",
-            active: false,
-          }
-        );
+        this.nav.push({
+          icon: "../ship.svg",
+          text: "Quản lý phương tiện",
+          title: "Quản lý phương tiện",
+          url: "/vehicles",
+          active: false,
+        });
       }
       if (role === "admin") {
-        this.nav.push(
-          {
-            icon: "../all_users.svg",
-            text: "Quản lý người dùng",
-            title: "Quản lý người dùng",
-            url: "/users",
-            active: false,
-          }
-        );
+        this.nav.push({
+          icon: "../all_users.svg",
+          text: "Quản lý người dùng",
+          title: "Quản lý người dùng",
+          url: "/users",
+          active: false,
+        });
       }
-      this.nav.push({
-        icon: "../update_profile.svg",
-        text: "Thông tin người dùng",
-        title: "Thông tin người dùng",
-        url: "/info-user",
-        active: false,
-      });
     },
   },
 };
@@ -178,7 +191,7 @@ table thead {
   max-width: 150px;
 }
 .v-field.v-field--prepended {
-  height: 40px
+  height: 40px;
 }
 div input.dp__input,
 div.v-field__input,
@@ -186,6 +199,66 @@ input.v-field__input {
   padding-top: 8px;
   padding-bottom: 8px;
   min-height: 40px;
-  height: 40px
+  height: 40px;
+}
+.sub-item {
+  display: none;
+}
+.info-area {
+  cursor: pointer;
+  position: relative;
+  z-index: 99999;
+  min-width: 200px;
+  padding-right: 40px;
+}
+.info-area .icon-area {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.info-area:hover {
+  background: #04b4ff;
+}
+.info-area:hover .icon-area {
+  transform: rotate(180deg) translateY(50%);
+}
+.info-area:hover .sub-item > * {
+  width: 100%;
+  text-align: left;
+  justify-content: flex-start;
+  text-transform: unset;
+  font-weight: 400;
+}
+.info-area:hover .sub-item > a.v-btn {
+  border-bottom: 1px solid #686868;
+  border-radius: 0;
+}
+.info-area:hover .sub-item > a.v-btn:last-child {
+  border-bottom: 0;
+}
+.info-area:hover .sub-item .v-btn__overlay {
+  background: white;
+}
+.info-area:hover .sub-item {
+  display: flex;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  flex-direction: column;
+  align-items: flex-start;
+  color: black;
+  border: 1px solid #686868;
+  border-width: 0 0 1px 1px;
+  width: 100%;
+}
+.info-area:hover .sub-item > *:hover {
+  background-color: #686868;
+  color: white;
+}
+.header-area.v-toolbar {
+  overflow: unset;
 }
 </style>

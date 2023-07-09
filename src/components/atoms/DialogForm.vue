@@ -44,6 +44,7 @@
                 label="Giới tính *"
                 v-model="customerData['gender']"
                 required
+                variant="outlined"
                 :rules="[rules.required]"
               />
             </v-col>
@@ -75,7 +76,7 @@
               />
             </v-col>
           </v-row>
-          <v-row  class="mt-0">
+          <v-row class="mt-0">
             <v-col cols="12" class="note-field pt-0">
               <h4>Ghi chú</h4>
               <v-text-field

@@ -52,13 +52,20 @@
               return-object
             >
               <template v-slot:item="{ item, props }">
-                <v-list-item v-bind="props" :disabled="(item && item.raw) ? item.raw['disable'] : false" />
+                <v-list-item
+                  v-bind="props"
+                  :disabled="item['raw'] ? item['raw']['disable'] : false"
+                />
               </template>
             </v-select>
-            <div class="mt-3 d-flex flex-column" v-if="warning && warning !== ''" style="padding: 5px;background: yellow;">
-              Cảnh báo: <div v-html="warning"/>
+            <div
+              class="mt-1 mb-3 d-flex flex-column"
+              v-if="warning && warning !== ''"
+              style="padding: 5px; background: yellow"
+            >
+              Cảnh báo:
+              <div v-html="warning" />
             </div>
-
           </v-col>
         </v-row>
         <v-row class="mt-0">
@@ -240,7 +247,6 @@
                 <h4>Bến rời <span style="color: red">*</span></h4>
                 <v-select
                   class="mt-2"
-                  label="Bến rời*"
                   :items="['Nha Trang']"
                   variant="solo"
                   v-model="businessData['fromStation']"
@@ -251,7 +257,6 @@
                 <h4>Bến đến <span style="color: red">*</span></h4>
                 <v-select
                   class="mt-2"
-                  label="Bến đến*"
                   :items="[
                     'Hòn Tắm',
                     'Hòn Tre',
@@ -271,7 +276,6 @@
                 </h4>
                 <v-select
                   class="mt-2"
-                  label="Thời gian rời bến*"
                   :items="times"
                   variant="solo"
                   v-model="businessData['time']"
@@ -421,16 +425,22 @@ export default {
           this.process = "Chấp nhận";
           break;
       }
-      process;
     },
     async getVehicle() {
       const list = await getListVehicle();
-      const newList = list.map((e: any)=> e = {...e, 'disable': (moment(e['insurance-deadline']) <= moment() || moment(e['registration-deadline']) <= moment())})
+      const newList = list.map(
+        (e: any) =>
+          (e = {
+            ...e,
+            disable:
+              moment(e["insurance-deadline"], "MM/DD/YYYY") <= moment() ||
+              moment(e["registration-deadline"], "MM/DD/YYYY") <= moment(),
+          })
+      );
       this.vehicle = newList.filter(
         (detailVehicle) =>
           detailVehicle.infos_id === this.$store.state?.user?.data.infos_id
       );
-
     },
     handleData() {
       const clientData = [
@@ -637,13 +647,39 @@ export default {
       this.businessData["ownerName"] = newVal["vehicle-owner"];
       this.businessData["tonnage"] = newVal["tonnage"];
       this.businessData["seats"] = newVal["wattage"];
-      // if(moment(newVal['insurance-deadline']) > moment().subtract(30, 'days')) {        
-      //   this.warning += `- Còn ${moment(newVal['insurance-deadline']).diff(moment(), 'days')} ngày nữa sẽ hết hạn bảo hiểm </br>`
-      // }
-      // if(moment(newVal['registration-deadline']) > moment().subtract(30, 'days')) {        
-      //   this.warning += `- Còn ${moment(newVal['registration-deadline']).diff(moment(), 'days')} ngày nữa sẽ hết hạn đăng hiểm </br>`
-      // }
-      
+      this.warning = "";
+      console.log(newVal["insurance-deadline"]);
+      console.log(moment().format("MM/DD/YYYY"));
+      console.log(moment(newVal["insurance-deadline"], "MM/DD/YYYY"));
+      console.log(moment().subtract(30, "days"));
+      console.log(
+        moment(newVal["insurance-deadline"], "MM/DD/YYYY").diff(
+          moment(),
+          "days"
+        )
+      );
+      if (
+        moment(newVal["insurance-deadline"], "MM/DD/YYYY").diff(
+          moment(),
+          "days"
+        ) <= 30
+      ) {
+        this.warning += `- Còn ${moment(
+          newVal["insurance-deadline"],
+          "MM/DD/YYYY"
+        ).diff(moment(), "days")} ngày nữa sẽ hết hạn bảo hiểm </br>`;
+      }
+      if (
+        moment(newVal["registration-deadline"], "MM/DD/YYYY").diff(
+          moment(),
+          "days"
+        ) <= 30
+      ) {
+        this.warning += `- Còn ${moment(
+          newVal["registration-deadline"],
+          "MM/DD/YYYY"
+        ).diff(moment(), "days")} ngày nữa sẽ hết hạn đăng hiểm </br>`;
+      }
     },
     businessData: {
       handler(newVal) {

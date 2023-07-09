@@ -1,10 +1,14 @@
 <template>
   <v-app>
-
     <default-view />
   </v-app>
 </template>
 
-<script lang="ts" setup>
-  import DefaultView from './View.vue'
+<script lang="ts">
+import DefaultView from "./View.vue";
+export default {
+  components: {
+    "default-view": DefaultView,
+  },
+};
 </script>
