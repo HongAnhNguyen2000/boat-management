@@ -90,43 +90,75 @@
 
       <v-row class="mt-0">
         <v-col cols="12" md="6" class="pt-0 pb-0">
-          <h4>Hạn bảo hiểm <span style="color: red">*</span></h4>
+          <v-row class="mt-0">
+            <div class="beside-image-upload">
+              <h4>Hạn bảo hiểm <span style="color: red">*</span></h4>
 
-          <vue-date-picker
-            v-model="vehicle.insuranceDeadline"
-            locale="vi"
-            format="dd-MM-yyyy"
-            select-text="Chọn"
-            cancel-text="Đóng"
-            :day-names="[
-              'Thứ 2',
-              'Thứ 3',
-              'Thứ 4',
-              'Thứ 5',
-              'Thứ 6',
-              'Thứ 7',
-              'Chủ Nhật',
-            ]"
-          />
+              <vue-date-picker
+                v-model="vehicle.insuranceDeadline"
+                locale="vi"
+                format="dd-MM-yyyy"
+                select-text="Chọn"
+                cancel-text="Đóng"
+                :day-names="[
+                  'Thứ 2',
+                  'Thứ 3',
+                  'Thứ 4',
+                  'Thứ 5',
+                  'Thứ 6',
+                  'Thứ 7',
+                  'Chủ Nhật',
+                ]"
+              />
+            </div>
+            <div class="image-upload-area">
+              <v-file-input 
+                @change="previewImage('imageInsurance', 'urlImageInsurance')"
+                v-model="imageInsurance"
+                accept="image/png, image/jpeg"
+                placeholder="Pick an avatar"
+                prepend-icon="mdi-camera"
+                style="padding-top:10px"
+                :class="urlImageInsurance ? '' : 'icon-required'"
+              />
+              <v-img :src="urlImageInsurance" v-if="urlImageInsurance" @click="openFullSize(urlImageInsurance)"/>
+            </div>
+          </v-row>
         </v-col>
         <v-col cols="12" md="6"  class="pt-0 pb-0">
-          <h4>Hạn đăng kiểm <span style="color: red">*</span></h4>
-          <date-picker
-            v-model="vehicle.registrationDeadline"
-            locale="vi"
-            format="dd-MM-yyyy"
-            select-text="Chọn"
-            cancel-text="Đóng"
-            :day-names="[
-              'Thứ 2',
-              'Thứ 3',
-              'Thứ 4',
-              'Thứ 5',
-              'Thứ 6',
-              'Thứ 7',
-              'Chủ Nhật',
-            ]"
-          />
+          <v-row class="mt-0">
+            <div class="beside-image-upload">
+              <h4>Hạn đăng kiểm <span style="color: red">*</span></h4>
+              <date-picker
+                v-model="vehicle.registrationDeadline"
+                locale="vi"
+                format="dd-MM-yyyy"
+                select-text="Chọn"
+                cancel-text="Đóng"
+                :day-names="[
+                  'Thứ 2',
+                  'Thứ 3',
+                  'Thứ 4',
+                  'Thứ 5',
+                  'Thứ 6',
+                  'Thứ 7',
+                  'Chủ Nhật',
+                ]"
+              />
+            </div>
+            <div class="image-upload-area">
+              <v-file-input 
+                @change="previewImage('imageRegistration', 'urlImageRegistration')"
+                v-model="imageRegistration"
+                accept="image/png, image/jpeg"
+                placeholder="Pick an avatar"
+                prepend-icon="mdi-camera"
+                style="padding-top:10px"
+                :class="urlImageRegistration ? '' : 'icon-required'"
+              />
+              <v-img :src="urlImageRegistration" v-if="urlImageRegistration" @click="openFullSize(urlImageRegistration)"/>
+            </div>
+          </v-row>
         </v-col>
       </v-row>
 
@@ -168,6 +200,19 @@
         Đăng ký
       </v-btn>
     </div>
+    <v-dialog v-model="open" width="auto" >
+      <div style="max-width: 500px; position: relative;">
+        <v-btn
+          color="white"
+          variant="elevated"
+          @click="closePopup"
+          class="close-popup-button"
+        >
+          <v-icon icon="mdi mdi-close" />
+        </v-btn>
+        <img :src="imagePopup" alt="imagePopup" v-if="imagePopup" style="width: 100%; height: auto">
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -175,6 +220,9 @@
 import { addVehicle, getInfos } from "@/firebase";
 import _ from "lodash";
 import Datepicker from "@vuepic/vue-datepicker";
+import {
+  convertBlobToBase64
+} from "@/CommonFile";
 export default {
   components: {
     "date-picker": Datepicker,
@@ -213,6 +261,12 @@ export default {
       },
       companies: [] as any,
       disabled: true,
+      urlImageInsurance: '',
+      urlImageRegistration: '',
+      imageRegistration: '' as any,
+      imageInsurance: '' as any,
+      open: false,
+      imagePopup: '',
       rules: {
         required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
         isNumber: (value: any) =>
@@ -230,8 +284,25 @@ export default {
       },
       deep: true,
     },
+    imageInsurance() {
+      this.disabled = this.validate();
+    },
+    imageRegistration() {
+      this.disabled = this.validate();
+    },
   },
   methods: {
+    closePopup() {
+      this.open = false;
+      this.imagePopup = '';
+    },
+    openFullSize(url) {
+      this.open = true;
+      this.imagePopup = url
+    },
+    async previewImage(image, url) {
+      this[url] = URL.createObjectURL(this[image][0])
+    },
     validate() {
       return (
         _.isEmpty(this.vehicle["registrationNumber"]) ||
@@ -245,6 +316,8 @@ export default {
         this.rules.isNumber(this.vehicle["wattage"]) !== true ||
         this.rules.isNumber(this.vehicle["tonnage"]) !== true ||
         _.isEmpty(this.vehicle["yearManufacture"].toString()) ||
+        _.isEmpty(this.imageInsurance[0]?.name) ||
+        _.isEmpty(this.imageRegistration[0]?.name) ||
         _.isEmpty(this.vehicle["infosId"])
       );
     },
@@ -259,6 +332,12 @@ export default {
         "year-manufacture": this.vehicle["yearManufacture"],
         infos_id: this.vehicle["infosId"],
       };
+      if (this.imageInsurance[0]) {
+        params['image-insurance'] = await convertBlobToBase64(this.imageInsurance[0])
+      }
+      if (this.imageRegistration[0]) {
+        params['image-registration'] = await convertBlobToBase64(this.imageRegistration[0])
+      }
       if (this.vehicle["registrationDeadline"]) {
         const now = new Date(this.vehicle["registrationDeadline"]);
         params["registration-deadline"] = `${("0" + (now.getMonth() + 1)).slice(
@@ -324,5 +403,45 @@ button.dp__action_select {
 }
 .dp__calendar_header_item {
   width: auto;
+}
+</style>
+<style>
+.image-upload-area img {
+  width: auto;
+  margin-left: auto;
+  max-width: 70px;
+  margin-bottom: auto;
+  object-fit: unset;
+  height: auto;
+  max-height: 40px;
+  cursor: pointer;
+}
+.image-upload-area {
+  display: flex;
+  flex-direction: row;
+  width: 134px;
+  padding: 24px 12px 0;
+}
+.image-upload-area .v-input__control {
+  display: none;
+}
+.beside-image-upload {
+  width: calc(100% - 134px);
+  padding: 0 12px;
+}
+.close-popup-button {
+  height: 20px!important;
+  width: 20px;
+  border-radius: 50%;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  min-width: unset;
+  top: 0;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
+.icon-required .v-input__prepend {
+  border: 1px solid red;
+  border-radius: 6px;
 }
 </style>

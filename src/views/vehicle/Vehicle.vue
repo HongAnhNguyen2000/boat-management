@@ -67,6 +67,12 @@
       <p class="mt-3">
         <span> Hạn đăng kiểm: </span>
         <span>
+          {{ registrationDeadline }}
+        </span>
+      </p>
+      <p class="mt-3">
+        <span> Hạn bảo hiểm: </span>
+        <span>
           {{ insuranceDeadline }}
         </span>
       </p>
@@ -95,6 +101,7 @@
 <script lang="ts">
 import { getInfo, getUser, getVehicle } from "@/firebase";
 import _ from "lodash";
+import moment from "moment";
 export default {
   props: {
     currentId: {
@@ -112,6 +119,7 @@ export default {
       yearManufacture: "",
       type: "",
       insuranceDeadline: "",
+      registrationDeadline: "",
       company: "" as any,
       vehicle_id: "" as any,
       isLoadedData: false,
@@ -139,7 +147,8 @@ export default {
         this.wattage = vehicleDetail["wattage"];
         this.yearManufacture = vehicleDetail["year-manufacture"];
         this.type = vehicleDetail["type"];
-        this.insuranceDeadline = vehicleDetail["insurance-deadline"];
+        this.insuranceDeadline = moment(vehicleDetail["insurance-deadline"], 'MM/DD/YYYY').format('DD/MM/YYYY');
+        this.registrationDeadline = moment(vehicleDetail["registration-deadline"], 'MM/DD/YYYY').format('DD/MM/YYYY');
         this.company = await this.getCompany(vehicleDetail["infos_id"]);
         setTimeout(() => {
           this.isLoadedData = true;
