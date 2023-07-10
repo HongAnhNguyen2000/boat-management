@@ -135,7 +135,7 @@
   </div>
 
   <v-dialog v-model="open" width="auto" persistent>
-    <div style="overflow-y: scroll; background: white">
+    <div style="overflow-y: auto; background: white">
       <vehicle-detail @closePopup="closePopup" :currentId="currentId" />
     </div>
   </v-dialog>
@@ -268,7 +268,7 @@ export default {
 <style scoped>
 .data-container {
   margin: 2rem;
-  padding: 0px 30px 56px 30px;
+  padding: 0px 10px 16px;
 }
 @media screen and (max-width: 830px) {
   .data-container {

@@ -141,7 +141,7 @@ export default {
 <style scoped>
 .data-container {
   margin: 2rem;
-  padding: 0px 30px 56px 30px;
+  padding: 0px 10px 16px;
 }
 @media screen and (max-width: 830px) {
   .data-container {

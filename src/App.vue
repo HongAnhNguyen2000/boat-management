@@ -261,4 +261,7 @@ input.v-field__input {
 .header-area.v-toolbar {
   overflow: unset;
 }
+.v-dialog {
+  z-index: 9999999!important;
+}
 </style>

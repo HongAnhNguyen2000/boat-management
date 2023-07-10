@@ -71,10 +71,16 @@
         </span>
       </p>
       <p class="mt-3">
+        <img :src="imageRegistration" alt="imageRegistration" v-if="imageRegistration" style="width: 100%; height: auto; max-width: 500px;">
+      </p>
+      <p class="mt-3">
         <span> Hạn bảo hiểm: </span>
         <span>
           {{ insuranceDeadline }}
         </span>
+      </p>
+      <p class="mt-3">
+        <img :src="imageInsurance" alt="imageInsurance" v-if="imageInsurance" style="width: 100%; height: auto; max-width: 500px;">
       </p>
     </div>
     <div>
@@ -119,6 +125,8 @@ export default {
       yearManufacture: "",
       type: "",
       insuranceDeadline: "",
+      imageRegistration: '',
+      imageInsurance: '',
       registrationDeadline: "",
       company: "" as any,
       vehicle_id: "" as any,
@@ -147,6 +155,8 @@ export default {
         this.wattage = vehicleDetail["wattage"];
         this.yearManufacture = vehicleDetail["year-manufacture"];
         this.type = vehicleDetail["type"];
+        this.imageInsurance = vehicleDetail["image-insurance"] ?? '';
+        this.imageRegistration = vehicleDetail["image-registration"] ?? '';
         this.insuranceDeadline = moment(vehicleDetail["insurance-deadline"], 'MM/DD/YYYY').format('DD/MM/YYYY');
         this.registrationDeadline = moment(vehicleDetail["registration-deadline"], 'MM/DD/YYYY').format('DD/MM/YYYY');
         this.company = await this.getCompany(vehicleDetail["infos_id"]);

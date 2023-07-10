@@ -38,7 +38,7 @@
 
       <v-row class="mt-0">
         <v-col cols="12" sm="6" class="pt-0 pb-0">
-          <v-row>
+          <v-row class="mb-0">
             <v-col cols="12" md="4">
               <h4>Trọng tải (tấn) <span style="color: red">*</span></h4>
 
@@ -381,7 +381,7 @@ export default {
 <style scoped>
 .data-container {
   margin: 2rem;
-  padding: 0px 30px 56px 30px;
+  padding: 0px 10px 16px;
 }
 @media screen and (max-width: 830px) {
   .data-container {

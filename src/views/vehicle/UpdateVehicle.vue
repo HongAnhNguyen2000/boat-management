@@ -34,6 +34,61 @@
           />
         </v-col>
       </v-row>
+
+
+      <v-row>
+        <v-col cols="12" sm="6">
+          <v-row class="mb-0">
+            <v-col cols="12" md="4">
+              <h4>Trọng tải (tấn) <span style="color: red">*</span></h4>
+
+              <v-text-field
+                variant="outlined"
+                v-model="vehicle.tonnage"
+                :rules="[rules.required, rules.isNumber]"
+              />
+            </v-col>
+            <v-col cols="12" md="4">
+              <h4>Công suất <span style="color: red">*</span></h4>
+
+              <v-text-field
+                variant="outlined"
+                v-model="vehicle.wattage"
+                :rules="[rules.required, rules.isNumber]"
+              />
+            </v-col>
+            <v-col cols="12" md="4">
+              <h4>
+                Năm sản xuất
+                <span style="color: red">*</span>
+              </h4>
+              <vue-date-picker
+                v-model="vehicle.yearManufacture"
+                locale="vi"
+                format="yyyy"
+                year-picker
+                :max-date="new Date()"
+                select-text="Chọn"
+                cancel-text="Đóng"
+                :year-range="[1900, new Date().getFullYear()]"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="12" sm="6">
+          <h4>Chọn công ty</h4>
+          <v-select
+            :items="companies"
+            item-value="id"
+            item-text="company"
+            item-title="company"
+            :value="vehicle['company']"
+            v-model="vehicle.infosId"
+            variant="solo"
+          />
+        </v-col>
+      </v-row>
+
       <v-row>
         <v-col cols="12" md="6">
           <v-row class="mt-0">
@@ -108,58 +163,7 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col cols="12" sm="6">
-          <v-row>
-            <v-col cols="12" md="4">
-              <h4>Trọng tải (tấn) <span style="color: red">*</span></h4>
 
-              <v-text-field
-                variant="outlined"
-                v-model="vehicle.tonnage"
-                :rules="[rules.required, rules.isNumber]"
-              />
-            </v-col>
-            <v-col cols="12" md="4">
-              <h4>Công suất <span style="color: red">*</span></h4>
-
-              <v-text-field
-                variant="outlined"
-                v-model="vehicle.wattage"
-                :rules="[rules.required, rules.isNumber]"
-              />
-            </v-col>
-            <v-col cols="12" md="4">
-              <h4>
-                Năm sản xuất
-                <span style="color: red">*</span>
-              </h4>
-              <vue-date-picker
-                v-model="vehicle.yearManufacture"
-                locale="vi"
-                format="yyyy"
-                year-picker
-                :max-date="new Date()"
-                select-text="Chọn"
-                cancel-text="Đóng"
-                :year-range="[1900, new Date().getFullYear()]"
-              />
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <h4>Chọn công ty</h4>
-          <v-select
-            :items="companies"
-            item-value="id"
-            item-text="company"
-            item-title="company"
-            :value="vehicle['company']"
-            v-model="vehicle.infosId"
-            variant="solo"
-          />
-        </v-col>
-      </v-row>
       <v-row>
         <v-col cols="12" md="6">
           <h4>Loại phương tiện <span style="color: red">*</span></h4>
@@ -187,17 +191,19 @@
       <div class="mt-3 mb-8"></div>
       <div class="mt-3 mb-8"></div>
     </div>
-    <v-btn
-      block
-      class="mb-8"
-      color="green"
-      size="large"
-      variant="elevated"
-      @click="regis"
-      :disabled="disabled"
-    >
-      Cập nhật
-    </v-btn>
+    <div class="d-flex justify-center align-center">
+      <v-btn
+        class="mb-8"
+        width="150px"
+        color="green"
+        variant="elevated"
+        @click="regis"
+        :disabled="disabled"
+      >
+        Cập nhật
+      </v-btn>
+    </div>
+    
     <v-dialog v-model="open" width="auto" >
       <div style="max-width: 500px; position: relative;">
         <v-btn
@@ -442,7 +448,7 @@ export default {
 <style scoped>
 .data-container {
   margin: 2rem;
-  padding: 0px 30px 56px 30px;
+  padding: 0px 10px 16px;
 }
 @media screen and (max-width: 830px) {
   .data-container {
