@@ -14,7 +14,7 @@
       </v-btn>
     </div>
 
-    <v-table class="min-width-table">
+    <v-table class="min-width-table" style="min-width: 1800px">
       <thead>
         <tr>
           <th class="text-left" @click="sortBy('name')" style="cursor: pointer">
@@ -338,5 +338,16 @@ export default {
   height: auto;
   max-height: 40px;
   cursor: pointer;
+}
+.close-popup-button {
+  height: 20px!important;
+  width: 20px;
+  border-radius: 50%;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  min-width: unset;
+  top: 0;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
 }
 </style>
