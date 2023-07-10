@@ -64,23 +64,30 @@
           {{ company }}
         </span>
       </p>
-      <p class="mt-3">
+      <p class="mt-3" style="align-items: center;">
         <span> Hạn đăng kiểm: </span>
         <span>
           {{ registrationDeadline }}
         </span>
+        <img 
+          :src="imageRegistration" 
+          alt="imageRegistration" 
+          v-if="imageRegistration" 
+          @click="openFullSize(imageRegistration)"
+          class="img-thumb">
       </p>
-      <p class="mt-3">
-        <img :src="imageRegistration" alt="imageRegistration" v-if="imageRegistration" style="width: 100%; height: auto; max-width: 500px;">
-      </p>
-      <p class="mt-3">
+      <p class="mt-3" style="align-items: center;">
         <span> Hạn bảo hiểm: </span>
         <span>
           {{ insuranceDeadline }}
         </span>
-      </p>
-      <p class="mt-3">
-        <img :src="imageInsurance" alt="imageInsurance" v-if="imageInsurance" style="width: 100%; height: auto; max-width: 500px;">
+        <img 
+          :src="imageInsurance" 
+          alt="imageInsurance" 
+          v-if="imageInsurance" 
+          class="img-thumb"
+          @click="openFullSize(imageInsurance)"
+        >
       </p>
     </div>
     <div>
@@ -102,6 +109,19 @@
   >
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </v-overlay>
+   <v-dialog v-model="openImage" width="auto" >
+      <div style="max-width: 500px; position: relative;">
+        <v-btn
+          color="white"
+          variant="elevated"
+          @click="closeImagePopup"
+          class="close-popup-button"
+        >
+          <v-icon icon="mdi mdi-close" />
+        </v-btn>
+        <img :src="imagePopup" alt="imagePopup" v-if="imagePopup" style="width: 100%; height: auto">
+      </div>
+    </v-dialog>
 </template>
 
 <script lang="ts">
@@ -132,6 +152,8 @@ export default {
       vehicle_id: "" as any,
       isLoadedData: false,
       isLoading: true,
+      openImage: false,
+      imagePopup: '',
     };
   },
   created() {
@@ -140,6 +162,14 @@ export default {
     this.getVehicle();
   },
   methods: {
+    closeImagePopup() {
+      this.openImage = false;
+      this.imagePopup = '';
+    },
+    openFullSize(url) {
+      this.openImage = true;
+      this.imagePopup = url
+    },
     async regis() {
       this.$router.push("/vehicle/update/" + this.vehicle_id);
     },
@@ -198,5 +228,15 @@ p {
 }
 
 .button-action {
+}
+.img-thumb {
+  width: auto;
+  margin-left: 10px;
+  max-width: 70px;
+  margin-bottom: auto;
+  object-fit: unset;
+  height: auto;
+  max-height: 40px;
+  cursor: pointer;
 }
 </style>

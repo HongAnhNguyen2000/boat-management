@@ -140,7 +140,8 @@ export default {
   methods: {
     async login() {
       this.$emit("handleLoading", true);
-      const loginVal = { email: this.email, password: this.password };
+      const loginVal = { email: this.email.trim(), password: this.password };
+      console.log(loginVal)
       const loggedIn = await this.$store.dispatch("logIn", loginVal);
       if (loggedIn) {
         this.alertColor = "green";

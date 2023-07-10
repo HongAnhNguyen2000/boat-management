@@ -108,6 +108,8 @@
             </div>
             <span v-else> - </span>
           </th>
+          <th>Ảnh đăng kiểm</th>
+          <th>Ảnh bảo hiểm </th>
         </tr>
       </thead>
       <tbody v-if="showVehicles.length > 0 && isReload">
@@ -126,6 +128,24 @@
           <td>{{ item.type }}</td>
           <td>{{ item.company }}</td>
           <td>{{ insurence(item["insurance-deadline"]) }}</td>
+          <td>
+            <img 
+              :src="item['image-registration']" 
+              alt="image registration" 
+              v-if="item['image-registration']" 
+              class="img-thumb" @click.stop.prevent="openFullSize(item['image-registration'])">
+            <span v-else>-</span>
+          </td>
+          <td>
+            <img 
+              :src="item['image-insurance']" 
+              alt="image insurance" 
+              v-if="item['image-insurance']" 
+              class="img-thumb"
+              @click.stop.prevent="openFullSize(item['image-insurance'])"
+            >
+            <span v-else>-</span>
+          </td>
         </tr>
       </tbody>
     </v-table>
@@ -139,6 +159,19 @@
       <vehicle-detail @closePopup="closePopup" :currentId="currentId" />
     </div>
   </v-dialog>
+  <v-dialog v-model="openImage" width="auto" >
+      <div style="max-width: 500px; position: relative;">
+        <v-btn
+          color="white"
+          variant="elevated"
+          @click="closeImagePopup"
+          class="close-popup-button"
+        >
+          <v-icon icon="mdi mdi-close" />
+        </v-btn>
+        <img :src="imagePopup" alt="imagePopup" v-if="imagePopup" style="width: 100%; height: auto">
+      </div>
+    </v-dialog>
 </template>
 
 <script lang="ts">
@@ -160,6 +193,8 @@ export default {
       open: false,
       currentId: "",
       currentSort: "",
+      openImage: false,
+      imagePopup: '',
       companies: [] as any,
       page: 1,
       pages: 1,
@@ -186,6 +221,14 @@ export default {
   },
 
   methods: {
+    closeImagePopup() {
+      this.openImage = false;
+      this.imagePopup = '';
+    },
+    openFullSize(url) {
+      this.openImage = true;
+      this.imagePopup = url
+    },
     insurence(date): string {
       return moment(date, "MM/DD/YYYY").format("DD/MM/YYYY");
     },
@@ -285,5 +328,15 @@ export default {
     margin-left: 0 !important;
     margin-top: 5px;
   }
+}
+.img-thumb {
+  width: auto;
+  margin-left: auto;
+  max-width: 70px;
+  margin-bottom: auto;
+  object-fit: unset;
+  height: auto;
+  max-height: 40px;
+  cursor: pointer;
 }
 </style>
