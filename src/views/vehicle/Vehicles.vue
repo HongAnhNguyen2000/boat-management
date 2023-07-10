@@ -14,7 +14,7 @@
       </v-btn>
     </div>
 
-    <v-table class="min-width-table" style="min-width: 1800px">
+    <v-table class="min-width-table increase-width-table">
       <thead>
         <tr>
           <th class="text-left" @click="sortBy('name')" style="cursor: pointer">
@@ -349,5 +349,8 @@ export default {
   min-width: unset;
   top: 0;
   box-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
+.increase-width-table table {
+  min-width: 1800px;
 }
 </style>
