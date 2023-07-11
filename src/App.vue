@@ -207,7 +207,7 @@ input.v-field__input {
 .info-area {
   cursor: pointer;
   position: relative;
-  z-index: 99999;
+  z-index: 100;
   min-width: 200px;
   padding-right: 40px;
 }
@@ -260,9 +260,6 @@ input.v-field__input {
 }
 .header-area.v-toolbar {
   overflow: unset;
-}
-.v-dialog {
-  z-index: 9999999 !important;
 }
 .v-row {
   margin: 0 -12px !important;
