@@ -262,6 +262,9 @@ input.v-field__input {
   overflow: unset;
 }
 .v-dialog {
-  z-index: 9999999!important;
+  z-index: 9999999 !important;
+}
+.v-row {
+  margin: 0 -12px !important;
 }
 </style>

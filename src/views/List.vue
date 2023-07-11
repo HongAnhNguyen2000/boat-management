@@ -823,6 +823,7 @@ export default {
   width: 25%;
   margin-left: auto;
   flex: unset;
+  min-width: 450px;
 }
 .search-box .v-field__field {
   align-items: center;
@@ -839,6 +840,7 @@ export default {
   }
   .search-box {
     width: 100%;
+    min-width: unset;
   }
   .filter-box {
     width: 100%;

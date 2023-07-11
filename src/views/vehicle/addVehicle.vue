@@ -75,7 +75,7 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" sm="6" class="pt-0 pb-0">
+        <v-col cols="12" sm="6" class="pb-0">
           <h4>Chọn công ty <span style="color: red">*</span></h4>
           <v-select
             :items="companies"
@@ -112,20 +112,24 @@
               />
             </div>
             <div class="image-upload-area">
-              <v-file-input 
+              <v-file-input
                 @change="previewImage('imageInsurance', 'urlImageInsurance')"
                 v-model="imageInsurance"
                 accept="image/png, image/jpeg"
                 placeholder="Pick an avatar"
                 prepend-icon="mdi-camera"
-                style="padding-top:10px"
+                style="padding-top: 10px"
                 :class="urlImageInsurance ? '' : 'icon-required'"
               />
-              <v-img :src="urlImageInsurance" v-if="urlImageInsurance" @click="openFullSize(urlImageInsurance)"/>
+              <v-img
+                :src="urlImageInsurance"
+                v-if="urlImageInsurance"
+                @click="openFullSize(urlImageInsurance)"
+              />
             </div>
           </v-row>
         </v-col>
-        <v-col cols="12" md="6"  class="pt-0 pb-0">
+        <v-col cols="12" md="6" class="pt-0 pb-0">
           <v-row class="mt-0">
             <div class="beside-image-upload">
               <h4>Hạn đăng kiểm <span style="color: red">*</span></h4>
@@ -147,16 +151,22 @@
               />
             </div>
             <div class="image-upload-area">
-              <v-file-input 
-                @change="previewImage('imageRegistration', 'urlImageRegistration')"
+              <v-file-input
+                @change="
+                  previewImage('imageRegistration', 'urlImageRegistration')
+                "
                 v-model="imageRegistration"
                 accept="image/png, image/jpeg"
                 placeholder="Pick an avatar"
                 prepend-icon="mdi-camera"
-                style="padding-top:10px"
+                style="padding-top: 10px"
                 :class="urlImageRegistration ? '' : 'icon-required'"
               />
-              <v-img :src="urlImageRegistration" v-if="urlImageRegistration" @click="openFullSize(urlImageRegistration)"/>
+              <v-img
+                :src="urlImageRegistration"
+                v-if="urlImageRegistration"
+                @click="openFullSize(urlImageRegistration)"
+              />
             </div>
           </v-row>
         </v-col>
@@ -200,8 +210,8 @@
         Đăng ký
       </v-btn>
     </div>
-    <v-dialog v-model="open" width="auto" >
-      <div style="max-width: 500px; position: relative;">
+    <v-dialog v-model="open" width="auto">
+      <div style="max-width: 500px; position: relative">
         <v-btn
           color="white"
           variant="elevated"
@@ -210,7 +220,12 @@
         >
           <v-icon icon="mdi mdi-close" />
         </v-btn>
-        <img :src="imagePopup" alt="imagePopup" v-if="imagePopup" style="width: 100%; height: auto">
+        <img
+          :src="imagePopup"
+          alt="imagePopup"
+          v-if="imagePopup"
+          style="width: 100%; height: auto"
+        />
       </div>
     </v-dialog>
   </div>
@@ -220,9 +235,7 @@
 import { addVehicle, getInfos } from "@/firebase";
 import _ from "lodash";
 import Datepicker from "@vuepic/vue-datepicker";
-import {
-  convertBlobToBase64
-} from "@/CommonFile";
+import { convertBlobToBase64 } from "@/CommonFile";
 export default {
   components: {
     "date-picker": Datepicker,
@@ -261,12 +274,12 @@ export default {
       },
       companies: [] as any,
       disabled: true,
-      urlImageInsurance: '',
-      urlImageRegistration: '',
-      imageRegistration: '' as any,
-      imageInsurance: '' as any,
+      urlImageInsurance: "",
+      urlImageRegistration: "",
+      imageRegistration: "" as any,
+      imageInsurance: "" as any,
       open: false,
-      imagePopup: '',
+      imagePopup: "",
       rules: {
         required: (value: any) => !!value || "Xin mời nhập trường yêu cầu.",
         isNumber: (value: any) =>
@@ -294,14 +307,14 @@ export default {
   methods: {
     closePopup() {
       this.open = false;
-      this.imagePopup = '';
+      this.imagePopup = "";
     },
     openFullSize(url) {
       this.open = true;
-      this.imagePopup = url
+      this.imagePopup = url;
     },
     async previewImage(image, url) {
-      this[url] = URL.createObjectURL(this[image][0])
+      this[url] = URL.createObjectURL(this[image][0]);
     },
     validate() {
       return (
@@ -333,10 +346,14 @@ export default {
         infos_id: this.vehicle["infosId"],
       };
       if (this.imageInsurance[0]) {
-        params['image-insurance'] = await convertBlobToBase64(this.imageInsurance[0])
+        params["image-insurance"] = await convertBlobToBase64(
+          this.imageInsurance[0]
+        );
       }
       if (this.imageRegistration[0]) {
-        params['image-registration'] = await convertBlobToBase64(this.imageRegistration[0])
+        params["image-registration"] = await convertBlobToBase64(
+          this.imageRegistration[0]
+        );
       }
       if (this.vehicle["registrationDeadline"]) {
         const now = new Date(this.vehicle["registrationDeadline"]);
@@ -430,7 +447,7 @@ button.dp__action_select {
   padding: 0 12px;
 }
 .close-popup-button {
-  height: 20px!important;
+  height: 20px !important;
   width: 20px;
   border-radius: 50%;
   padding: 0;
@@ -438,7 +455,7 @@ button.dp__action_select {
   right: 0;
   min-width: unset;
   top: 0;
-  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
 }
 .icon-required .v-input__prepend {
   border: 1px solid red;
