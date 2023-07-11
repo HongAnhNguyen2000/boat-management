@@ -64,30 +64,31 @@
           {{ company }}
         </span>
       </p>
-      <p class="mt-3" style="align-items: center;">
-        <span> Hạn đăng kiểm: </span>
-        <span>
-          {{ registrationDeadline }}
-        </span>
-        <img 
-          :src="imageRegistration" 
-          alt="imageRegistration" 
-          v-if="imageRegistration" 
-          @click="openFullSize(imageRegistration)"
-          class="img-thumb">
-      </p>
-      <p class="mt-3" style="align-items: center;">
+      <p class="mt-3" style="align-items: center">
         <span> Hạn bảo hiểm: </span>
         <span>
           {{ insuranceDeadline }}
         </span>
-        <img 
-          :src="imageInsurance" 
-          alt="imageInsurance" 
-          v-if="imageInsurance" 
+        <img
+          :src="imageInsurance"
+          alt="imageInsurance"
+          v-if="imageInsurance"
           class="img-thumb"
           @click="openFullSize(imageInsurance)"
-        >
+        />
+      </p>
+      <p class="mt-3" style="align-items: center">
+        <span> Hạn đăng kiểm: </span>
+        <span>
+          {{ registrationDeadline }}
+        </span>
+        <img
+          :src="imageRegistration"
+          alt="imageRegistration"
+          v-if="imageRegistration"
+          @click="openFullSize(imageRegistration)"
+          class="img-thumb"
+        />
       </p>
     </div>
     <div>
@@ -109,19 +110,24 @@
   >
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </v-overlay>
-   <v-dialog v-model="openImage" width="auto" >
-      <div style="max-width: 500px; position: relative;">
-        <v-btn
-          color="white"
-          variant="elevated"
-          @click="closeImagePopup"
-          class="close-popup-button"
-        >
-          <v-icon icon="mdi mdi-close" />
-        </v-btn>
-        <img :src="imagePopup" alt="imagePopup" v-if="imagePopup" style="width: 100%; height: auto">
-      </div>
-    </v-dialog>
+  <v-dialog v-model="openImage" width="auto">
+    <div style="max-width: 500px; position: relative">
+      <v-btn
+        color="white"
+        variant="elevated"
+        @click="closeImagePopup"
+        class="close-popup-button"
+      >
+        <v-icon icon="mdi mdi-close" />
+      </v-btn>
+      <img
+        :src="imagePopup"
+        alt="imagePopup"
+        v-if="imagePopup"
+        style="width: 100%; height: auto"
+      />
+    </div>
+  </v-dialog>
 </template>
 
 <script lang="ts">
@@ -145,15 +151,15 @@ export default {
       yearManufacture: "",
       type: "",
       insuranceDeadline: "",
-      imageRegistration: '',
-      imageInsurance: '',
+      imageRegistration: "",
+      imageInsurance: "",
       registrationDeadline: "",
       company: "" as any,
       vehicle_id: "" as any,
       isLoadedData: false,
       isLoading: true,
       openImage: false,
-      imagePopup: '',
+      imagePopup: "",
     };
   },
   created() {
@@ -164,11 +170,11 @@ export default {
   methods: {
     closeImagePopup() {
       this.openImage = false;
-      this.imagePopup = '';
+      this.imagePopup = "";
     },
     openFullSize(url) {
       this.openImage = true;
-      this.imagePopup = url
+      this.imagePopup = url;
     },
     async regis() {
       this.$router.push("/vehicle/update/" + this.vehicle_id);
@@ -185,10 +191,16 @@ export default {
         this.wattage = vehicleDetail["wattage"];
         this.yearManufacture = vehicleDetail["year-manufacture"];
         this.type = vehicleDetail["type"];
-        this.imageInsurance = vehicleDetail["image-insurance"] ?? '';
-        this.imageRegistration = vehicleDetail["image-registration"] ?? '';
-        this.insuranceDeadline = moment(vehicleDetail["insurance-deadline"], 'MM/DD/YYYY').format('DD/MM/YYYY');
-        this.registrationDeadline = moment(vehicleDetail["registration-deadline"], 'MM/DD/YYYY').format('DD/MM/YYYY');
+        this.imageInsurance = vehicleDetail["image-insurance"] ?? "";
+        this.imageRegistration = vehicleDetail["image-registration"] ?? "";
+        this.insuranceDeadline = moment(
+          vehicleDetail["insurance-deadline"],
+          "MM/DD/YYYY"
+        ).format("DD/MM/YYYY");
+        this.registrationDeadline = moment(
+          vehicleDetail["registration-deadline"],
+          "MM/DD/YYYY"
+        ).format("DD/MM/YYYY");
         this.company = await this.getCompany(vehicleDetail["infos_id"]);
         setTimeout(() => {
           this.isLoadedData = true;
@@ -240,7 +252,7 @@ p {
   cursor: pointer;
 }
 .close-popup-button {
-  height: 20px!important;
+  height: 20px !important;
   width: 20px;
   border-radius: 50%;
   padding: 0;
@@ -248,6 +260,6 @@ p {
   right: 0;
   min-width: unset;
   top: 0;
-  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
 }
 </style>

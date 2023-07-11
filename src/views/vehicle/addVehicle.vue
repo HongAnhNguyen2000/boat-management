@@ -100,6 +100,7 @@
                 format="dd-MM-yyyy"
                 select-text="Chọn"
                 cancel-text="Đóng"
+                date-picker
                 :day-names="[
                   'Thứ 2',
                   'Thứ 3',
@@ -112,20 +113,50 @@
               />
             </div>
             <div class="image-upload-area">
-              <v-file-input
-                @change="previewImage('imageInsurance', 'urlImageInsurance')"
-                v-model="imageInsurance"
-                accept="image/png, image/jpeg"
-                placeholder="Pick an avatar"
-                prepend-icon="mdi-camera"
-                style="padding-top: 10px"
-                :class="urlImageInsurance ? '' : 'icon-required'"
-              />
-              <v-img
-                :src="urlImageInsurance"
-                v-if="urlImageInsurance"
-                @click="openFullSize(urlImageInsurance)"
-              />
+              <h4>Ảnh chụp bảo hiểm <span style="color: red">*</span></h4>
+              <div class="image-upload-content">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    background: lightgray;
+                    padding: 0 10px !important;
+                    border-radius: 4px;
+                    position: relative;
+                    cursor: pointer;
+                  "
+                  @click="triggerClick('imageInsurance')"
+                >
+                  <v-icon style="color: #5f5c5c">mdi-camera</v-icon>
+                  <v-file-input
+                    @change="
+                      previewImage('imageInsurance', 'urlImageInsurance')
+                    "
+                    v-model="imageInsurance"
+                    accept="image/png, image/jpeg"
+                    prepend-icon="mdi-camera"
+                    style="display: none"
+                    ref="imageInsurance"
+                  />
+                  <span class="ml-2"> Tải ảnh lên </span>
+                </div>
+                <div style="position: relative" v-if="urlImageInsurance">
+                  <v-btn
+                    color="white"
+                    variant="elevated"
+                    @click="clearImage('imageInsurance', 'urlImageInsurance')"
+                    class="close-popup-button"
+                    style="z-index: 9; right: -10px; top: -10px"
+                  >
+                    <v-icon icon="mdi mdi-close" />
+                  </v-btn>
+                  <v-img
+                    :src="urlImageInsurance"
+                    @click="openFullSize(urlImageInsurance)"
+                    class="ml-3"
+                  />
+                </div>
+              </div>
             </div>
           </v-row>
         </v-col>
@@ -151,22 +182,52 @@
               />
             </div>
             <div class="image-upload-area">
-              <v-file-input
-                @change="
-                  previewImage('imageRegistration', 'urlImageRegistration')
-                "
-                v-model="imageRegistration"
-                accept="image/png, image/jpeg"
-                placeholder="Pick an avatar"
-                prepend-icon="mdi-camera"
-                style="padding-top: 10px"
-                :class="urlImageRegistration ? '' : 'icon-required'"
-              />
-              <v-img
-                :src="urlImageRegistration"
-                v-if="urlImageRegistration"
-                @click="openFullSize(urlImageRegistration)"
-              />
+              <h4>Ảnh chụp đăng kiểm <span style="color: red">*</span></h4>
+              <div class="image-upload-content">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    background: lightgray;
+                    padding: 0 10px !important;
+                    border-radius: 4px;
+                    position: relative;
+                    cursor: pointer;
+                  "
+                  @click="triggerClick('imageRegistration')"
+                >
+                  <v-icon style="color: #5f5c5c">mdi-camera</v-icon>
+                  <v-file-input
+                    @change="
+                      previewImage('imageRegistration', 'urlImageRegistration')
+                    "
+                    v-model="imageRegistration"
+                    accept="image/png, image/jpeg"
+                    prepend-icon="mdi-camera"
+                    ref="imageRegistration"
+                    style="display: none"
+                  />
+                  <span class="ml-2"> Tải ảnh lên </span>
+                </div>
+                <div style="position: relative" v-if="urlImageRegistration">
+                  <v-btn
+                    color="white"
+                    variant="elevated"
+                    @click="
+                      clearImage('imageRegistration', 'urlImageRegistration')
+                    "
+                    class="close-popup-button"
+                    style="z-index: 9; right: -10px; top: -10px"
+                  >
+                    <v-icon icon="mdi mdi-close" />
+                  </v-btn>
+                  <v-img
+                    :src="urlImageRegistration"
+                    @click="openFullSize(urlImageRegistration)"
+                    class="ml-3"
+                  />
+                </div>
+              </div>
             </div>
           </v-row>
         </v-col>
@@ -305,6 +366,14 @@ export default {
     },
   },
   methods: {
+    clearImage(image: string, elemName: string) {
+      this[image] = [];
+      this[elemName] = "";
+    },
+    triggerClick(elemName: string) {
+      const elem: any = this.$refs[elemName];
+      elem.click();
+    },
     closePopup() {
       this.open = false;
       this.imagePopup = "";
@@ -427,7 +496,6 @@ button.dp__action_select {
   width: auto;
   margin-left: auto;
   max-width: 70px;
-  margin-bottom: auto;
   object-fit: unset;
   height: auto;
   max-height: 40px;
@@ -435,15 +503,29 @@ button.dp__action_select {
 }
 .image-upload-area {
   display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 0 12px;
+}
+.image-upload-content {
+  display: flex;
   flex-direction: row;
-  width: 134px;
-  padding: 24px 12px 0;
+  width: 100%;
+}
+.image-upload-content > div {
+  padding-top: 6px;
+  display: flex;
+  width: auto;
+  flex: unset;
+  height: 40px;
+  align-items: center;
+  padding: 0 !important;
 }
 .image-upload-area .v-input__control {
   display: none;
 }
 .beside-image-upload {
-  width: calc(100% - 134px);
+  width: 50%;
   padding: 0 12px;
 }
 .close-popup-button {
@@ -456,9 +538,5 @@ button.dp__action_select {
   min-width: unset;
   top: 0;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
-}
-.icon-required .v-input__prepend {
-  border: 1px solid red;
-  border-radius: 6px;
 }
 </style>

@@ -108,8 +108,8 @@
             </div>
             <span v-else> - </span>
           </th>
+          <th>Ảnh bảo hiểm</th>
           <th>Ảnh đăng kiểm</th>
-          <th>Ảnh bảo hiểm </th>
         </tr>
       </thead>
       <tbody v-if="showVehicles.length > 0 && isReload">
@@ -129,21 +129,23 @@
           <td>{{ item.company }}</td>
           <td>{{ insurence(item["insurance-deadline"]) }}</td>
           <td>
-            <img 
-              :src="item['image-registration']" 
-              alt="image registration" 
-              v-if="item['image-registration']" 
-              class="img-thumb" @click.stop.prevent="openFullSize(item['image-registration'])">
+            <img
+              :src="item['image-insurance']"
+              alt="image insurance"
+              v-if="item['image-insurance']"
+              class="img-thumb"
+              @click.stop.prevent="openFullSize(item['image-insurance'])"
+            />
             <span v-else>-</span>
           </td>
           <td>
-            <img 
-              :src="item['image-insurance']" 
-              alt="image insurance" 
-              v-if="item['image-insurance']" 
+            <img
+              :src="item['image-registration']"
+              alt="image registration"
+              v-if="item['image-registration']"
               class="img-thumb"
-              @click.stop.prevent="openFullSize(item['image-insurance'])"
-            >
+              @click.stop.prevent="openFullSize(item['image-registration'])"
+            />
             <span v-else>-</span>
           </td>
         </tr>
@@ -159,19 +161,24 @@
       <vehicle-detail @closePopup="closePopup" :currentId="currentId" />
     </div>
   </v-dialog>
-  <v-dialog v-model="openImage" width="auto" >
-      <div style="max-width: 500px; position: relative;">
-        <v-btn
-          color="white"
-          variant="elevated"
-          @click="closeImagePopup"
-          class="close-popup-button"
-        >
-          <v-icon icon="mdi mdi-close" />
-        </v-btn>
-        <img :src="imagePopup" alt="imagePopup" v-if="imagePopup" style="width: 100%; height: auto">
-      </div>
-    </v-dialog>
+  <v-dialog v-model="openImage" width="auto">
+    <div style="max-width: 500px; position: relative">
+      <v-btn
+        color="white"
+        variant="elevated"
+        @click="closeImagePopup"
+        class="close-popup-button"
+      >
+        <v-icon icon="mdi mdi-close" />
+      </v-btn>
+      <img
+        :src="imagePopup"
+        alt="imagePopup"
+        v-if="imagePopup"
+        style="width: 100%; height: auto"
+      />
+    </div>
+  </v-dialog>
 </template>
 
 <script lang="ts">
@@ -194,7 +201,7 @@ export default {
       currentId: "",
       currentSort: "",
       openImage: false,
-      imagePopup: '',
+      imagePopup: "",
       companies: [] as any,
       page: 1,
       pages: 1,
@@ -223,11 +230,11 @@ export default {
   methods: {
     closeImagePopup() {
       this.openImage = false;
-      this.imagePopup = '';
+      this.imagePopup = "";
     },
     openFullSize(url) {
       this.openImage = true;
-      this.imagePopup = url
+      this.imagePopup = url;
     },
     insurence(date): string {
       return moment(date, "MM/DD/YYYY").format("DD/MM/YYYY");
@@ -340,7 +347,7 @@ export default {
   cursor: pointer;
 }
 .close-popup-button {
-  height: 20px!important;
+  height: 20px !important;
   width: 20px;
   border-radius: 50%;
   padding: 0;
@@ -348,7 +355,7 @@ export default {
   right: 0;
   min-width: unset;
   top: 0;
-  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
 }
 .increase-width-table table {
   min-width: 1800px;
