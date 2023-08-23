@@ -47,7 +47,6 @@
         <v-col cols="6" v-if="currentRole === 'manager'">
           <h4>Chọn vai trò</h4>
           <v-select
-            label="Vai trò người dùng"
             :items="labelType"
             v-model="role"
             item-value="en"
@@ -62,7 +61,6 @@
           <h4>Chọn công ty</h4>
           <v-select
             class="mt-2"
-            label="Công ty"
             :items="companies"
             item-value="id"
             item-text="company"

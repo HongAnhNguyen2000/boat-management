@@ -12,14 +12,23 @@ import { ref } from "vue";
 import exp from "constants";
 
 const config = {
-  apiKey: "AIzaSyBiT_WbANpN4ntqRCvuV48EZ4x4lsxO5Wc",
-  authDomain: "boat-51710.firebaseapp.com",
-  projectId: "boat-51710",
-  storageBucket: "boat-51710.appspot.com",
-  messagingSenderId: "1093694730199",
-  appId: "1:1093694730199:web:84e89bac8dfb79eed4a592",
-  measurementId: "G-P535XQYL57",
+  apiKey: "AIzaSyB7CrZwaisaMKSn-ZrnUOY7bFFVfGTPZnU",
+  authDomain: "boat-925e2.firebaseapp.com",
+  projectId: "boat-925e2",
+  storageBucket: "boat-925e2.appspot.com",
+  messagingSenderId: "283415674733",
+  appId: "1:283415674733:web:8f36d2ce964325aafb6464",
+  measurementId: "G-SDD380TSH5",
 };
+// const config = {
+//   apiKey: "AIzaSyBiT_WbANpN4ntqRCvuV48EZ4x4lsxO5Wc",
+//   authDomain: "boat-51710.firebaseapp.com",
+//   projectId: "boat-51710",
+//   storageBucket: "boat-51710.appspot.com",
+//   messagingSenderId: "1093694730199",
+//   appId: "1:1093694730199:web:84e89bac8dfb79eed4a592",
+//   measurementId: "G-P535XQYL57",
+// };
 
 const firebaseApp = initializeApp(config);
 
